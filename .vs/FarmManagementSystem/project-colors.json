@@ -1,0 +1,31 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "98ddb4da-5a01-4db2-a549-13fa6eaac79b": {
+      "ProjectGuid": "98ddb4da-5a01-4db2-a549-13fa6eaac79b",
+      "DisplayName": "Entities",
+      "ColorIndex": 0
+    },
+    "f5ea66a2-527d-4f1f-b0de-1a4fa479ecaa": {
+      "ProjectGuid": "f5ea66a2-527d-4f1f-b0de-1a4fa479ecaa",
+      "DisplayName": "Core",
+      "ColorIndex": 1
+    },
+    "8eed6eb0-3864-473f-ba48-f1267144db30": {
+      "ProjectGuid": "8eed6eb0-3864-473f-ba48-f1267144db30",
+      "DisplayName": "Business",
+      "ColorIndex": 2
+    },
+    "f1ff71f5-200e-432a-b29e-33e7aafe32ac": {
+      "ProjectGuid": "f1ff71f5-200e-432a-b29e-33e7aafe32ac",
+      "DisplayName": "DataAccess",
+      "ColorIndex": 3
+    },
+    "fee8f446-8217-45a0-b230-074a97080b27": {
+      "ProjectGuid": "fee8f446-8217-45a0-b230-074a97080b27",
+      "DisplayName": "WebAPI",
+      "ColorIndex": 4
+    }
+  },
+  "NextColorIndex": 5
+}
