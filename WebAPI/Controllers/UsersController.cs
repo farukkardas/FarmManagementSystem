@@ -10,10 +10,11 @@ namespace WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public UsersController(IUserService userService)
+        private readonly IAuthService _authService;
+        public UsersController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
+            _authService = authService;
         }
 
         [HttpGet("getall")]
@@ -82,7 +83,9 @@ namespace WebAPI.Controllers
         [HttpGet("getuserdetails")]
         public IActionResult GetUserDetails(int id,string securityKey)
         {
-            var result = _userService.GetUserDetails(id,securityKey);
+            _authService.UserOwnControl(id, securityKey);
+            
+            var result = _userService.GetUserDetails(id);
 
             if (result.Success)
             {

@@ -9,9 +9,9 @@ namespace Business.Abstract
         IDataResult<List<FuelConsumption>> GetAll();
         IDataResult<FuelConsumption> GetById(int id);
         
-        IResult Add(FuelConsumption fuelConsumption);
-        IResult Delete(FuelConsumption fuelConsumption);
-        IResult Update(FuelConsumption fuelConsumption);
+        IResult Add(FuelConsumption fuelConsumption,int id, string securityKey);
+        IResult Delete(FuelConsumption fuelConsumption,int id, string securityKey);
+        IResult Update(FuelConsumption fuelConsumption,int id, string securityKey);
         IDataResult<List<FuelConsumption>> GetUserFuelConsumptions(int id, string securityKey);
     }
 }

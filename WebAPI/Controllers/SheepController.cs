@@ -41,9 +41,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Sheep sheep)
+        public IActionResult Add(Sheep sheep,int id, string securityKey)
         {
-            var result = _sheepService.Add(sheep);
+            var result = _sheepService.Add(sheep,id,securityKey);
 
             if (result.Success)
             {
@@ -54,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Sheep sheep)
+        public IActionResult Delete(Sheep sheep,int id, string securityKey)
         {
-            var result = _sheepService.Delete(sheep);
+            var result = _sheepService.Delete(sheep,id,securityKey);
 
             if (result.Success)
             {
@@ -67,9 +67,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Sheep sheep)
+        public IActionResult Update(Sheep sheep,int id, string securityKey)
         {
-            var result = _sheepService.Update(sheep);
+            var result = _sheepService.Update(sheep,id,securityKey);
 
             if (result.Success)
             {

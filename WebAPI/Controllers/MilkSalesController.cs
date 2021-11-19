@@ -54,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(MilkSales milkSales)
+        public IActionResult Add(MilkSales milkSales,int id, string securityKey)
         {
-            var result = _milkSalesService.Add(milkSales);
+            var result = _milkSalesService.Add(milkSales,id,securityKey);
 
             if (result.Success)
             {
@@ -67,9 +67,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(MilkSales milkSales)
+        public IActionResult Delete(MilkSales milkSales,int id, string securityKey)
         {
-            var result = _milkSalesService.Delete(milkSales);
+            var result = _milkSalesService.Delete(milkSales,id,securityKey);
 
             if (result.Success)
             {
@@ -80,9 +80,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(MilkSales milkSales)
+        public IActionResult Update(MilkSales milkSales,int id, string securityKey)
         {
-            var result = _milkSalesService.Update(milkSales);
+            var result = _milkSalesService.Update(milkSales,id,securityKey);
 
             if (result.Success)
             {

@@ -10,9 +10,9 @@ namespace Business.Abstract
         IDataResult<List<Customer>> GetAll();
         IDataResult<Customer> GetById(int id);
         IDataResult<List<MilkSalesTotalDto>> GetCustomerSummary();
-        IResult Add(Customer customer);
-        IResult Delete(Customer customer);
-        IResult Update(Customer customer);
+        IResult Add(Customer customer,int id, string securityKey);
+        IResult Delete(Customer customer,int id, string securityKey);
+        IResult Update(Customer customer,int id, string securityKey);
         IDataResult<List<MilkSalesTotalDto>> GetUserCustomers(int id, string securityKey);
     }
 }

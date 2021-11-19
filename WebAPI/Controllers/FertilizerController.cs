@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Fertilizer fertilizer)
+        public IActionResult Add(Fertilizer fertilizer,int id, string securityKey)
         {
-            var result = _fertilizerService.Add(fertilizer);
+            var result = _fertilizerService.Add(fertilizer,id,securityKey);
 
             if (result.Success)
             {
@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Fertilizer fertilizer)
+        public IActionResult Delete(Fertilizer fertilizer,int id, string securityKey)
         {
-            var result = _fertilizerService.Delete(fertilizer);
+            var result = _fertilizerService.Delete(fertilizer,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +66,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Fertilizer fertilizer)
+        public IActionResult Update(Fertilizer fertilizer,int id, string securityKey)
         {
-            var result = _fertilizerService.Update(fertilizer);
+            var result = _fertilizerService.Update(fertilizer,id,securityKey);
 
             if (result.Success)
             {

@@ -136,5 +136,22 @@ namespace Business.Concrete
 
             return finalString;
         }
+
+        public IResult UserOwnControl(int id,string securityKey)
+        {
+            var user = _userDal.Get(u => u.Id == id);
+
+            if (user == null)
+            {
+                return new ErrorResult("User not found");
+            }
+            
+            if (user.SecurityKey != securityKey)
+            {
+                return new ErrorResult("You have not permission for this.");
+            }
+
+            return new SuccessResult();
+        }
     }
 }

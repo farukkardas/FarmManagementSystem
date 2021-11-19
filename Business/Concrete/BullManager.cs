@@ -1,73 +1,103 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DataTransferObjects;
 
 namespace Business.Concrete
 {
     public class BullManager : IBullService
     {
         private readonly IBullDal _bullDal;
-        private readonly IUserDal _userDal;
-
-        public BullManager(IBullDal bullDal, IUserDal userDal)
+        private readonly IAuthService _authService;
+        
+        public BullManager(IBullDal bullDal,IAuthService authService)
         {
             _bullDal = bullDal;
-            _userDal = userDal;
+           
+            _authService = authService;
         }
      
+        [CacheAspect(20)]
+        [SecuredOperations("admin")]
         public IDataResult<List<Bull>> GetAll()
         {
             var result = _bullDal.GetAll();
             return new SuccessDataResult<List<Bull>>(result);
         }
         
+        [CacheAspect(20)]
+        [SecuredOperations("admin")]
         public IDataResult<Bull> GetById(int id)
         {
             var result = _bullDal.Get(b => b.Id == id);
             return new SuccessDataResult<Bull>(result);
         }
-
+        
+        [SecuredOperations("user,admin")]
         [ValidationAspect(typeof(BullValidator))]
-        [CacheRemoveAspect("IUserService.Get")]
-        public IResult Add(Bull bull)
+        [CacheRemoveAspect("IBullService.Get")]
+        public IResult Add(Bull bull,int id,string securityKey)
         {
+             IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
+            }
+            
             _bullDal.Add(bull);
             return new SuccessResult($"Bull{Messages.SuccessfullyAdded}");
         }
 
-        [CacheRemoveAspect("IUserService.Get")]
-        public IResult Delete(Bull bull)
+        [SecuredOperations("user,admin")]
+        [CacheRemoveAspect("IBullService.Get")]
+        public IResult Delete(Bull bull,int id,string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
+            }
             _bullDal.Delete(bull);
             return new SuccessResult($"Bull{Messages.SuccessfullyDeleted}");
         }
 
-        [CacheRemoveAspect("IUserService.Get")]
-        public IResult Update(Bull bull)
+        [ValidationAspect(typeof(BullValidator))]
+        [SecuredOperations("user,admin")]
+        [CacheRemoveAspect("IBullService.Get")]
+        public IResult Update(Bull bull,int id,string securityKey)
         {
+          
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
+            }
+            
             _bullDal.Update(bull);
             return new SuccessResult($"Bull{Messages.SuccessfullyUpdated}");
         }
 
+        [CacheAspect(20)]
+        [SecuredOperations("user,admin")]
         public IDataResult<List<Bull>> GetUserBulls(int id, string securityKey)
         {
-            var user = _userDal.Get(u => u.Id == id);
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
 
-            if (user == null)
+            if (conditionResult != null)
             {
-                return new ErrorDataResult<List<Bull>>("User not found!");
-            }
-            
-            if (user.SecurityKey != securityKey)
-            {
-                return new ErrorDataResult<List<Bull>>("You have not permission for this.");
+                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
             }
 
             var bulls = _bullDal.GetAll(c=>c.OwnerId == id);

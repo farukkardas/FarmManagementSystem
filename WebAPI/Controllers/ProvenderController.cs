@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Provender provender)
+        public IActionResult Add(Provender provender,int id, string securityKey)
         {
-            var result = _provenderService.Add(provender);
+            var result = _provenderService.Add(provender,id,securityKey);
 
             if (result.Success)
             {
@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Provender provender)
+        public IActionResult Delete(Provender provender,int id, string securityKey)
         {
-            var result = _provenderService.Delete(provender);
+            var result = _provenderService.Delete(provender,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +66,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Provender provender)
+        public IActionResult Update(Provender provender,int id, string securityKey)
         {
-            var result = _provenderService.Update(provender);
+            var result = _provenderService.Update(provender,id,securityKey);
 
             if (result.Success)
             {

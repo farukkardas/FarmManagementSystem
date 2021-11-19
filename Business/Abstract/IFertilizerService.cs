@@ -9,9 +9,9 @@ namespace Business.Abstract
         IDataResult<List<Fertilizer>> GetAll();
         IDataResult<Fertilizer> GetById(int id);
         
-        IResult Add(Fertilizer cow);
-        IResult Delete(Fertilizer cow);
-        IResult Update(Fertilizer cow);
+        IResult Add(Fertilizer cow,int id,string securityKey);
+        IResult Delete(Fertilizer cow,int id,string securityKey);
+        IResult Update(Fertilizer cow,int id,string securityKey);
         IDataResult<List<Fertilizer>> GetUserFertilizers(int id, string securityKey);
     }
 }

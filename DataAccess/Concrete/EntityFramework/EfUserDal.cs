@@ -36,11 +36,15 @@ namespace DataAccess.Concrete.EntityFramework
                 select new UserDetailDto
                 {
                     Id = u.Id,
-                    Profit = context.MilkSales.Where(s => s.SellerId == u.Id).Sum(x => x.Amount),
+                    Profit = context.MilkSales.Where(s => s.SellerId == u.Id).Sum(x => x.SalePrice),
                     TotalSales = context.MilkSales.Count(m => m.SellerId == u.Id),
                     CustomerCount = context.Customers.Count(c => c.OwnerId == u.Id),
-                    AnimalCount = context.Cows.Count(cows => cows.OwnerId == u.Id)
-                                  + context.Calves.Count(calves => calves.OwnerId == u.Id) +
+                    BullCount = context.Bulls.Count(b=>b.OwnerId == u.Id),
+                    CalfCount = context.Calves.Count(c=>c.OwnerId == u.Id),
+                    CowCount = context.Cows.Count(c=>c.OwnerId == u.Id),
+                    SheepCount = context.Sheeps.Count(s=>s.OwnerId == u.Id),
+                    AnimalCount = context.Cows.Count(cows => cows.OwnerId == u.Id) +
+                                  context.Calves.Count(calves => calves.OwnerId == u.Id) +
                                   context.Bulls.Count(bull => bull.OwnerId == u.Id) +
                                   context.Sheeps.Count(sheep => sheep.OwnerId == u.Id)
                                   

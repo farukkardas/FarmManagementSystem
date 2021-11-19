@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
@@ -12,15 +17,16 @@ namespace Business.Concrete
     public class CustomerManager : ICustomerService
     {
         private readonly ICustomerDal _customerDal;
-        private readonly IUserDal _userDal;
+        private readonly IAuthService _authService;
 
-        public CustomerManager(ICustomerDal customerDal, IUserDal userDal)
+        public CustomerManager(ICustomerDal customerDal, IAuthService authService)
         {
             _customerDal = customerDal;
-            _userDal = userDal;
+            _authService = authService;
         }
 
 
+        [SecuredOperations("admin")]
         public IDataResult<List<Customer>> GetAll()
         {
             var result = _customerDal.GetAll();
@@ -28,6 +34,7 @@ namespace Business.Concrete
             
         }
 
+        [SecuredOperations("admin")]
         public IDataResult<Customer> GetById(int id)
         {
             var result = _customerDal.Get(c=>c.Id == id);
@@ -35,6 +42,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>(result);
         }
 
+        [SecuredOperations("admin,user")]
         public IDataResult<List<MilkSalesTotalDto>> GetCustomerSummary()
         {
             var result = _customerDal.MilkSalesSummary();
@@ -42,36 +50,62 @@ namespace Business.Concrete
             return new SuccessDataResult<List<MilkSalesTotalDto>>(result);
         }
 
-        public IResult Add(Customer customer)
+        
+        [SecuredOperations("admin,user")]
+        [CacheRemoveAspect(("ICustomerService.Get"))]
+        [ValidationAspect(typeof(CustomerValidator))]
+        public IResult Add(Customer customer,int id, string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Customer>>(conditionResult.Message);
+            }
             _customerDal.Add(customer);
             return new SuccessResult($"Customer {Messages.SuccessfullyAdded}");
         }
 
-        public IResult Delete(Customer customer)
+        [SecuredOperations("admin,user")]
+        [CacheRemoveAspect(("ICustomerService.Get"))]
+        public IResult Delete(Customer customer,int id, string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Customer>>(conditionResult.Message);
+            }
+            
            _customerDal.Delete(customer);
            return new SuccessResult($"Customer {Messages.SuccessfullyDeleted}");
         }
 
-        public IResult Update(Customer customer)
+        [SecuredOperations("admin,user")]
+        [CacheRemoveAspect(("ICustomerService.Get"))]
+        [ValidationAspect(typeof(CustomerValidator))]
+        public IResult Update(Customer customer,int id, string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Customer>>(conditionResult.Message);
+            }
+            
             _customerDal.Update(customer);
             return new SuccessResult($"Customer {Messages.SuccessfullyUpdated}");
         }
 
+    
+        [SecuredOperations("user,admin")]
         public IDataResult<List<MilkSalesTotalDto>> GetUserCustomers(int id, string securityKey)
         {
-            var user = _userDal.Get(u => u.Id == id);
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
 
-            if (user == null)
+            if (conditionResult != null)
             {
-                return new ErrorDataResult<List<MilkSalesTotalDto>>("User not found!");
-            }
-            
-            if (user.SecurityKey != securityKey)
-            {
-                return new ErrorDataResult<List<MilkSalesTotalDto>>("You have not permission for this.");
+                return new ErrorDataResult<List<MilkSalesTotalDto>>(conditionResult.Message);
             }
 
             var customers = _customerDal.MilkSalesSummary(c=>c.OwnerId == id);

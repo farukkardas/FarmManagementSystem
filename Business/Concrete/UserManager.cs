@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -12,7 +10,6 @@ using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.DataTransferObjects;
 
@@ -27,19 +24,23 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        [SecuredOperations("admin")]
+        [CacheAspect(20)]
         public IDataResult<List<User>> GetAll()
         {
             var result = _userDal.GetAll();
             return new SuccessDataResult<List<User>>(result);
         }
 
+        [SecuredOperations("admin")]
+        [CacheAspect(20)]
         public IDataResult<User> GetById(int id)
         {
             var result = _userDal.Get(u => u.Id == id);
             return new SuccessDataResult<User>(result);
         }
 
-
+        [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IUserService.Get")]
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
@@ -48,7 +49,7 @@ namespace Business.Concrete
             return new SuccessResult($"User{Messages.SuccessfullyAdded}");
         }
 
-        [ValidationAspect(typeof(UserValidator))]
+        [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User user)
         {
@@ -56,16 +57,16 @@ namespace Business.Concrete
             return new SuccessResult($"User{Messages.SuccessfullyDeleted}");
         }
 
-        [ValidationAspect(typeof(UserValidator))]
+        [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IUserService.Get")]
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User user)
         {
             _userDal.Update(user);
             return new SuccessResult($"User{Messages.SuccessfullyUpdated}");
         }
 
-       
-
+        
         public List<OperationClaim> GetClaims(User user)
         {
             return _userDal.GetClaims(user);
@@ -77,51 +78,14 @@ namespace Business.Concrete
         }
 
 
-        public IDataResult<UserDetailDto> GetUserDetails(int id, string securityKey)
+        [CacheAspect(20)]
+        [SecuredOperations("user,admin")]
+        public IDataResult<UserDetailDto> GetUserDetails(int id)
         {
-            IResult conditionResult = BusinessRules.Run(CheckUserIdAndSecurityKey(id, securityKey));
-
-            if (conditionResult != null)
-            {
-                return new ErrorDataResult<UserDetailDto>(conditionResult.Message);
-            }
-
+            
             var result = _userDal.GetUserDetails(u => u.Id == id);
 
             return new SuccessDataResult<UserDetailDto>(result, "Data was successfully fetched.");
         }
-
-
-        private IDataResult<UserDetailDto> CheckUserIdAndSecurityKey(int id, string securityKey)
-        {
-            var user = _userDal.Get(u => u.Id == id);
-
-            var result = _userDal.GetUserDetails(x => x.Id == id);
-
-            if (user == null)
-            {
-                return new ErrorDataResult<UserDetailDto>($"User not found!");
-            }
-
-            if (result == null)
-            {
-                return new ErrorDataResult<UserDetailDto>("Error when getting user details!");
-            }
-            
-
-            if (result.Id != user.Id)
-            {
-                return new ErrorDataResult<UserDetailDto>($" ID error : {Messages.AuthorizationDenied}");
-            }
-
-            if (user.SecurityKey != securityKey)
-            {
-                return new ErrorDataResult<UserDetailDto>($" email error : {Messages.AuthorizationDenied}");
-            }
-
-            return new SuccessDataResult<UserDetailDto>(result);
-        }
-
-        
     }
 }

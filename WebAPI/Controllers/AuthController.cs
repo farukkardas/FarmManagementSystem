@@ -9,12 +9,10 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-        private readonly IUserService _userService;
         
-        public AuthController(IAuthService authService, IUserService userService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -57,7 +55,7 @@ namespace WebAPI.Controllers
             
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
 
             return BadRequest(result.Message);

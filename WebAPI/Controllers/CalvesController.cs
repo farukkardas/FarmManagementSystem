@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Calves calves)
+        public IActionResult Add(Calves calves,int id,string securityKey)
         {
-            var result = _calvesService.Add(calves);
+            var result = _calvesService.Add(calves,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +66,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Calves calves)
+        public IActionResult Delete(Calves calves,int id,string securityKey)
         {
-            var result = _calvesService.Delete(calves);
+            var result = _calvesService.Delete(calves,id,securityKey);
 
             if (result.Success)
             {
@@ -79,9 +79,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Calves calves)
+        public IActionResult Update(Calves calves,int id,string securityKey)
         {
-            var result = _calvesService.Update(calves);
+            var result = _calvesService.Update(calves,id,securityKey);
 
             if (result.Success)
             {

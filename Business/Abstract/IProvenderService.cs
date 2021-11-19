@@ -8,9 +8,9 @@ namespace Business.Abstract
     {
         IDataResult<List<Provender>> GetAll();
         IDataResult<Provender> GetById(int id);
-        IResult Add(Provender cow);
-        IResult Delete(Provender cow);
-        IResult Update(Provender cow);
+        IResult Add(Provender cow,int id,string securityKey);
+        IResult Delete(Provender cow,int id,string securityKey);
+        IResult Update(Provender cow,int id,string securityKey);
         IDataResult<List<Provender>> GetUserProvenders(int id, string securityKey);
     }
 }

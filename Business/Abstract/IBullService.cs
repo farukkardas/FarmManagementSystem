@@ -8,9 +8,9 @@ namespace Business.Abstract
     {
         IDataResult<List<Bull>> GetAll();
         IDataResult<Bull> GetById(int id);
-        IResult Add(Bull bull);
-        IResult Delete(Bull bull);
-        IResult Update(Bull bull);
+        IResult Add(Bull bull,int id,string securityKey);
+        IResult Delete(Bull bull,int id,string securityKey);
+        IResult Update(Bull bull,int id,string securityKey);
 
         IDataResult<List<Bull>> GetUserBulls(int id, string securityKey);
     }

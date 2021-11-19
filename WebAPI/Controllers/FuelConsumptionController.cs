@@ -40,9 +40,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(FuelConsumption fuelConsumption)
+        public IActionResult Add(FuelConsumption fuelConsumption,int id, string securityKey)
         {
-            var result = _fuelConsumptionService.Add(fuelConsumption);
+            var result = _fuelConsumptionService.Add(fuelConsumption,id,securityKey);
 
             if (result.Success)
             {
@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(FuelConsumption fuelConsumption)
+        public IActionResult Delete(FuelConsumption fuelConsumption,int id, string securityKey)
         {
-            var result = _fuelConsumptionService.Delete(fuelConsumption);
+            var result = _fuelConsumptionService.Delete(fuelConsumption,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +66,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(FuelConsumption fuelConsumption)
+        public IActionResult Update(FuelConsumption fuelConsumption,int id, string securityKey)
         {
-            var result = _fuelConsumptionService.Update(fuelConsumption);
+            var result = _fuelConsumptionService.Update(fuelConsumption,id,securityKey);
 
             if (result.Success)
             {

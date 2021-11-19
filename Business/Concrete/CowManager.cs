@@ -11,22 +11,22 @@ using Entities.Concrete;
 using System.Collections.Generic;
 using Business.BusinessAspects;
 using Core.Aspects.Autofac.Caching;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
     public class CowManager : ICowService
     {
         private readonly ICowDal _cowDal;
-        private readonly IUserDal _userDal;
-
-        public CowManager(ICowDal cowDal, IUserDal userDal)
+        private readonly IAuthService _authService;
+        public CowManager(ICowDal cowDal, IUserDal userDal, IAuthService authService)
         {
             _cowDal = cowDal;
-            _userDal = userDal;
+            _authService = authService;
         }
 
         [SecuredOperations("admin")]
-        [CacheAspect(10)]
+        [CacheAspect(20)]
         public IDataResult<List<Cow>> GetAll()
         {
             var result = _cowDal.GetAll();
@@ -34,7 +34,7 @@ namespace Business.Concrete
         }
         
         [SecuredOperations("admin")]
-        [CacheAspect(10)]
+        [CacheAspect(20)]
         public IDataResult<Cow> GetById(int id)
         {
             var result = _cowDal.Get(c => c.Id == id);
@@ -42,7 +42,7 @@ namespace Business.Concrete
         }
         
         [SecuredOperations("admin")]
-        [CacheAspect(10)]
+        [CacheAspect(20)]
         public IDataResult<Cow> GetByCowId(int cowId)
         {
             var result = _cowDal.Get(c => c.CowId == cowId);
@@ -52,43 +52,61 @@ namespace Business.Concrete
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect(("ICowService.Get"))]
         [ValidationAspect(typeof(CowValidator))]
-        public IResult Add(Cow cow)
+        public IResult Add(Cow cow,int id ,string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
+            }
+            
             _cowDal.Add(cow);
             return new SuccessResult($"Cow{Messages.SuccessfullyAdded}");
         }
         
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect(("ICowService.Get"))]
-        public IResult Delete(Cow cow)
+        public IResult Delete(Cow cow,int id ,string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
+            }
             _cowDal.Delete(cow);
             return new SuccessResult($"Cow{Messages.SuccessfullyDeleted}");
         }
         
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect(("ICowService.Get"))]
-        public IResult Update(Cow cow)
+        [ValidationAspect(typeof(CowValidator))]
+        public IResult Update(Cow cow,int id ,string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
+            }
+            
             _cowDal.Update(cow);
             return new SuccessResult($"Cow{Messages.SuccessfullyUpdated}");
         }
 
-   
+        [CacheAspect(20)]
+        [SecuredOperations("user,admin")]
         public IDataResult<List<Cow>> GetUserCows(int id, string securityKey)
         {
-            var user = _userDal.Get(u => u.Id == id);
+            
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
 
-            if (user == null)
+            if (conditionResult != null)
             {
-                return new ErrorDataResult<List<Cow>>("User not found!");
+                return new ErrorDataResult<List<Cow>>(conditionResult.Message);
             }
             
-            if (user.SecurityKey != securityKey)
-            {
-                return new ErrorDataResult<List<Cow>>("You have not permission for this.");
-            }
-
             var cows = _cowDal.GetAll(c=>c.OwnerId == id);
             
             return new SuccessDataResult<List<Cow>>(cows);

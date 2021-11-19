@@ -11,7 +11,6 @@ namespace WebAPI.Controllers
     public class CowController : ControllerBase
     {
         private readonly ICowService _cowService;
-
         public CowController(ICowService cowService)
         {
             _cowService = cowService;
@@ -42,9 +41,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Cow cow)
+        public IActionResult Add(Cow cow,int id,string securityKey)
         {
-            var result = _cowService.Add(cow);
+            var result = _cowService.Add(cow,id,securityKey);
 
             if (result.Success)
             {
@@ -55,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Cow cow)
+        public IActionResult Delete(Cow cow,int id,string securityKey)
         {
-            var result = _cowService.Delete(cow);
+            var result = _cowService.Delete(cow,id,securityKey);
 
             if (result.Success)
             {
@@ -68,9 +67,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Cow cow)
+        public IActionResult Update(Cow cow,int id,string securityKey)
         {
-            var result = _cowService.Update(cow);
+            var result = _cowService.Update(cow,id,securityKey);
 
             if (result.Success)
             {
@@ -96,6 +95,8 @@ namespace WebAPI.Controllers
         [HttpGet("getusercows")]
         public IActionResult GetUserCows(int id, string securityKey)
         {
+           
+            
             var result = _cowService.GetUserCows(id, securityKey);
 
             if (result.Success)

@@ -14,7 +14,6 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(b => b.BullId).NotEmpty().WithMessage("Id cannot be empty!");
             RuleFor(b => b.BullId).Must(IsIdUnique).WithMessage("Bull ID must be unique!");
-
         }
 
 

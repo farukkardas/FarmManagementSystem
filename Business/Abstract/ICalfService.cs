@@ -9,9 +9,9 @@ namespace Business.Abstract
     {
         IDataResult<List<Calves>> GetAll();
         IDataResult<Calves> GetById(int id);
-        IResult Add(Calves calves);
-        IResult Delete(Calves calves);
-        IResult Update(Calves calves);
+        IResult Add(Calves calves,int id ,string securityKey);
+        IResult Delete(Calves calves,int id ,string securityKey);
+        IResult Update(Calves calves,int id ,string securityKey);
         IDataResult<List<Calves>> GetUserCalves(int id, string securityKey);
     }
 }

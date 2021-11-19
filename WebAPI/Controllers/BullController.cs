@@ -52,9 +52,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Bull bull)
+        public IActionResult Add(Bull bull,int id,string securityKey)
         {
-            var result = _bullService.Add(bull);
+            
+            var result = _bullService.Add(bull,id,securityKey);
 
             if (result.Success)
             {
@@ -65,9 +66,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Bull bull)
+        public IActionResult Delete(Bull bull,int id,string securityKey)
         {
-            var result = _bullService.Delete(bull);
+            var result = _bullService.Delete(bull,id,securityKey);
 
             if (result.Success)
             {
@@ -78,9 +79,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Bull bull)
+        public IActionResult Update(Bull bull,int id,string securityKey)
         {
-            var result = _bullService.Update(bull);
+            var result = _bullService.Update(bull,id,securityKey);
 
             if (result.Success)
             {
