@@ -1,4 +1,5 @@
-﻿using DataAccess.Entites;
+﻿using System;
+using DataAccess.Entites;
 
 namespace Core.Entities.Concrete
 {
@@ -11,8 +12,8 @@ namespace Core.Entities.Concrete
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
         public bool Status { get; set; }
-        
         public string SecurityKey { get; set; }
+        public DateTime? SecurityKeyExpiration { get; set; }
 
     }
 }

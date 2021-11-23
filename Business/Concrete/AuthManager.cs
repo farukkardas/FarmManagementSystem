@@ -20,7 +20,7 @@ namespace Business.Concrete
         private readonly IUserService _userService;
         private readonly IUserDal _userDal;
         private readonly ITokenHelper _tokenHelper;
-        
+
         public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUserDal userDal)
         {
             _userService = userService;
@@ -31,8 +31,8 @@ namespace Business.Concrete
         public IDataResult<User> Register(UserRegisterDto userRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
-            
-            HashingHelper.CreatePasswordHash(password,out passwordHash,out passwordSalt);
+
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             var user = new User
             {
@@ -52,13 +52,13 @@ namespace Business.Concrete
         public IDataResult<User> Login(UserLoginDto userLoginDto)
         {
             var userToCheck = _userService.GetByMail(userLoginDto.Email);
-           
-            
+
+
             if (userToCheck == null)
             {
                 return new ErrorDataResult<User>("User not found!");
             }
-            
+
             GenerateRandomSecurityKey(userToCheck);
 
             IResult result = BusinessRules.Run(CheckUserStatus(userLoginDto.Email));
@@ -73,8 +73,8 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>("Wrong password!");
             }
-            
-            
+
+
             return new SuccessDataResult<User>(userToCheck);
         }
 
@@ -84,17 +84,17 @@ namespace Business.Concrete
             {
                 return new ErrorResult("This user is exists!");
             }
+
             return new SuccessResult();
         }
 
-      
+
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
-           
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
-            
-            return new SuccessDataResult<AccessToken>(accessToken,"Successful login!");
+
+            return new SuccessDataResult<AccessToken>(accessToken, "Successful login!");
         }
 
         private IResult CheckUserStatus(string email)
@@ -112,19 +112,24 @@ namespace Business.Concrete
         private void GenerateRandomSecurityKey(User user)
         {
             using var context = new FarmManagementContext();
+            
+            if (user == null || user.SecurityKeyExpiration > DateTime.Now)
+            {
+                return;
+            }
+            
+            user.SecurityKey = RandomSecurityKey();
+            user.SecurityKeyExpiration = DateTime.Now.AddHours(3);
+               
+            _userDal.Update(user);
 
-            if (user != null) user.SecurityKey = RandomSecurityKey();
-            
-          _userDal.Update(user);
-          
             context.SaveChanges();
-            
         }
-        
+
         private string RandomSecurityKey()
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var stringChars = new char[15];
+            var stringChars = new char[100];
             var random = new Random();
 
             for (int i = 0; i < stringChars.Length; i++)
@@ -137,7 +142,7 @@ namespace Business.Concrete
             return finalString;
         }
 
-        public IResult UserOwnControl(int id,string securityKey)
+        public IResult UserOwnControl(int id, string securityKey)
         {
             var user = _userDal.Get(u => u.Id == id);
 
@@ -145,7 +150,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult("User not found");
             }
-            
+
             if (user.SecurityKey != securityKey)
             {
                 return new ErrorResult("You have not permission for this.");

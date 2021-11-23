@@ -78,7 +78,7 @@ namespace Business.Concrete
         }
 
 
-        [CacheAspect(20)]
+       
         [SecuredOperations("user,admin")]
         public IDataResult<UserDetailDto> GetUserDetails(int id)
         {
