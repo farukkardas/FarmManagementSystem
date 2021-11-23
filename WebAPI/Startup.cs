@@ -70,7 +70,11 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
             
+            //Exception Middleware for handle errors
             //app.ConfigureCustomExceptionMiddleware();
+
+            //Using static files from root directory
+            app.UseStaticFiles();
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:45523").AllowAnyHeader().AllowAnyMethod()
                 .AllowAnyOrigin());

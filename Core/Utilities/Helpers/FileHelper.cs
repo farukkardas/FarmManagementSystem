@@ -12,6 +12,9 @@ namespace Core.Utilities.Helpers
         {
             string extension = Path.GetExtension(file.FileName)?.ToUpper();
             string newFileName = Guid.NewGuid().ToString("N") + extension;
+
+           
+
             if (!Directory.Exists(directory + path))
             {
                 Directory.CreateDirectory(directory + path);

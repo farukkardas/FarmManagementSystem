@@ -19,6 +19,8 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Calves> Calves { get; set; }
         public DbSet<Sheep> Sheeps { get; set; }
 
+        public DbSet<UserImage> UserImages { get; set; }
+
         public DbSet<FuelConsumption> FuelConsumptions { get; set; }
 
         public DbSet<Fertilizer> Fertilizers { get; set; }

@@ -14,4 +14,3 @@ C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreap
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\DataAccess.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\ref\DataAccess.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\DataAccess.pdb
-C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\DataAccess.csproj.CopyComplete
