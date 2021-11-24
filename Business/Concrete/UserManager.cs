@@ -12,16 +12,17 @@ using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DataTransferObjects;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Business.Concrete
 {
     public class UserManager : IUserService
     {
         private readonly IUserDal _userDal;
-
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
+          ;
         }
 
         [SecuredOperations("admin")]
@@ -65,27 +66,26 @@ namespace Business.Concrete
             _userDal.Update(user);
             return new SuccessResult($"User{Messages.SuccessfullyUpdated}");
         }
+        
+        
+        [SecuredOperations("admin")]
+        [CacheAspect(20)]
+        public IDataResult<UserDetailDto> GetUserDetails(int id,string securityKey)
+        {
+            var result = _userDal.GetUserDetails(u => u.Id == id);
 
+            return new SuccessDataResult<UserDetailDto>(result, "Data was successfully fetched.");
+        }
+        
         
         public List<OperationClaim> GetClaims(User user)
         {
             return _userDal.GetClaims(user);
         }
-
+        
         public User GetByMail(string email)
         {
             return _userDal.Get(u => u.Email == email);
-        }
-
-
-       
-        [SecuredOperations("user,admin")]
-        public IDataResult<UserDetailDto> GetUserDetails(int id)
-        {
-            
-            var result = _userDal.GetUserDetails(u => u.Id == id);
-
-            return new SuccessDataResult<UserDetailDto>(result, "Data was successfully fetched.");
         }
     }
 }

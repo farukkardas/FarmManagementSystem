@@ -12,6 +12,8 @@ namespace Entities.DataTransferObjects
         public string City { get; set; }
         public string District { get; set; }
         public string Address { get; set; }
+        public int? ZipCode { get; set; }
+        public string ImagePath { get; set; }
         public double Profit { get; set; }
         public int TotalSales { get; set; }
         public int CustomerCount { get; set; }

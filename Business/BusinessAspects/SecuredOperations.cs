@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using Business.Constants;
 using Castle.DynamicProxy;
 using Core.Extensions;
@@ -6,6 +7,7 @@ using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,7 +38,7 @@ namespace Business.BusinessAspects
                 }
             }
 
-            throw new Exception(Messages.AuthorizationDenied);
+            throw new ValidationException(Messages.AuthorizationDenied);
            
         }
     }

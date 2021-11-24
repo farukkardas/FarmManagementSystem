@@ -33,16 +33,19 @@ namespace DataAccess.Concrete.EntityFramework
             using var context = new FarmManagementContext();
             
             var result = from u in context.Users
+                
                 select new UserDetailDto
                 {
                     Id = u.Id,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
                     Email = u.Email,
-                    PhoneNumber = u.PhoneNumber,
-                    City = u.City,
-                    District = u.District,
-                    Address =  u.Address,
+                     PhoneNumber = u.PhoneNumber,
+                     City = u.City,
+                     District = u.District,
+                     Address =  u.Address,
+                    ZipCode = u.ZipCode,
+                    ImagePath = context.UserImages.FirstOrDefault(im => im.UserId == u.Id).ImagePath,
                     Profit = context.MilkSales.Where(s => s.SellerId == u.Id).Sum(x => x.SalePrice),
                     TotalSales = context.MilkSales.Count(m => m.SellerId == u.Id),
                     CustomerCount = context.Customers.Count(c => c.OwnerId == u.Id),

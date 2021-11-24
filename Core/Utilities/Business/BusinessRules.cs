@@ -2,7 +2,7 @@
 
 namespace Core.Utilities.Business
 {
-    public class BusinessRules
+    public static class BusinessRules
     {
         public static IResult Run(params IResult[] logics)
         {

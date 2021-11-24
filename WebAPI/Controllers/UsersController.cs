@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
+using Core.Utilities.Business;
+using Core.Utilities.Results.Abstract;
+using Core.Utilities.Results.Concrete;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -83,9 +86,15 @@ namespace WebAPI.Controllers
         [HttpGet("getuserdetails")]
         public IActionResult GetUserDetails(int id,string securityKey)
         {
-            _authService.UserOwnControl(id, securityKey);
             
-            var result = _userService.GetUserDetails(id);
+            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+
+            if (!conditionResult.Success)
+            {
+                return BadRequest(conditionResult);
+            }
+            
+            var result = _userService.GetUserDetails(id,securityKey);
 
             if (result.Success)
             {

@@ -19,60 +19,88 @@ namespace Business.Concrete
     {
         private readonly IUserImageDal _userImageDal;
         private readonly IAuthService _authService;
-        
+
         public UserImageManager(IUserImageDal userImageDal, IAuthService authService)
         {
             _userImageDal = userImageDal;
             _authService = authService;
         }
 
-        public IResult Add(IFormFile file, [FromForm]UserImage userImage,int id,string securityKey)
+        [SecuredOperations("user,admin")]
+        public IResult Add(IFormFile file, [FromForm] UserImage userImage, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey)); 
-            
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
             if (conditionResult != null)
             {
-                return new ErrorDataResult<List<Bull>>(conditionResult.Message);
+                return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
             }
+
             userImage.ImagePath = FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
             _userImageDal.Add(userImage);
             return new SuccessResult($"Image is {Messages.SuccessfullyAdded}");
         }
 
-        public IResult Delete(UserImage userImage,int id,string securityKey)
+        [SecuredOperations("user,admin")]
+        public IResult Delete(UserImage userImage, int id, string securityKey)
         {
-            _authService.UserOwnControl(id,securityKey);
-           FileHelper.Delete(userImage.ImagePath);
-           _userImageDal.Delete(userImage);
-           return new SuccessResult($"Image {Messages.SuccessfullyDeleted}");
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
+            }
+
+            FileHelper.Delete(userImage.ImagePath);
+            _userImageDal.Delete(userImage);
+            return new SuccessResult($"Image {Messages.SuccessfullyDeleted}");
         }
 
-        public IResult Update(IFormFile file, UserImage userImage,int id,string securityKey)
+        [SecuredOperations("user,admin")]
+        public IResult Update(IFormFile file, UserImage userImage, int id, string securityKey)
         {
-            _authService.UserOwnControl(id,securityKey);
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
+            }
+
             userImage.ImagePath = FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
             _userImageDal.Update(userImage);
             return new SuccessResult($"Image {Messages.SuccessfullyUpdated}");
-
         }
 
         [SecuredOperations("admin")]
         public IDataResult<UserImage> Get(int id)
         {
-            throw new System.NotImplementedException();
+            var result = _userImageDal.Get(u => u.Id == id);
+            return new SuccessDataResult<UserImage>(result);
         }
 
         [SecuredOperations("admin")]
         public IDataResult<List<UserImage>> GetAll()
         {
-            throw new System.NotImplementedException();
+            var result = _userImageDal.GetAll();
+
+            return new SuccessDataResult<List<UserImage>>(result);
         }
 
-        public IDataResult<List<UserImage>> GetImagesByUserId(int userId,string securityKey)
+        [SecuredOperations("admin")]
+        public IDataResult<UserImage> GetImagesByUserId(int id, string securityKey)
         {
-            throw new System.NotImplementedException();
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<UserImage>(conditionResult.Message);
+            }
+
+            var result = _userImageDal.Get(u => u.UserId == id);
+
+            return new SuccessDataResult<UserImage>(result);
         }
     }
 }

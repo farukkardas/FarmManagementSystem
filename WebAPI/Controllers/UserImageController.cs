@@ -56,16 +56,16 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        // [HttpGet("getbyid")]
-        // public IActionResult GetById([FromForm(Name = ("Id"))] int Id)
-        // {
-        //     var result = _carImageService.Get(Id);
-        //     if (result.Success)
-        //     {
-        //         return Ok(result);
-        //     }
-        //     return BadRequest(result);
-        // }
+        [HttpGet("getbyid")]
+        public IActionResult GetById([FromForm(Name = ("Id"))] int id)
+        {
+            var result = _userImageService.Get(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
         //
         // [HttpGet("getall")]
         // public IActionResult GetAll()
@@ -78,16 +78,17 @@ namespace WebAPI.Controllers
         //     return BadRequest(result);
         // }
         //
-        // [HttpGet("getimagesbycarid")]
-        // public IActionResult GetImagesByCarId([FromForm(Name = ("CarId"))] int carId)
-        // {
-        //     var result = _carImageService.GetImagesByCarId(carId);
-        //     if (result.Success)
-        //     {
-        //         return Ok(result);
-        //     }
-        //     return BadRequest(result);
-        // }
+        [HttpGet("getimagesbyuserid")]
+        public IActionResult GetImagesByUserId(int id,string securityKey)
+        {
+            var result = _userImageService.GetImagesByUserId(id,securityKey);
+            
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
     }
 }

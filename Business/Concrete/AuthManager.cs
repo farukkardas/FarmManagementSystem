@@ -2,6 +2,7 @@
 using System.Linq;
 using Business.Abstract;
 using Business.Constants;
+using Castle.Core;
 using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
@@ -142,9 +143,9 @@ namespace Business.Concrete
             return finalString;
         }
 
-        public IResult UserOwnControl(int id, string securityKey)
+        public IResult UserOwnControl(int userId, string securityKey)
         {
-            var user = _userDal.Get(u => u.Id == id);
+            var user = _userDal.Get(u => u.Id == userId);
 
             if (user == null)
             {
@@ -156,6 +157,11 @@ namespace Business.Concrete
                 return new ErrorResult("You have not permission for this.");
             }
 
+            if (user.SecurityKeyExpiration < DateTime.Now)
+            { 
+                return new ErrorResult("Security key outdated please login again.");
+            }
+            
             return new SuccessResult();
         }
     }
