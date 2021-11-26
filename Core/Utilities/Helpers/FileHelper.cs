@@ -10,10 +10,10 @@ namespace Core.Utilities.Helpers
         static string path = @"images\";
         public static string Add(IFormFile file)
         {
-            string extension = Path.GetExtension(file.FileName)?.ToUpper();
-            string newFileName = Guid.NewGuid().ToString("N") + extension;
-
+           string extension = Path.GetExtension(file.FileName)?.ToUpper();
+           string newFileName = Guid.NewGuid().ToString("N") + extension;
            
+
 
             if (!Directory.Exists(directory + path))
             {
@@ -25,6 +25,9 @@ namespace Core.Utilities.Helpers
                 fileStream.Flush();
             }
             return (path + newFileName).Replace("\\", "/");
+
+
+
         }
 
         public static string Update(IFormFile file, string oldImagePath)

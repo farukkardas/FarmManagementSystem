@@ -45,7 +45,7 @@ namespace DataAccess.Concrete.EntityFramework
                      District = u.District,
                      Address =  u.Address,
                     ZipCode = u.ZipCode,
-                    ImagePath = context.UserImages.FirstOrDefault(im => im.UserId == u.Id).ImagePath,
+                    ImagePath = context.UserImages.Where(im=>im.UserId == u.Id).Select(im=>im.ImagePath).SingleOrDefault(),
                     Profit = context.MilkSales.Where(s => s.SellerId == u.Id).Sum(x => x.SalePrice),
                     TotalSales = context.MilkSales.Count(m => m.SellerId == u.Id),
                     CustomerCount = context.Customers.Count(c => c.OwnerId == u.Id),

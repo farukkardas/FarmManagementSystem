@@ -41,7 +41,6 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(result);
         }
 
-        [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IUserService.Get")]
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
@@ -69,7 +68,7 @@ namespace Business.Concrete
         
         
         [SecuredOperations("admin")]
-        [CacheAspect(20)]
+      //  [CacheAspect(20)]
         public IDataResult<UserDetailDto> GetUserDetails(int id,string securityKey)
         {
             var result = _userDal.GetUserDetails(u => u.Id == id);

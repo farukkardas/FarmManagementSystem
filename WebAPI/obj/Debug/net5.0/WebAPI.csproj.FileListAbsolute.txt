@@ -69,4 +69,4 @@ C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
-C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI.csproj.CopyComplete

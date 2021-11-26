@@ -27,20 +27,22 @@ namespace Business.Concrete
         }
 
         [SecuredOperations("user,admin")]
-        public IResult Add(IFormFile file, [FromForm] UserImage userImage, int id, string securityKey)
+        public IResult Add(IFormFile file, UserImage userImage, int id, string securityKey)
         {
             IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
-
+        
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
             }
-
+        
             userImage.ImagePath = FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
             _userImageDal.Add(userImage);
             return new SuccessResult($"Image is {Messages.SuccessfullyAdded}");
         }
+
+      
 
         [SecuredOperations("user,admin")]
         public IResult Delete(UserImage userImage, int id, string securityKey)
@@ -67,9 +69,18 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
             }
 
+            var user = _userImageDal.Get(u => u.UserId == id);
+
+            if (user != null)
+            {
+                FileHelper.Delete(user.ImagePath);
+                _userImageDal.Delete(user);
+            }
+           
+
             userImage.ImagePath = FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
-            _userImageDal.Update(userImage);
+            _userImageDal.Add(userImage);
             return new SuccessResult($"Image {Messages.SuccessfullyUpdated}");
         }
 

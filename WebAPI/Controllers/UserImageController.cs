@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
         public IActionResult Add([FromForm]IFormFile file,[FromForm]UserImage userImage,int id,string securityKey)
         {
             
-            var result = _userImageService.Add(file, userImage,id,securityKey);
+            var result = _userImageService.Add(file,userImage,id,securityKey);
             if (result.Success)
             {
                 return Ok(result);
@@ -44,10 +44,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("update")]
-        public IActionResult Update(IFormFile file,int imageId,int id ,string securityKey)
+        [HttpPost("update")]
+        public IActionResult Update([FromForm]IFormFile file,[FromForm] UserImage userImage,int id ,string securityKey)
         {
-            var userImage = _userImageService.Get(imageId).Data;
+           
             var result = _userImageService.Update(file, userImage,id,securityKey);
             if (result.Success)
             {
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
-        //
+        
         // [HttpGet("getall")]
         // public IActionResult GetAll()
         // {
@@ -77,7 +77,7 @@ namespace WebAPI.Controllers
         //     }
         //     return BadRequest(result);
         // }
-        //
+        
         [HttpGet("getimagesbyuserid")]
         public IActionResult GetImagesByUserId(int id,string securityKey)
         {

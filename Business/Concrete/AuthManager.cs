@@ -2,7 +2,9 @@
 using System.Linq;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Castle.Core;
+using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
@@ -29,6 +31,7 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IDataResult<User> Register(UserRegisterDto userRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -45,6 +48,7 @@ namespace Business.Concrete
                 Status = true
             };
 
+            
             _userService.Add(user);
 
             return new SuccessDataResult<User>(user, $"{user} , {Messages.SuccessfullyAdded}");
