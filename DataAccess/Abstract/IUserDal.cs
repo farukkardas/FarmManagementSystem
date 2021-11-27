@@ -14,7 +14,7 @@ namespace DataAccess.Abstract
         List<OperationClaim> GetClaims(User user);
 
         UserDetailDto GetUserDetails(Expression<Func<UserDetailDto, bool>> filter = null);
-        
-       
+
+        void UpdateUser(UserForEdit userForEdit);
     }
 }

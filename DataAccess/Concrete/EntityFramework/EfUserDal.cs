@@ -31,7 +31,6 @@ namespace DataAccess.Concrete.EntityFramework
         public UserDetailDto GetUserDetails(Expression<Func<UserDetailDto, bool>> filter = null)
         {
             using var context = new FarmManagementContext();
-            
             var result = from u in context.Users
                 
                 select new UserDetailDto
@@ -60,9 +59,26 @@ namespace DataAccess.Concrete.EntityFramework
                                   
                 };
             
-            return filter == null ? result.FirstOrDefault() : result.Where(filter).FirstOrDefault();
+            return filter == null ? result.SingleOrDefault() : result.Where(filter).SingleOrDefault();
         }
 
-        
+        public void UpdateUser(UserForEdit userForEdit)
+        {
+            using var context = new FarmManagementContext();
+
+            var user = context.Users.SingleOrDefault(u => u.Id == userForEdit.Id);
+
+            if (user != null)
+            {
+                user.FirstName = userForEdit.FirstName;
+                user.LastName = userForEdit.LastName;
+                user.PhoneNumber = userForEdit.PhoneNumber;
+                user.City = userForEdit.City;
+                user.District = userForEdit.District;
+                user.Address = userForEdit.Address;
+            }
+
+            context.SaveChanges();
+        }
     }
 }

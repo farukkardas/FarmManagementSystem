@@ -4,6 +4,7 @@ using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Entities.Concrete;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -70,9 +71,16 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         
-        [HttpPost("update")]
-        public IActionResult Update(User user)
+        [HttpPut("update")]
+        public IActionResult Update(User user,int id , string securityKey)
         {
+            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+
+            if (!conditionResult.Success)
+            {
+                return BadRequest(conditionResult);
+            }
+            
             var result = _userService.Update(user);
 
             if (result.Success)
@@ -83,6 +91,25 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpPut("updateuser")]
+        public IActionResult UpdateUser(UserForEdit userForEdit,int id , string securityKey)
+        {
+            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+
+            if (!conditionResult.Success)
+            {
+                return BadRequest(conditionResult);
+            }
+            
+            var result = _userService.UpdateUser(userForEdit);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
         [HttpGet("getuserdetails")]
         public IActionResult GetUserDetails(int id,string securityKey)
         {

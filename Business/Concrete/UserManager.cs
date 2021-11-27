@@ -65,8 +65,17 @@ namespace Business.Concrete
             _userDal.Update(user);
             return new SuccessResult($"User{Messages.SuccessfullyUpdated}");
         }
-        
-        
+
+        [SecuredOperations("user,admin")]
+        [CacheRemoveAspect("IUserService.Get")]
+        [ValidationAspect(typeof(UserUpdateValidator))]
+        public IResult UpdateUser(UserForEdit userForEdit)
+        {
+            _userDal.UpdateUser(userForEdit);
+            return new SuccessResult($"User{Messages.SuccessfullyUpdated}");
+        }
+
+
         [SecuredOperations("admin")]
       //  [CacheAspect(20)]
         public IDataResult<UserDetailDto> GetUserDetails(int id,string securityKey)
