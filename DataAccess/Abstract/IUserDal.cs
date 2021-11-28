@@ -12,9 +12,11 @@ namespace DataAccess.Abstract
     public interface IUserDal : IEntityRepository<User>
     {
         List<OperationClaim> GetClaims(User user);
-
+        
         UserDetailDto GetUserDetails(Expression<Func<UserDetailDto, bool>> filter = null);
 
         void UpdateUser(UserForEdit userForEdit);
+
+        void SetClaims(int id);
     }
 }

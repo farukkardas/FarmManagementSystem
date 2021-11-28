@@ -12,7 +12,7 @@ namespace Business.Abstract
         IResult UserExists(string email);
         IDataResult<AccessToken> CreateAccessToken(User user);
         IResult UserOwnControl(int id, string securityKey);
-
+        IResult CheckSecurityKeyOutdated(int id);
 
     }
 }

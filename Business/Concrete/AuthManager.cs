@@ -50,6 +50,7 @@ namespace Business.Concrete
 
             
             _userService.Add(user);
+            _userDal.SetClaims(user.Id);
 
             return new SuccessDataResult<User>(user, $"{user} , {Messages.SuccessfullyAdded}");
         }
@@ -124,7 +125,7 @@ namespace Business.Concrete
             }
             
             user.SecurityKey = RandomSecurityKey();
-            user.SecurityKeyExpiration = DateTime.Now.AddHours(3);
+            user.SecurityKeyExpiration = DateTime.Now.AddDays(1);
                
             _userDal.Update(user);
 
@@ -161,12 +162,19 @@ namespace Business.Concrete
                 return new ErrorResult("You have not permission for this.");
             }
 
-            if (user.SecurityKeyExpiration < DateTime.Now)
-            { 
-                return new ErrorResult("Security key outdated please login again.");
-            }
-            
             return new SuccessResult();
+        }
+
+        public IResult CheckSecurityKeyOutdated(int id)
+        {
+           var user = _userDal.Get(u => u.Id == id);
+
+           if (user.SecurityKeyExpiration < DateTime.Now)
+           {
+               return new ErrorResult("Security key outdated");
+           }
+
+           return new SuccessResult();
         }
     }
 }

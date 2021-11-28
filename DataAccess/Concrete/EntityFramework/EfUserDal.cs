@@ -6,8 +6,6 @@ using Core.Entities.Concrete;
 using DataAccess.Abstract;
 using Entities.DataTransferObjects;
 using System.Linq.Expressions;
-using Core.Utilities.Results.Abstract;
-using Core.Utilities.Results.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -77,6 +75,20 @@ namespace DataAccess.Concrete.EntityFramework
                 user.District = userForEdit.District;
                 user.Address = userForEdit.Address;
             }
+
+            context.SaveChanges();
+        }
+
+        public void SetClaims(int id)
+        {
+            using var context = new FarmManagementContext();
+
+            UserOperationClaim userOperationClaim = new UserOperationClaim();
+
+            userOperationClaim.UserId = id;
+            userOperationClaim.OperationClaimId = 1;
+            
+            context.UserOperationClaims.Add(userOperationClaim);
 
             context.SaveChanges();
         }

@@ -55,5 +55,18 @@ namespace WebAPI.Controllers
 
             return BadRequest(result.Message);
         }
+
+        [HttpPost("checkskoutdated")]
+        public ActionResult CheckSecurityKeyOutdated(int id)
+        {
+           var result = _authService.CheckSecurityKeyOutdated(id);
+
+           if (result.Success)
+           {
+               return Ok(result);
+           }
+
+           return BadRequest(result.Message);
+        }
     }
 }
