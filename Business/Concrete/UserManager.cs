@@ -33,7 +33,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(result);
         }
 
-        [SecuredOperations("admin")]
+       // [SecuredOperations("admin")]
         [CacheAspect(20)]
         public IDataResult<User> GetById(int id)
         {
@@ -49,7 +49,7 @@ namespace Business.Concrete
             return new SuccessResult($"User{Messages.SuccessfullyAdded}");
         }
 
-        [SecuredOperations("user,admin")]
+        [SecuredOperations("admin")]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User user)
         {
@@ -57,7 +57,7 @@ namespace Business.Concrete
             return new SuccessResult($"User{Messages.SuccessfullyDeleted}");
         }
 
-        [SecuredOperations("user,admin")]
+        [SecuredOperations("user")]
         [CacheRemoveAspect("IUserService.Get")]
         [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User user)

@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Cow cow,int id,string securityKey)
+        public IActionResult Add(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _cowService.Add(cow,id,securityKey);
 
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Cow cow,int id,string securityKey)
+        public IActionResult Delete(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _cowService.Delete(cow,id,securityKey);
 
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Cow cow,int id,string securityKey)
+        public IActionResult Update(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _cowService.Update(cow,id,securityKey);
 
@@ -79,21 +79,8 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         
-        [HttpGet("getbycowid")]
-        public IActionResult Update(int cowId)
-        {
-            var result = _cowService.GetByCowId(cowId);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
         [HttpGet("getusercows")]
-        public IActionResult GetUserCows(int id, string securityKey)
+        public IActionResult GetUserCows([FromHeader]int id,[FromHeader] string securityKey)
         {
            
             

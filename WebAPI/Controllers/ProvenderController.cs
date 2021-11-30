@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Provender provender,int id, string securityKey)
+        public IActionResult Add(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
         {
             var result = _provenderService.Add(provender,id,securityKey);
 
@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Provender provender,int id, string securityKey)
+        public IActionResult Delete(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
         {
             var result = _provenderService.Delete(provender,id,securityKey);
 
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Provender provender,int id, string securityKey)
+        public IActionResult Update(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
         {
             var result = _provenderService.Update(provender,id,securityKey);
 
@@ -79,7 +79,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getuserprovenders")]
-        public IActionResult GetUserProvenders(int id, string securityKey)
+        public IActionResult GetUserProvenders([FromHeader]int id,[FromHeader] string securityKey)
         {
             var result = _provenderService.GetUserProvenders(id, securityKey);
 

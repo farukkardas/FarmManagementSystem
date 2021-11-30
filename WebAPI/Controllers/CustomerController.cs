@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Customer customer,int id,string securityKey)
+        public IActionResult Add(Customer customer,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _customerService.Add(customer,id,securityKey);
 
@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Customer customer,int id,string securityKey)
+        public IActionResult Delete(Customer customer,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _customerService.Delete(customer,id,securityKey);
 
@@ -78,7 +78,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Customer customer,int id,string securityKey)
+        public IActionResult Update(Customer customer,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _customerService.Update(customer,id,securityKey);
 
@@ -91,7 +91,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getusercustomers")]
-        public IActionResult GetUserCustomer(int id, string securityKey)
+        public IActionResult GetUserCustomer([FromHeader]int id, [FromHeader]string securityKey)
         {
             var result = _customerService.GetUserCustomers(id, securityKey);
             

@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Sheep sheep,int id, string securityKey)
+        public IActionResult Add(Sheep sheep,[FromHeader]int id, [FromHeader]string securityKey)
         {
             var result = _sheepService.Add(sheep,id,securityKey);
 
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Sheep sheep,int id, string securityKey)
+        public IActionResult Delete(Sheep sheep,[FromHeader]int id,[FromHeader] string securityKey)
         {
             var result = _sheepService.Delete(sheep,id,securityKey);
 
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Sheep sheep,int id, string securityKey)
+        public IActionResult Update(Sheep sheep,[FromHeader]int id,[FromHeader] string securityKey)
         {
             var result = _sheepService.Update(sheep,id,securityKey);
 
@@ -80,7 +80,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getusersheeps")]
-        public IActionResult GetUserSheeps(int id, string securityKey)
+        public IActionResult GetUserSheeps([FromHeader]int id,[FromHeader] string securityKey)
         {
             var result = _sheepService.GetUserSheeps(id, securityKey);
             

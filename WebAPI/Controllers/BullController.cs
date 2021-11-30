@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("getuserbulls")]
-        public IActionResult GetUserBulls(int id,string securityKey)
+        public IActionResult GetUserBulls([FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _bullService.GetUserBulls(id,securityKey);
             if (result.Success)
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Bull bull,int id,string securityKey)
+        public IActionResult Add(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
         {
             
             var result = _bullService.Add(bull,id,securityKey);
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Bull bull,int id,string securityKey)
+        public IActionResult Delete(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _bullService.Delete(bull,id,securityKey);
 
@@ -79,7 +79,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Bull bull,int id,string securityKey)
+        public IActionResult Update(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _bullService.Update(bull,id,securityKey);
 

@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm]IFormFile file,[FromForm]UserImage userImage,int id,string securityKey)
+        public IActionResult Add([FromForm]IFormFile file,[FromForm]UserImage userImage,[FromHeader]int id,[FromHeader]string securityKey)
         {
             
             var result = _userImageService.Add(file,userImage,id,securityKey);
@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
         
         
         [HttpDelete("delete")]
-        public IActionResult Delete(int imageId,int id,string securityKey)
+        public IActionResult Delete(int imageId,[FromHeader]int id,[FromHeader]string securityKey)
         {
 
             var userImage = _userImageService.Get(id).Data;
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm]IFormFile file,[FromForm] UserImage userImage,int id ,string securityKey)
+        public IActionResult Update([FromForm]IFormFile file,[FromForm] UserImage userImage,[FromHeader]int id ,[FromHeader]string securityKey)
         {
            
             var result = _userImageService.Update(file, userImage,id,securityKey);
@@ -67,19 +67,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         
-        // [HttpGet("getall")]
-        // public IActionResult GetAll()
-        // {
-        //     var result = _carImageService.GetAll();
-        //     if (result.Success)
-        //     {
-        //         return Ok(result);
-        //     }
-        //     return BadRequest(result);
-        // }
         
         [HttpGet("getimagesbyuserid")]
-        public IActionResult GetImagesByUserId(int id,string securityKey)
+        public IActionResult GetImagesByUserId([FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _userImageService.GetImagesByUserId(id,securityKey);
             

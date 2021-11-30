@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("checkskoutdated")]
-        public ActionResult CheckSecurityKeyOutdated(int id)
+        public ActionResult CheckSecurityKeyOutdated([FromForm]int id)
         {
            var result = _authService.CheckSecurityKeyOutdated(id);
 

@@ -42,7 +42,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>(result);
         }
 
-        [SecuredOperations("admin,user")]
+        [SecuredOperations("admin")]
         public IDataResult<List<MilkSalesTotalDto>> GetCustomerSummary()
         {
             var result = _customerDal.MilkSalesSummary();

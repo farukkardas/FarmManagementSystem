@@ -163,9 +163,14 @@ namespace Business.Concrete
 
         public IResult CheckSecurityKeyOutdated(int id)
         {
-           var user = _userDal.Get(u => u.Id == id);
+            var result = _userDal.Get(u=>u.Id == id);
 
-           if (user.SecurityKeyExpiration < DateTime.Now)
+            if (result == null)
+            {
+                return new ErrorResult("User not found, logout");
+            }
+
+            if (result.SecurityKeyExpiration < DateTime.Now)
            {
                return new ErrorResult("Security key outdated");
            }

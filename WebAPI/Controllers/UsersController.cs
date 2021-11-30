@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(User user)
+        public IActionResult Delete(User user,int id,string securityKey)
         {
             var result = _userService.Delete(user);
 
@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPut("update")]
-        public IActionResult Update(User user,int id , string securityKey)
+        public IActionResult Update(User user,[FromHeader]int id ,[FromHeader] string securityKey)
         {
             IResult conditionResult = _authService.UserOwnControl(id, securityKey);
 
@@ -92,7 +92,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("updateuser")]
-        public IActionResult UpdateUser(UserForEdit userForEdit,int id , string securityKey)
+        public IActionResult UpdateUser(UserForEdit userForEdit,[FromHeader]int id , [FromHeader]string securityKey)
         {
             IResult conditionResult = _authService.UserOwnControl(id, securityKey);
 
@@ -111,7 +111,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpGet("getuserdetails")]
-        public IActionResult GetUserDetails(int id,string securityKey)
+        public IActionResult GetUserDetails([FromHeader]int id,[FromHeader]string securityKey)
         {
             
             IResult conditionResult = _authService.UserOwnControl(id, securityKey);
