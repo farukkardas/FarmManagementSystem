@@ -20,4 +20,9 @@
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Aspects\Autofac\Logging" />
+      <Folder Include="CrossCuttingConcerns\Logging\" />
+    </ItemGroup>
+
 </Project>

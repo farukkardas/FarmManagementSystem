@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace WebAPI.Controllers
 {
@@ -9,10 +10,11 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-
+     
         public AuthController(IAuthService authService)
         {
             _authService = authService;
+            
         }
 
         [HttpPost("login")]
@@ -27,12 +29,14 @@ namespace WebAPI.Controllers
                 return BadRequest(userToLogin.Message);
             }
             
-            
             var result = _authService.CreateAccessToken(userToLogin.Data);
-            
+
             if (result.Success)
             {
+               
+               Log.Error($"{userLoginDto.Email} sucessfully logged!");  
                 return Ok(result);
+                
             }
 
             

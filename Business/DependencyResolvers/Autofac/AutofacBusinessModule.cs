@@ -8,6 +8,7 @@ using Core.Utilities.Security.JWT.Abstract;
 using Core.Utilities.Security.JWT.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.Extensions.Logging;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -50,6 +51,7 @@ namespace Business.DependencyResolvers.Autofac
             
             builder.RegisterType<UserImageManager>().As<IUserImageService>();
             builder.RegisterType<EfUserImageDal>().As<IUserImageDal>();
+
             
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

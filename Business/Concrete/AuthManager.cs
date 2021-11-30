@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
-using Castle.Core;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Business;
@@ -34,9 +32,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(UserValidator))]
         public IDataResult<User> Register(UserRegisterDto userRegisterDto, string password)
         {
-            byte[] passwordHash, passwordSalt;
-
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            HashingHelper.CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
             var user = new User
             {

@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Concrete;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -8,7 +9,8 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-1TJQMOV;Database=Farm01;user id=sa;password=05366510050Ab*");
+            
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-1TJQMOV;Database=Farm01;user id=sa;password=05366510050Ab*;TrustServerCertificate=True");
         }
 
         public DbSet<User> Users { get; set; }
