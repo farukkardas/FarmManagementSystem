@@ -20,17 +20,12 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Bull> Bulls { get; set; }
         public DbSet<Calves> Calves { get; set; }
         public DbSet<Sheep> Sheeps { get; set; }
-
         public DbSet<UserImage> UserImages { get; set; }
-
         public DbSet<FuelConsumption> FuelConsumptions { get; set; }
-
         public DbSet<Fertilizer> Fertilizers { get; set; }
-
         public DbSet<Provender> Provenders { get; set; }
-
         public DbSet<MilkSales> MilkSales { get; set; }
-
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<AnimalSales> AnimalSales { get; set; }
     }
 }

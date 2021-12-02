@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProvenderController : ControllerBase
+    public class ProvenderController : Controller
     {
         private readonly IProvenderService _provenderService;
 

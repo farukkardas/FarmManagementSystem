@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CowController : ControllerBase
+    public class CowController : Controller
     {
         private readonly ICowService _cowService;
         public CowController(ICowService cowService)

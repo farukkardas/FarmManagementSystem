@@ -7,7 +7,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserImageController : ControllerBase
+    public class UserImageController : Controller
     {
         readonly IUserImageService _userImageService;
 

@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CalvesController : ControllerBase
+    public class CalvesController : Controller
     {
         readonly ICalfService _calvesService;
 

@@ -15,6 +15,7 @@ namespace WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
+
         public UsersController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
@@ -59,8 +60,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(User user,int id,string securityKey)
+        public IActionResult Delete(User user, int id, string securityKey)
         {
+            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+
+            if (!conditionResult.Success)
+            {
+                return BadRequest(conditionResult);
+            }
+
             var result = _userService.Delete(user);
 
             if (result.Success)
@@ -70,9 +78,9 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPut("update")]
-        public IActionResult Update(User user,[FromHeader]int id ,[FromHeader] string securityKey)
+        public IActionResult Update(User user, [FromHeader] int id, [FromHeader] string securityKey)
         {
             IResult conditionResult = _authService.UserOwnControl(id, securityKey);
 
@@ -80,7 +88,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(conditionResult);
             }
-            
+
             var result = _userService.Update(user);
 
             if (result.Success)
@@ -92,7 +100,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("updateuser")]
-        public IActionResult UpdateUser(UserForEdit userForEdit,[FromHeader]int id , [FromHeader]string securityKey)
+        public IActionResult UpdateUser(UserForEdit userForEdit, [FromHeader] int id, [FromHeader] string securityKey)
         {
             IResult conditionResult = _authService.UserOwnControl(id, securityKey);
 
@@ -100,7 +108,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(conditionResult);
             }
-            
+
             var result = _userService.UpdateUser(userForEdit);
 
             if (result.Success)
@@ -110,8 +118,9 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+
         [HttpGet("getuserdetails")]
-        public IActionResult GetUserDetails([FromHeader]int id,[FromHeader]string securityKey)
+        public IActionResult GetUserDetails([FromHeader] int id, [FromHeader]string securityKey)
         {
             
             IResult conditionResult = _authService.UserOwnControl(id, securityKey);

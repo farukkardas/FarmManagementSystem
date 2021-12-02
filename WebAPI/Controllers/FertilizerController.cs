@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FertilizerController : ControllerBase
+    public class FertilizerController : Controller
     {
         private readonly IFertilizerService _fertilizerService;
 

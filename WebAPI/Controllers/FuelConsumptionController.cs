@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FuelConsumptionController : ControllerBase
+    public class FuelConsumptionController : Controller
     {
         private readonly IFuelConsumptionService _fuelConsumptionService;
 

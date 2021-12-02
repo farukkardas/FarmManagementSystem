@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MilkSalesController : ControllerBase
+    public class MilkSalesController : Controller
     {
         private IMilkSalesService _milkSalesService;
 

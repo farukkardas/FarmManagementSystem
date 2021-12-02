@@ -6,9 +6,9 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BullController : ControllerBase
+    public class BullController : Controller
     {
-        private IBullService _bullService;
+        private readonly IBullService _bullService;
 
         public BullController(IBullService bullService)
         {

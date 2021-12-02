@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SheepController : ControllerBase
+    public class SheepController : Controller
     {
         private readonly ISheepService _sheepService;
 

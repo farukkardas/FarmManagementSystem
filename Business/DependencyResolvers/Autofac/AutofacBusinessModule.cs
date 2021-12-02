@@ -52,6 +52,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserImageManager>().As<IUserImageService>();
             builder.RegisterType<EfUserImageDal>().As<IUserImageDal>();
 
+            builder.RegisterType<AnimalSalesManager>().As<IAnimalSalesService>();
+            builder.RegisterType<EfAnimalSalesDal>().As<IAnimalSalesDal>();
             
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
