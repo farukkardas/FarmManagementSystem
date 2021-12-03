@@ -13,24 +13,22 @@ namespace DataAccess.Concrete.EntityFramework
     {
         public List<MilkSalesDto> GetMilkSales(Expression<Func<MilkSalesDto, bool>> filter = null)
         {
-            using (FarmManagementContext context = new FarmManagementContext())
-            {
-                var result = from c in context.MilkSales
-                             join cu in context.Customers on c.CustomerId equals cu.Id
-                             select new MilkSalesDto()
-                             {
-                                 Amount = c.Amount,
-                                 CustomerId = cu.Id,
-                                 Price = c.SalePrice,
-                                 FirstName = cu.FirstName,
-                                 LastName = cu.LastName,
-                                 SalesId = c.Id,
-                                 BoughtDate = c.BoughtDate,
-                                 SellerId = c.SellerId
-                             };
+            using FarmManagementContext context = new FarmManagementContext();
+            var result = from c in context.MilkSales
+                join cu in context.Customers on c.CustomerId equals cu.Id
+                select new MilkSalesDto()
+                {
+                    Amount = c.Amount,
+                    CustomerId = cu.Id,
+                    Price = c.SalePrice,
+                    FirstName = cu.FirstName,
+                    LastName = cu.LastName,
+                    SalesId = c.Id,
+                    BoughtDate = c.BoughtDate,
+                    SellerId = c.SellerId
+                };
 
-                return filter == null ? result.ToList() : result.Where(filter).ToList();
-            }
+            return filter == null ? result.ToList() : result.Where(filter).ToList();
         }
 
        

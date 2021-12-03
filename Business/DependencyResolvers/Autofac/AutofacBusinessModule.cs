@@ -55,6 +55,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<AnimalSalesManager>().As<IAnimalSalesService>();
             builder.RegisterType<EfAnimalSalesDal>().As<IAnimalSalesDal>();
             
+            builder.RegisterType<OrderManager>().As<IOrderService>();
+            builder.RegisterType<EfOrderDal>().As<IOrderDal>();
+            
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

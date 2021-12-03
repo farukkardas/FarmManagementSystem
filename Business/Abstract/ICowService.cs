@@ -9,14 +9,10 @@ namespace Business.Abstract
     {
         IDataResult<List<Cow>> GetAll();
         IDataResult<Cow> GetById(int id);
-        
         IDataResult<Cow> GetByCowId(int cowId);
         IResult Add(Cow cow,int id , string securityKey);
         IResult Delete(Cow cow,int id , string securityKey);
         IResult Update(Cow cow,int id , string securityKey);
-
         IDataResult<List<Cow>> GetUserCows(int id, string securityKey);
-
-       
     }
 }
