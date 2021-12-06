@@ -19,6 +19,7 @@ namespace DataAccess.Concrete.EntityFramework
             var result = from o in context.Orders
                 join cu in context.Customers on o.CustomerId equals cu.Id
                 join us in context.Users on o.SellerId equals us.Id
+                join pr in context.Products on o.ProductType equals pr.Id
                 select new OrderDetailDto()
                 {
                     Id = o.Id,
@@ -29,6 +30,7 @@ namespace DataAccess.Concrete.EntityFramework
                     DeliveryCity = o.DeliveryCity,
                     DeliveryDistrict = o.DeliveryDistrict,
                     ProductType = o.ProductType,
+                    ProductName = pr.ProductName,
                     BoughtDate = o.BoughtDate,
                     Status = o.Status
                 };

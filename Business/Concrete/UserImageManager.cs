@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
+using Core.Aspects.Autofac.Transaction;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
 using Core.Utilities.Results.Abstract;
@@ -25,7 +26,7 @@ namespace Business.Concrete
             _userImageDal = userImageDal;
             _authService = authService;
         }
-
+        [TransactionScopeAspect]
         [SecuredOperations("user,admin")]
         public IResult Add(IFormFile file, UserImage userImage, int id, string securityKey)
         {
@@ -39,7 +40,7 @@ namespace Business.Concrete
             userImage.ImagePath = FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
             _userImageDal.Add(userImage);
-            return new SuccessResult($"Image is {Messages.SuccessfullyAdded}");
+            return new SuccessResult($"Image is {file.FileName} {Messages.SuccessfullyAdded}");
         }
 
       

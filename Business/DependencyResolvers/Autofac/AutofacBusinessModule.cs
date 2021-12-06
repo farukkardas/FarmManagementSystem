@@ -58,6 +58,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<OrderManager>().As<IOrderService>();
             builder.RegisterType<EfOrderDal>().As<IOrderDal>();
             
+            builder.RegisterType<ProductsOnSaleManager>().As<IProductsOnSaleService>();
+            builder.RegisterType<EfProductsOnSaleDal>().As<IProductsOnSaleDal>();
+            
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

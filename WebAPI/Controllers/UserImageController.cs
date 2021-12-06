@@ -22,10 +22,12 @@ namespace WebAPI.Controllers
         {
             
             var result = _userImageService.Add(file,userImage,id,securityKey);
+            
             if (result.Success)
             {
                 return Ok(result);
             }
+            
             return BadRequest(result);
         }
         

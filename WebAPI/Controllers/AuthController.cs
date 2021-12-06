@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
             {
                
                Log.Error($"{userLoginDto.Email} sucessfully logged!");  
-                return Ok(result);
+                return Ok(result.Success);
                 
             }
 

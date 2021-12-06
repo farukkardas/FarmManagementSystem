@@ -10,6 +10,7 @@ namespace Entities.DataTransferObjects
         public string SellerName { get; set; }
         public string CustomerName { get; set; }
         public int ProductType { get; set; }
+        public string ProductName { get; set; }
         public int DeliveryCity { get; set; }
         public string DeliveryDistrict { get; set; }
         public string DeliveryAddress { get; set; }
