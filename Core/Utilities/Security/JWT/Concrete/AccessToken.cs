@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Core.Entities.Concrete;
 
 namespace Core.Utilities.Security.JWT.Concrete
 {
@@ -8,5 +10,6 @@ namespace Core.Utilities.Security.JWT.Concrete
         public DateTime Expiration { get; set; }
         public int Id { get; set; }
         public string SecurityKey { get; set; }
+        public List<OperationClaim> OperationClaims { get; set; }
     }
 }

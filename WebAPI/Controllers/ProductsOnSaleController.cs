@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace WebAPI.Controllers
 {
@@ -9,7 +10,7 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class ProductsOnSaleController : Controller
     {
-        private IProductsOnSaleService _productsOnSaleService;
+        private readonly IProductsOnSaleService _productsOnSaleService;
 
         public ProductsOnSaleController(IProductsOnSaleService productsOnSaleService)
         {
@@ -45,6 +46,19 @@ namespace WebAPI.Controllers
         public IActionResult GetUserProducts([FromHeader]int id ,[FromHeader]string securityKey)
         {
             var result = _productsOnSaleService.GetUserProducts(id,securityKey);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+        
+        [HttpPost("deleteproduct")]
+        public IActionResult Add([FromForm]int productId,[FromHeader]int id,[FromHeader]string securityKey)
+        {
+            var result = _productsOnSaleService.Delete(productId,id,securityKey);
 
             if (result.Success)
             {

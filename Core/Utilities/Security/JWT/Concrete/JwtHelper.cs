@@ -33,12 +33,14 @@ namespace Core.Utilities.Security.JWT.Concrete
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
             var userId = user.Id;
             var userKey = user.SecurityKey;
+         
             return new AccessToken
             {
                 Token = token,
                 Expiration = _accessTokenExpiration,
                 Id = userId,
-                SecurityKey = userKey
+                SecurityKey = userKey,
+                OperationClaims = operationClaims
             };
 
         }

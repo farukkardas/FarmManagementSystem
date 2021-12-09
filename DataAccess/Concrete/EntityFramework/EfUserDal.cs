@@ -86,7 +86,7 @@ namespace DataAccess.Concrete.EntityFramework
             UserOperationClaim userOperationClaim = new UserOperationClaim();
 
             userOperationClaim.UserId = id;
-            userOperationClaim.OperationClaimId = 1;
+            userOperationClaim.OperationClaimId = 2;
             
             context.UserOperationClaims.Add(userOperationClaim);
 

@@ -20,9 +20,8 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login(UserLoginDto userLoginDto)
         {
-            
+
             var userToLogin = _authService.Login(userLoginDto);
-            
             
             if (!userToLogin.Success)
             {
@@ -35,7 +34,7 @@ namespace WebAPI.Controllers
             {
                
                Log.Error($"{userLoginDto.Email} sucessfully logged!");  
-                return Ok(result.Success);
+                return Ok(result);
                 
             }
 

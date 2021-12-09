@@ -90,9 +90,26 @@ namespace Business.Concrete
 
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect("IProductsOnSaleService.Get")]
-        public IResult Delete(ProductsOnSale productsOnSale, int id, string securityKey)
+        public IResult Delete(int productId, int id, string securityKey)
         {
-            _productsOnSaleDal.Delete(productsOnSale);
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<ProductsOnSale>>(conditionResult.Message);
+            }
+            
+            //Find product
+            var product = _productsOnSaleDal.Get(p => p.Id == productId);
+
+            if (product == null)
+            {
+                return new ErrorResult("Product not found!");
+            }
+            // Delete image from local.
+            FileHelper.Delete(product.ImagePath);
+            //Delete product from DB.
+            _productsOnSaleDal.Delete(product);
 
             return new SuccessResult($"Product {Messages.SuccessfullyDeleted}");
         }
