@@ -30,33 +30,37 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using var context = new FarmManagementContext();
             var result = from u in context.Users
-                
+                join userOperationClaim in context.UserOperationClaims
+                    on u.Id equals userOperationClaim.UserId
+                join operationClaim in context.OperationClaims on userOperationClaim.OperationClaimId equals
+                    operationClaim.Id
                 select new UserDetailDto
                 {
                     Id = u.Id,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
                     Email = u.Email,
-                     PhoneNumber = u.PhoneNumber,
-                     City = u.City,
-                     District = u.District,
-                     Address =  u.Address,
+                    PhoneNumber = u.PhoneNumber,
+                    City = u.City,
+                    District = u.District,
+                    Address = u.Address,
                     ZipCode = u.ZipCode,
-                    ImagePath = context.UserImages.Where(im=>im.UserId == u.Id).Select(im=>im.ImagePath).SingleOrDefault(),
+                    ImagePath = context.UserImages.Where(im => im.UserId == u.Id).Select(im => im.ImagePath)
+                        .SingleOrDefault(),
                     Profit = context.MilkSales.Where(s => s.SellerId == u.Id).Sum(x => x.SalePrice),
                     TotalSales = context.MilkSales.Count(m => m.SellerId == u.Id),
                     CustomerCount = context.Customers.Count(c => c.OwnerId == u.Id),
-                    BullCount = context.Bulls.Count(b=>b.OwnerId == u.Id),
-                    CalfCount = context.Calves.Count(c=>c.OwnerId == u.Id),
-                    CowCount = context.Cows.Count(c=>c.OwnerId == u.Id),
-                    SheepCount = context.Sheeps.Count(s=>s.OwnerId == u.Id),
+                    BullCount = context.Bulls.Count(b => b.OwnerId == u.Id),
+                    CalfCount = context.Calves.Count(c => c.OwnerId == u.Id),
+                    CowCount = context.Cows.Count(c => c.OwnerId == u.Id),
+                    SheepCount = context.Sheeps.Count(s => s.OwnerId == u.Id),
                     AnimalCount = context.Cows.Count(cows => cows.OwnerId == u.Id) +
                                   context.Calves.Count(calves => calves.OwnerId == u.Id) +
                                   context.Bulls.Count(bull => bull.OwnerId == u.Id) +
-                                  context.Sheeps.Count(sheep => sheep.OwnerId == u.Id)
-                                  
+                                  context.Sheeps.Count(sheep => sheep.OwnerId == u.Id),
+                    Role = operationClaim.Name
                 };
-            
+
             return filter == null ? result.SingleOrDefault() : result.Where(filter).SingleOrDefault();
         }
 
@@ -87,7 +91,7 @@ namespace DataAccess.Concrete.EntityFramework
 
             userOperationClaim.UserId = id;
             userOperationClaim.OperationClaimId = 2;
-            
+
             context.UserOperationClaims.Add(userOperationClaim);
 
             context.SaveChanges();

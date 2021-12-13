@@ -60,6 +60,9 @@ namespace Business.DependencyResolvers.Autofac
             
             builder.RegisterType<ProductsOnSaleManager>().As<IProductsOnSaleService>();
             builder.RegisterType<EfProductsOnSaleDal>().As<IProductsOnSaleDal>();
+
+            builder.RegisterType<BasketManager>().As<IBasketService>();
+            builder.RegisterType<EfBasketDal>().As<IBasketDal>();
             
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

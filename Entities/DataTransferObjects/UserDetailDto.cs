@@ -22,6 +22,7 @@ namespace Entities.DataTransferObjects
         public int SheepCount { get; set; }
         public int BullCount { get; set; }
         public int AnimalCount { get; set; }
+        public string Role { get; set; }
         
     }
 }

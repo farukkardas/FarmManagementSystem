@@ -31,13 +31,13 @@ namespace Core.Utilities.Helpers
 
             //Check if its valid image.
             using MemoryStream ms = new MemoryStream();
-            file.CopyToAsync(ms);
+            file.CopyTo(ms);
 
             byte[] bytes = ms.ToArray();
             
             if (!bytes.IsImage())
             {
-                throw new JsonException("It is not valid image!");
+                throw new ArgumentException($" {bytes.Length}  - It is not valid image!");
             }
             
             //Upload image

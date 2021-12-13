@@ -27,7 +27,7 @@ namespace WebAPI
         {
             services.AddControllers();
             services.AddCors();
-            
+
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -54,14 +54,13 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             //Exception Middleware for handle error
-           app.ConfigureCustomExceptionMiddleware();
+  //          app.ConfigureCustomExceptionMiddleware();
 
             //Using static files from root directory
             app.UseStaticFiles();

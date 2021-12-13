@@ -33,7 +33,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(result);
         }
 
-       // [SecuredOperations("admin")]
+        [SecuredOperations("admin")]
         [CacheAspect(20)]
         public IDataResult<User> GetById(int id)
         {

@@ -11,6 +11,7 @@ using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 
 namespace Business.Concrete
@@ -40,11 +41,11 @@ namespace Business.Concrete
 
         [SecuredOperations("admin,user,customer")]
         [CacheAspect(10)]
-        public IDataResult<ProductsOnSale> GetById(int id)
+        public IDataResult<ProductDetailDto> GetById(int id)
         {
-            var result = _productsOnSaleDal.Get(s => s.Id == id);
+            var result = _productsOnSaleDal.GetProductById(p=>p.Id == id);
 
-            return new SuccessDataResult<ProductsOnSale>(result);
+            return new SuccessDataResult<ProductDetailDto>(result);
         }
 
         public IDataResult<List<ProductsOnSale>> GetUserProducts(int id, string securityKey)
@@ -78,6 +79,7 @@ namespace Business.Concrete
             product.Id = productsOnSale.Id;
             product.Name = productsOnSale.Name;
             product.Price = productsOnSale.Price;
+            product.Description = productsOnSale.Description;
             product.EntryDate = DateTime.Now;
             product.SellerId = productsOnSale.SellerId;
             product.ImagePath = FileHelper.Add(file);
