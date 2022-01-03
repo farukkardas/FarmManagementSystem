@@ -34,19 +34,18 @@ namespace Core.Utilities.Helpers
             file.CopyTo(ms);
 
             byte[] bytes = ms.ToArray();
-            
+
             if (!bytes.IsImage())
             {
                 throw new ArgumentException($" {bytes.Length}  - It is not valid image!");
             }
-            
+
             //Upload image
             using FileStream fileStream = File.Create(Directory + path + newFileName);
             file.CopyTo(fileStream);
             fileStream.Flush();
-           
-            return (path + newFileName).Replace("\\", "/");
 
+            return (path + newFileName).Replace("\\", "/");
         }
 
         public static string Update(IFormFile file, string oldImagePath)

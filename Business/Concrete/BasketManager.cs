@@ -14,25 +14,40 @@ namespace Business.Concrete
     {
         private readonly IBasketDal _basketDal;
         private readonly IAuthService _authService;
-
-        public BasketManager(IBasketDal basketDal, IAuthService authService)
+        private readonly IProductsOnSaleDal _productsOnSale;
+        public BasketManager(IBasketDal basketDal, IAuthService authService, IProductsOnSaleDal productsOnSale)
         {
             _basketDal = basketDal;
             _authService = authService;
+            _productsOnSale = productsOnSale;
         }
 
         public IResult AddToBasket(ProductInBasket productInBasket, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey),CheckIfProductExists(productInBasket.ProductId));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<BasketProductDto>>(conditionResult.Message);
             }
+            
+            
 
             _basketDal.Add(productInBasket);
 
-            return new SuccessResult($"Product {Messages.SuccessfullyAdded} in a basket!");
+            return new SuccessResult("Product successfully added in a basket!");
+        }
+
+        private IResult CheckIfProductExists(int productId)
+        {
+            var product = _productsOnSale.Get(p => p.Id == productId);
+
+            if (product == null)
+            {
+                return new ErrorResult("Product not found!");
+            }
+
+            return new SuccessResult();
         }
 
         public IResult DeleteFromBasket(ProductInBasket productInBasket, int id, string securityKey)

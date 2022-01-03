@@ -43,10 +43,10 @@ namespace Business.Concrete
                 PasswordSalt = passwordSalt,
                 Status = true
             };
-
             
             _userService.Add(user);
             _userDal.SetClaims(user.Id);
+            GenerateRandomSecurityKey(user);
 
             return new SuccessDataResult<User>(user, $"{user} , {Messages.SuccessfullyAdded}");
         }
@@ -175,7 +175,7 @@ namespace Business.Concrete
                return new ErrorResult("Security key outdated");
            }
 
-           return new SuccessResult();
+           return new SuccessResult("Security key is up to date.");
         }
     }
 }

@@ -77,6 +77,7 @@ namespace Business.Concrete
 
 
         [SecuredOperations("admin,user,customer")]
+        [CacheAspect(10)]
         public IDataResult<UserDetailDto> GetUserDetails(int id,string securityKey)
         {
             var result = _userDal.GetUserDetails(u => u.Id == id);

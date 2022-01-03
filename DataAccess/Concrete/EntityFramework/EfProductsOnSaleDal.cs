@@ -22,6 +22,7 @@ namespace DataAccess.Concrete.EntityFramework
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price,
+                    CategoryId = p.CategoryId,
                     EntryDate = p.EntryDate,
                     ImagePath = p.ImagePath,
                     PhoneNumber = u.PhoneNumber,

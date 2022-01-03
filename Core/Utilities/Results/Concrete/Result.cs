@@ -16,6 +16,6 @@ namespace Core.Utilities.Results.Concrete
         }
 
         public bool Success { get; }
-        public string Message { get; }
+        public string Message { get; set; }
     }
 }

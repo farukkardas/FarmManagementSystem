@@ -37,7 +37,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
             }
         
-            userImage.ImagePath = FileHelper.Add(file);
+            userImage.ImagePath =  FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
             _userImageDal.Add(userImage);
             return new SuccessResult($"Image is {file.FileName} {Messages.SuccessfullyAdded}");

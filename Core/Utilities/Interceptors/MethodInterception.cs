@@ -12,7 +12,6 @@ namespace Core.Utilities.Interceptors
             
         }
         
-
         protected virtual void OnAfter(IInvocation invocation)
         {
         }

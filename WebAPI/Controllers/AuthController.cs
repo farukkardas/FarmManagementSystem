@@ -25,21 +25,19 @@ namespace WebAPI.Controllers
             
             if (!userToLogin.Success)
             {
-                return BadRequest(userToLogin.Message);
+                return BadRequest(userToLogin);
             }
             
             var result = _authService.CreateAccessToken(userToLogin.Data);
 
             if (result.Success)
             {
-               
-               Log.Error($"{userLoginDto.Email} sucessfully logged!");  
+                Log.Error($"{userLoginDto.Email} sucessfully logged!");  
                 return Ok(result);
-                
             }
 
             
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
         
         
@@ -49,14 +47,14 @@ namespace WebAPI.Controllers
        
             var registerResult = _authService.Register(userRegisterDto, userRegisterDto.Password);
             var result = _authService.CreateAccessToken(registerResult.Data);
-            
+            result.Message = "Successfully registered!";
             
             if (result.Success)
             {
                 return Ok(result);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("checkskoutdated")]
@@ -69,7 +67,7 @@ namespace WebAPI.Controllers
                return Ok(result);
            }
 
-           return BadRequest(result.Message);
+           return BadRequest(result);
         }
     }
 }

@@ -9,12 +9,14 @@ using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI
 {
     public class Startup
     {
+        string  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,14 +24,25 @@ namespace WebAPI
 
         private IConfiguration Configuration { get; }
 
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {   
+           
+            
             services.AddControllers();
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-
+            services.AddSignalR();
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -60,22 +73,23 @@ namespace WebAPI
             }
 
             //Exception Middleware for handle error
-  //          app.ConfigureCustomExceptionMiddleware();
+          //  app.ConfigureCustomExceptionMiddleware();
 
             //Using static files from root directory
-            app.UseStaticFiles();
 
-            app.UseDefaultFiles();
-
-            app.UseCors(builder => builder.WithOrigins("http://localhost:45523").AllowAnyHeader().AllowAnyMethod()
-                .AllowAnyOrigin());
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ServeUnknownFileTypes = true
+            });
 
             app.UseHttpsRedirection();
 
+            app.UseCors(MyAllowSpecificOrigins);
+            
             app.UseRouting();
 
             app.UseAuthorization();
-
+    
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
