@@ -20,17 +20,19 @@ namespace DataAccess.Concrete.EntityFramework
                 join cu in context.Customers on o.CustomerId equals cu.Id
                 join us in context.Users on o.SellerId equals us.Id
                 join pr in context.Products on o.ProductType equals pr.Id
+                join pOnSale in context.ProductsOnSale on o.ProductId equals pOnSale.Id
                 select new OrderDetailDto()
                 {
                     Id = o.Id,
                     SellerName = us.FirstName + " " + us.LastName,
                     SellerId = us.Id,
+                    ProductId = pOnSale.Id,
                     CustomerName = cu.FirstName + " " + cu.LastName,
                     DeliveryAddress = o.DeliveryAddress,
                     DeliveryCity = o.DeliveryCity,
                     DeliveryDistrict = o.DeliveryDistrict,
                     ProductType = o.ProductType,
-                    ProductName = pr.ProductName,
+                    ProductName = pOnSale.Name,
                     BoughtDate = o.BoughtDate,
                     Status = o.Status
                 };

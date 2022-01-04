@@ -8,8 +8,9 @@ namespace Entities.Concrete
         public int Id { get; set; }
         public int SellerId { get; set; }
         public int CustomerId { get; set; }
+        public int ProductId { get; set; }
         public int ProductType { get; set; }
-        public double Amount { get; set; }
+        public double Price { get; set; }
         public int DeliveryCity { get; set; }
         public string DeliveryDistrict { get; set; }
         public string DeliveryAddress { get; set; }
