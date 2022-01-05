@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.ValidationRules.FluentValidation;
@@ -35,7 +36,11 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult CheckoutProducts(int id, string securityKey, CreditCart creditCartInfo)
         {
-            IResult conditionRules = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            var baskedProducts = _basketDal.GetAll(b => b.UserId == id);
+            var userDetails = _userDal.Get(u => u.Id == id);
+
+            IResult conditionRules = BusinessRules.Run(_authService.UserOwnControl(id, securityKey),
+                CheckBasketIsEmpty(baskedProducts), DontBuyOwnProduct(id, baskedProducts));
 
             if (conditionRules != null)
             {
@@ -44,16 +49,12 @@ namespace Business.Concrete
 
 // Do communication with BANK'S API'S and make payment here.            
 
-            var baskedProducts = _basketDal.GetAll(b => b.UserId == id);
-            var userDetails = _userDal.Get(u => u.Id == id);
 
             foreach (var basketP in baskedProducts)
             {
                 var boughtProduct = _productsOnSaleDal.GetProductById(p => p.Id == basketP.ProductId);
-
                 Order order = new Order
                 {
-                    
                     SellerId = boughtProduct.SellerId,
                     CustomerId = id,
                     ProductId = boughtProduct.Id,
@@ -68,7 +69,41 @@ namespace Business.Concrete
                 _orderDal.Add(order);
             }
 
+            foreach (var deleteProduct in baskedProducts)
+            {
+                _basketDal.Delete(deleteProduct);
+            }
+
             return new SuccessResult("Your order has been received successfully.");
+        }
+
+        private IResult DontBuyOwnProduct(int id, List<ProductInBasket> baskedProducts)
+        {
+            foreach (var baskedProduct in baskedProducts)
+            {
+                var productsOnSales = _productsOnSaleDal.GetAll(p => p.Id == baskedProduct.ProductId);
+
+                foreach (var p in productsOnSales)
+                {
+                    if (p.SellerId == id)
+                    {
+                        return new ErrorResult("You dont buy your product!");
+                    }
+                }
+            }
+
+            return new SuccessResult();
+        }
+
+
+        private IResult CheckBasketIsEmpty(List<ProductInBasket> baskedProducts)
+        {
+            if (baskedProducts.Count < 1)
+            {
+                return new ErrorResult("You dont have product in basket!");
+            }
+
+            return new SuccessResult();
         }
     }
 }

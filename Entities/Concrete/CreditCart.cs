@@ -6,8 +6,8 @@ namespace Entities.Concrete
     {
         public string FullName { get; set; }
         public string CartNumber { get; set; }
-        public int CvvNumber { get; set; }
-        public int ExpirationYear { get; set; }
-        public int ExpirationMonth { get; set; }
+        public string CvvNumber { get; set; }
+        public string ExpirationDate { get; set; }
+      
     }
 }

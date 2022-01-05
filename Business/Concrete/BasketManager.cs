@@ -24,8 +24,9 @@ namespace Business.Concrete
 
         public IResult AddToBasket(ProductInBasket productInBasket, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey),CheckIfProductExists(productInBasket.ProductId));
-
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey),CheckIfProductExists(productInBasket.ProductId),CheckIfProductExistOnBasket(productInBasket.ProductId),CheckIfOwnProduct(id,productInBasket.ProductId));
+            
+            
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<BasketProductDto>>(conditionResult.Message);
@@ -36,6 +37,30 @@ namespace Business.Concrete
             _basketDal.Add(productInBasket);
 
             return new SuccessResult("Product successfully added in a basket!");
+        }
+
+        private IResult CheckIfOwnProduct(int userId,int productId)
+        {
+            var productOnSale = _productsOnSale.GetProductById(p => p.Id == productId);
+
+            if (productOnSale.SellerId == userId)
+            {
+                return new ErrorResult("You cannot add your product in basket!");
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfProductExistOnBasket(int productId)
+        {
+            var result = _basketDal.Get(b => b.ProductId == productId);
+
+            if (result != null)
+            {
+                return new ErrorResult("You have this product in basket!");
+            }
+
+            return new SuccessResult();
         }
 
         private IResult CheckIfProductExists(int productId)
