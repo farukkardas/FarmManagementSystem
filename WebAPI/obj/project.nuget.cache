@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8o7U/++QteU1itgZfFMVJWn1VWQVMzbB4vwU7hf3iz60prCaE1iEzXamYrLJNy51dr1Uwz6LGP6ZjFx6Ite+1w==",
+  "dgSpecHash": "H1wUniz15rNOhzMcAykV7loHJMGAjqyk4h1gQiY7BaGLeEmCERs4ZPnSc1ETtxJxZ8oeOIdBTERvtS7mYbC2Mw==",
   "success": true,
   "projectFilePath": "C:\\Users\\fagam\\RiderProjects\\FarmManagementSystem\\WebAPI\\WebAPI.csproj",
   "expectedPackageFiles": [
@@ -90,7 +90,7 @@
     "C:\\Users\\fagam\\.nuget\\packages\\serilog.sinks.console\\3.1.1\\serilog.sinks.console.3.1.1.nupkg.sha512",
     "C:\\Users\\fagam\\.nuget\\packages\\serilog.sinks.debug\\2.0.0\\serilog.sinks.debug.2.0.0.nupkg.sha512",
     "C:\\Users\\fagam\\.nuget\\packages\\serilog.sinks.file\\4.1.0\\serilog.sinks.file.4.1.0.nupkg.sha512",
-    "C:\\Users\\fagam\\.nuget\\packages\\serilog.sinks.mssqlserver\\5.7.0-dev-00405\\serilog.sinks.mssqlserver.5.7.0-dev-00405.nupkg.sha512",
+    "C:\\Users\\fagam\\.nuget\\packages\\serilog.sinks.mssqlserver\\5.7.0-dev-00414\\serilog.sinks.mssqlserver.5.7.0-dev-00414.nupkg.sha512",
     "C:\\Users\\fagam\\.nuget\\packages\\serilog.sinks.periodicbatching\\2.3.0\\serilog.sinks.periodicbatching.2.3.0.nupkg.sha512",
     "C:\\Users\\fagam\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\fagam\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",

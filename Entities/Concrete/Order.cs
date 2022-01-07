@@ -15,6 +15,7 @@ namespace Entities.Concrete
         public string DeliveryDistrict { get; set; }
         public string DeliveryAddress { get; set; }
         public DateTime BoughtDate { get; set; }
-        public bool Status { get; set; }
+        public int Status { get; set; }
+        public int? DeliveryNo { get; set; }
     }
 }

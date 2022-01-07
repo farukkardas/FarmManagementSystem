@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -21,6 +22,46 @@ namespace WebAPI.Controllers
         {
             var result = _orderService.GetUserOrders(id, securityKey);
 
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+        
+        
+        [HttpGet("GetAll")]
+        public IActionResult GetAll([FromHeader] int id, [FromHeader] string securityKey)
+        {
+            var result = _orderService.GetAll();
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPut("approveorder")]
+        public IActionResult ApproveOrder([FromHeader] int id, [FromHeader] string securityKey,int order)
+        {
+            var result = _orderService.ApproveOrder(id, securityKey, order);
+            
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+        
+        [HttpPut("addcargono")]
+        public IActionResult AddCargoNo([FromHeader] int id, [FromHeader] string securityKey,int order,int deliveryNo)
+        {
+            var result = _orderService.AddCargoNumber(id, securityKey, order,deliveryNo);
+            
             if (result.Success)
             {
                 return Ok(result);

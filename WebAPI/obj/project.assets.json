@@ -1137,7 +1137,7 @@
           "lib/netstandard2.0/Serilog.Sinks.File.dll": {}
         }
       },
-      "Serilog.Sinks.MSSqlServer/5.7.0-dev-00405": {
+      "Serilog.Sinks.MSSqlServer/5.7.0-dev-00414": {
         "type": "package",
         "dependencies": {
           "Microsoft.Azure.Services.AppAuthentication": "1.4.0",
@@ -4438,17 +4438,17 @@
         "serilog.sinks.file.nuspec"
       ]
     },
-    "Serilog.Sinks.MSSqlServer/5.7.0-dev-00405": {
-      "sha512": "rygeYr6Iex5d4FryfYOTYXvNoI/XAsk5mkGxD3c2HFOE2FggZ+VIJGzmSezyMLWvMP7D+yGZ2E9YVdqQKXsvUQ==",
+    "Serilog.Sinks.MSSqlServer/5.7.0-dev-00414": {
+      "sha512": "xaaE6bGPUsbuvqUcQ0IXUGqWtBdU0B9WbzvTy4q9ij/xhXDnPCzv1TGJOkxRaef7EssNN18Qkawi+QkCy9IYEw==",
       "type": "package",
-      "path": "serilog.sinks.mssqlserver/5.7.0-dev-00405",
+      "path": "serilog.sinks.mssqlserver/5.7.0-dev-00414",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/net452/Serilog.Sinks.MSSqlServer.dll",
         "lib/net452/Serilog.Sinks.MSSqlServer.xml",
-        "lib/net461/Serilog.Sinks.MSSqlServer.dll",
-        "lib/net461/Serilog.Sinks.MSSqlServer.xml",
+        "lib/net462/Serilog.Sinks.MSSqlServer.dll",
+        "lib/net462/Serilog.Sinks.MSSqlServer.xml",
         "lib/net472/Serilog.Sinks.MSSqlServer.dll",
         "lib/net472/Serilog.Sinks.MSSqlServer.xml",
         "lib/netcoreapp3.1/Serilog.Sinks.MSSqlServer.dll",
@@ -4456,7 +4456,7 @@
         "lib/netstandard2.0/Serilog.Sinks.MSSqlServer.dll",
         "lib/netstandard2.0/Serilog.Sinks.MSSqlServer.xml",
         "serilog-sink-nuget.png",
-        "serilog.sinks.mssqlserver.5.7.0-dev-00405.nupkg.sha512",
+        "serilog.sinks.mssqlserver.5.7.0-dev-00414.nupkg.sha512",
         "serilog.sinks.mssqlserver.nuspec"
       ]
     },
@@ -8767,7 +8767,7 @@
       "Microsoft.Data.SqlClient >= 4.0.0",
       "Serilog.AspNetCore >= 4.1.1-dev-00241",
       "Serilog.Settings.Configuration >= 3.3.0",
-      "Serilog.Sinks.MSSqlServer >= 5.7.0-dev-00405"
+      "Serilog.Sinks.MSSqlServer >= 5.7.0-dev-00414"
     ]
   },
   "packageFolders": {
@@ -8840,7 +8840,7 @@
           },
           "Serilog.Sinks.MSSqlServer": {
             "target": "Package",
-            "version": "[5.7.0-dev-00405, )"
+            "version": "[5.7.0-dev-00414, )"
           }
         },
         "imports": [

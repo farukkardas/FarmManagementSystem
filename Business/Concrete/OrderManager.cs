@@ -10,6 +10,7 @@ using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DataTransferObjects;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Business.Concrete
 {
@@ -85,7 +86,7 @@ namespace Business.Concrete
         {
             var order = _orderDal.Get(o => o.Id == orderId);
 
-            order.Status = false;
+            order.Status = 1;
 
             return new SuccessResult($"Order has ben cancelled.");
         }
@@ -100,9 +101,42 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<OrderDetailDto>>(conditionResult.Message);
             }
             
-            var result = _orderDal.GetUserOrders(o => o.SellerId == id);
+            var result = _orderDal.GetUserOrders(o=>o.SellerId == id);
 
             return new SuccessDataResult<List<OrderDetailDto>>(result);
+        }
+
+        public IResult ApproveOrder(int id, string securityKey, int orderId)
+        {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorResult(conditionResult.Message);
+            }
+
+            var result =  _orderDal.Get(o => o.Id == orderId);
+            result.Status = 3;
+            _orderDal.Update(result);
+
+            return new SuccessResult($" Order has ben approved.");
+        }
+
+        public IResult AddCargoNumber(int id, string securityKey, int orderId,int deliveryNo)
+        {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorResult(conditionResult.Message);
+            }
+            
+            var result =  _orderDal.Get(o => o.Id == orderId);
+            result.DeliveryNo = deliveryNo;
+            result.Status = 5;
+            _orderDal.Update(result);
+
+            return new SuccessResult("Delivery no has ben approved.");
         }
     }
 }

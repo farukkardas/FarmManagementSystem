@@ -40,7 +40,6 @@ namespace Core.DataAccess.EntityFramework
             updatedEntity.State = EntityState.Modified;
             context.SaveChanges();
         }
-        
         public void Delete(TEntity entity)
         {
             using TContext context = new TContext();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.ValidationRules.FluentValidation;
+using Castle.Core.Internal;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
@@ -40,7 +41,7 @@ namespace Business.Concrete
             var userDetails = _userDal.Get(u => u.Id == id);
 
             IResult conditionRules = BusinessRules.Run(_authService.UserOwnControl(id, securityKey),
-                CheckBasketIsEmpty(baskedProducts), DontBuyOwnProduct(id, baskedProducts));
+                CheckBasketIsEmpty(baskedProducts), DontBuyOwnProduct(id, baskedProducts),CheckIfAddressExists(id));
 
             if (conditionRules != null)
             {
@@ -64,7 +65,7 @@ namespace Business.Concrete
                     DeliveryDistrict = userDetails.District ?? " ",
                     DeliveryAddress = userDetails.Address ?? " ",
                     BoughtDate = DateTime.Now,
-                    Status = true
+                    Status = 2
                 };
                 _orderDal.Add(order);
             }
@@ -75,6 +76,18 @@ namespace Business.Concrete
             }
 
             return new SuccessResult("Your order has been received successfully.");
+        }
+
+        private IResult CheckIfAddressExists(int id)
+        {
+            var result = _userDal.GetUserDetails(u => u.Id == id);
+
+            if (result.Address.IsNullOrEmpty() || result.City == null)
+            {
+                return new ErrorResult("To complete checkout please fill your address in your profile page!");
+            }
+
+            return new SuccessResult();
         }
 
         private IResult DontBuyOwnProduct(int id, List<ProductInBasket> baskedProducts)

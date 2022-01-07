@@ -39,7 +39,7 @@
           "Microsoft.Data.SqlClient": "4.0.0",
           "Serilog.AspNetCore": "4.1.1-dev-00241",
           "Serilog.Settings.Configuration": "3.3.0",
-          "Serilog.Sinks.MSSqlServer": "5.7.0-dev-00405",
+          "Serilog.Sinks.MSSqlServer": "5.7.0-dev-00414",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "5.0.0.0",
@@ -1192,7 +1192,7 @@
           "lib/netstandard2.0/Serilog.Sinks.File.dll": {}
         }
       },
-      "Serilog.Sinks.MSSqlServer/5.7.0-dev-00405": {
+      "Serilog.Sinks.MSSqlServer/5.7.0-dev-00414": {
         "dependencies": {
           "Microsoft.Azure.Services.AppAuthentication": "1.4.0",
           "Microsoft.Data.SqlClient": "4.0.0",
@@ -4395,12 +4395,12 @@
       "path": "serilog.sinks.file/4.1.0",
       "hashPath": "serilog.sinks.file.4.1.0.nupkg.sha512"
     },
-    "Serilog.Sinks.MSSqlServer/5.7.0-dev-00405": {
+    "Serilog.Sinks.MSSqlServer/5.7.0-dev-00414": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rygeYr6Iex5d4FryfYOTYXvNoI/XAsk5mkGxD3c2HFOE2FggZ+VIJGzmSezyMLWvMP7D+yGZ2E9YVdqQKXsvUQ==",
-      "path": "serilog.sinks.mssqlserver/5.7.0-dev-00405",
-      "hashPath": "serilog.sinks.mssqlserver.5.7.0-dev-00405.nupkg.sha512"
+      "sha512": "sha512-xaaE6bGPUsbuvqUcQ0IXUGqWtBdU0B9WbzvTy4q9ij/xhXDnPCzv1TGJOkxRaef7EssNN18Qkawi+QkCy9IYEw==",
+      "path": "serilog.sinks.mssqlserver/5.7.0-dev-00414",
+      "hashPath": "serilog.sinks.mssqlserver.5.7.0-dev-00414.nupkg.sha512"
     },
     "Serilog.Sinks.PeriodicBatching/2.3.0": {
       "type": "package",
