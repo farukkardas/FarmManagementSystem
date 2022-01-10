@@ -17,19 +17,21 @@ namespace Business.Concrete
     public class CheckoutManager : ICheckOutService
     {
         private readonly IBasketDal _basketDal;
+        private IBasketService _basketService;
         private readonly IAuthService _authService;
         private readonly IProductsOnSaleDal _productsOnSaleDal;
         private readonly IOrderDal _orderDal;
         private readonly IUserDal _userDal;
 
         public CheckoutManager(IBasketDal basketDal, IAuthService authService, IProductsOnSaleDal productsOnSaleDal,
-            IOrderDal orderDal, IUserDal userDal)
+            IOrderDal orderDal, IUserDal userDal, IBasketService basketService)
         {
             _basketDal = basketDal;
             _authService = authService;
             _productsOnSaleDal = productsOnSaleDal;
             _orderDal = orderDal;
             _userDal = userDal;
+            _basketService = basketService;
         }
 
         [SecuredOperations("user,admin,customer")]
@@ -72,7 +74,7 @@ namespace Business.Concrete
 
             foreach (var deleteProduct in baskedProducts)
             {
-                _basketDal.Delete(deleteProduct);
+                _basketService.Delete(deleteProduct);
             }
 
             return new SuccessResult("Your order has been received successfully.");

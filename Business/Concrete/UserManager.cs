@@ -22,7 +22,7 @@ namespace Business.Concrete
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
-          ;
+            
         }
 
         [SecuredOperations("admin")]
@@ -84,8 +84,19 @@ namespace Business.Concrete
 
             return new SuccessDataResult<UserDetailDto>(result, "Data was successfully fetched.");
         }
-        
-        
+
+        [CacheRemoveAspect("IUserService.Get")]
+        [SecuredOperations("admin,user,customer")]
+        public IResult ChangeUserAddress(int id, string securityKey, int cityId, string fullAddress)
+        {
+            var user = _userDal.Get(u=>u.Id == id);
+            user.City = cityId;
+            user.Address = fullAddress;
+            _userDal.Update(user);
+            return new SuccessResult("Address information is updated!");
+        }
+
+
         public List<OperationClaim> GetClaims(User user)
         {
             return _userDal.GetClaims(user);

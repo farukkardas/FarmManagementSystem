@@ -17,7 +17,6 @@ namespace Business.Abstract
         List<OperationClaim> GetClaims(User user);
         User GetByMail(string email);
         IDataResult<UserDetailDto> GetUserDetails(int id,string securityKey);
-
-
+        IResult ChangeUserAddress(int id, string securityKey, int cityId, string fullAddress);
     }
 }

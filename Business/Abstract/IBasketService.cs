@@ -8,6 +8,7 @@ namespace Business.Abstract
     public interface IBasketService
     {
         IResult AddToBasket(ProductInBasket productInBasket,int id,string securityKey);
+        IResult Delete(ProductInBasket productInBasket);
         IResult DeleteFromBasket(ProductInBasket productInBasket,int id,string securityKey);
         IDataResult<List<BasketProductDto>> GetBasketProducts(int id,string securityKey);
     }

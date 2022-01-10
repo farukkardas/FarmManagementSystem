@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Collections.Generic;
+using Business.Abstract;
 using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
@@ -139,6 +140,27 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+        
+        [HttpPut("changeaddress")]
+        public IActionResult ChangeUserAddress([FromHeader]int id,[FromHeader]string securityKey,[FromForm]int cityId,[FromForm]string fullAddress)
+        {
+            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+
+            if (!conditionResult.Success)
+            {
+                return BadRequest(conditionResult);
+            }
+            
+            var result = _userService.ChangeUserAddress(id,securityKey,cityId,fullAddress);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
 
         
     }

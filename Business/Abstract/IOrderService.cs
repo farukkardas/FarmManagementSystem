@@ -18,6 +18,7 @@ namespace Business.Abstract
         IResult CancelOrder(int orderId,int id,string securityKey);
         //Seller Methods
         IDataResult<List<OrderDetailDto>> GetUserOrders(int id,string securityKey);
+        IDataResult<List<OrderDetailDto>> GetCustomerOrders(int id,string securityKey);
         IResult ApproveOrder(int id, string securityKey, int orderId);
         IResult AddCargoNumber(int id, string securityKey, int orderId,int deliveryNo);
     }

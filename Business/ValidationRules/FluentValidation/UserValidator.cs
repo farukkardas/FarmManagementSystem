@@ -28,6 +28,13 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.Email).MaximumLength(299).WithMessage("Email en fazla 300 karakter olabilir!");
             RuleFor(p => p.Email).MinimumLength(10).WithMessage("Email minimum 10 karakter olabilir!");
             RuleFor(p => p.Email).Must(IsEmailUnique).WithMessage("Bu emaile kayıtlı kullanıcı bulunuyor!");
+            
+            //Address
+            RuleFor(p => p.Address).NotEmpty().WithMessage("Addres cannot be empty!");
+            RuleFor(p => p.Address).MinimumLength(20).WithMessage("Addres minimum length 20 letter!");
+            RuleFor(p => p.Address).MaximumLength(299).WithMessage("Addres maximum length 300 letter!");
+            
+            
         }
 
         private bool IsEmailUnique(string arg)

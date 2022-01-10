@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Business;
@@ -22,8 +23,11 @@ namespace Business.Concrete
             _authService = authService;
             _productsOnSale = productsOnSale;
         }
+        
+        
 
         [CacheRemoveAspect("IBasketService.Get")]
+        [SecuredOperations("admin,user,customer")]
         public IResult AddToBasket(ProductInBasket productInBasket, int id, string securityKey)
         {
             IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey),CheckIfProductExists(productInBasket.ProductId),CheckIfProductExistOnBasket(id,productInBasket.ProductId),CheckIfOwnProduct(id,productInBasket.ProductId));
@@ -81,6 +85,7 @@ namespace Business.Concrete
         }
 
         [CacheRemoveAspect("IBasketService.Get")]
+        [SecuredOperations("admin,user,customer")]
         public IResult DeleteFromBasket(ProductInBasket productInBasket, int id, string securityKey)
         {
             IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
@@ -95,7 +100,17 @@ namespace Business.Concrete
 
             return new SuccessResult();
         }
+        
+        [CacheRemoveAspect("IBasketService.Get")]
+        [SecuredOperations("admin,user,customer")]
+        public IResult Delete(ProductInBasket productInBasket)
+        {
+            _basketDal.Delete(productInBasket);
 
+            return new SuccessResult();
+        }
+        
+        [SecuredOperations("admin,user,customer")]
         [CacheAspect(10)]
         public IDataResult<List<BasketProductDto>> GetBasketProducts(int id, string securityKey)
         {

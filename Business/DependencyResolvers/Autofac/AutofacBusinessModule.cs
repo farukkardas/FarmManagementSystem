@@ -8,7 +8,6 @@ using Core.Utilities.Security.JWT.Abstract;
 using Core.Utilities.Security.JWT.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
-using Microsoft.Extensions.Logging;
 
 namespace Business.DependencyResolvers.Autofac
 {

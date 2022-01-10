@@ -91,7 +91,7 @@ namespace Business.Concrete
             return new SuccessResult($"Order has ben cancelled.");
         }
 
-        [SecuredOperations("user,admin")]
+        [SecuredOperations("user,admin,customer")]
         public IDataResult<List<OrderDetailDto>> GetUserOrders(int id, string securityKey)
         {
             IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
@@ -101,7 +101,21 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<OrderDetailDto>>(conditionResult.Message);
             }
             
-            var result = _orderDal.GetUserOrders(o=>o.SellerId == id);
+            var result = _orderDal.GetUserOrders(o=>o.SellerId== id);
+
+            return new SuccessDataResult<List<OrderDetailDto>>(result);
+        }
+        
+        public IDataResult<List<OrderDetailDto>> GetCustomerOrders(int id, string securityKey)
+        {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<OrderDetailDto>>(conditionResult.Message);
+            }
+            
+            var result = _orderDal.GetUserOrders(o=>o.CustomerId == id);
 
             return new SuccessDataResult<List<OrderDetailDto>>(result);
         }

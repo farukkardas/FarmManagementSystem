@@ -30,6 +30,19 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         
+        [HttpGet("GetCustomerOrders")]
+        public IActionResult GetCustomerOrders([FromHeader] int id, [FromHeader] string securityKey)
+        {
+            var result = _orderService.GetCustomerOrders(id, securityKey);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+        
         
         [HttpGet("GetAll")]
         public IActionResult GetAll([FromHeader] int id, [FromHeader] string securityKey)
