@@ -5,7 +5,6 @@ C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\WebAPI
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\WebAPI.runtimeconfig.json
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\WebAPI.runtimeconfig.dev.json
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\WebAPI.dll
-C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\ref\WebAPI.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\WebAPI.pdb
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Autofac.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Autofac.Extensions.DependencyInjection.dll
@@ -84,3 +83,4 @@ C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Serilo
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Serilog.Sinks.File.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Serilog.Sinks.MSSqlServer.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Serilog.Sinks.PeriodicBatching.dll
+C:\Users\fagam\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\refint\WebAPI.dll

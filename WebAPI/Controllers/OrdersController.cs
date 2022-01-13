@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("approveorder")]
-        public IActionResult ApproveOrder([FromHeader] int id, [FromHeader] string securityKey,int order)
+        public IActionResult ApproveOrder([FromHeader] int id, [FromHeader] string securityKey,[FromForm]int order)
         {
             var result = _orderService.ApproveOrder(id, securityKey, order);
             

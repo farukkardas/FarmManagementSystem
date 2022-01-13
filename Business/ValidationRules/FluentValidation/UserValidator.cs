@@ -11,28 +11,27 @@ namespace Business.ValidationRules.FluentValidation
         public UserValidator()
         {
             //First name
-            RuleFor(p => p.FirstName).NotEmpty().WithMessage("İsim boş bırakılamaz!");
-            RuleFor(p => p.FirstName).MinimumLength(2).WithMessage("İsim en az 2 harfli olmalıdır!");
-            RuleFor(p => p.FirstName).MaximumLength(39).WithMessage("İsim maksimum 40 karakter olabilir!");
+            RuleFor(p => p.FirstName).NotEmpty().WithMessage("Name can not be empty!");
+            RuleFor(p => p.FirstName).MinimumLength(2).WithMessage("Name minimum 2 character!");
+            RuleFor(p => p.FirstName).MaximumLength(39).WithMessage("Name maximum 40 character!");
             
             
             //Last Name
-            RuleFor(p => p.LastName).NotEmpty().WithMessage("Soyisim boş bırakılamaz!");
-            RuleFor(p => p.LastName).MinimumLength(2).WithMessage("Soyisim en az 2 harfli olmalıdır!");
-            RuleFor(p => p.LastName).MaximumLength(39).WithMessage("İsim maksimum 40 karakter olabilir!");
+            RuleFor(p => p.LastName).NotEmpty().WithMessage("Lastname cannot be empty!");
+            RuleFor(p => p.LastName).MinimumLength(2).WithMessage("Lastname minimum 2 length!");
+            RuleFor(p => p.LastName).MaximumLength(39).WithMessage("Lastname maximum 40 length!");
            
             
             //Email
-            RuleFor(p => p.Email).NotEmpty().WithMessage("Email boş bırakılamaz!");
-            RuleFor(p => p.Email).EmailAddress().WithMessage("Geçersiz mail formatı!");
-            RuleFor(p => p.Email).MaximumLength(299).WithMessage("Email en fazla 300 karakter olabilir!");
-            RuleFor(p => p.Email).MinimumLength(10).WithMessage("Email minimum 10 karakter olabilir!");
-            RuleFor(p => p.Email).Must(IsEmailUnique).WithMessage("Bu emaile kayıtlı kullanıcı bulunuyor!");
+            RuleFor(p => p.Email).NotEmpty().WithMessage("Email can not be empty!");
+            RuleFor(p => p.Email).EmailAddress().WithMessage("Invalid mail format!");
+            RuleFor(p => p.Email).MaximumLength(299).WithMessage("Email maximum 300 character!");
+            RuleFor(p => p.Email).MinimumLength(10).WithMessage("Email minimum length is 10!");
+            RuleFor(p => p.Email).Must(IsEmailUnique).WithMessage("There is a registered user for this e-mail!");
             
             //Address
-            RuleFor(p => p.Address).NotEmpty().WithMessage("Addres cannot be empty!");
-            RuleFor(p => p.Address).MinimumLength(20).WithMessage("Addres minimum length 20 letter!");
-            RuleFor(p => p.Address).MaximumLength(299).WithMessage("Addres maximum length 300 letter!");
+            RuleFor(p => p.Address).MinimumLength(20).WithMessage("Address minimum length 20 letter!");
+            RuleFor(p => p.Address).MaximumLength(299).WithMessage("Address maximum length 300 letter!");
             
             
         }

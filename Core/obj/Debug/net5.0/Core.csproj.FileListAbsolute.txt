@@ -1,6 +1,5 @@
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\bin\Debug\net5.0\Core.deps.json
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\bin\Debug\net5.0\Core.dll
-C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\bin\Debug\net5.0\ref\Core.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\bin\Debug\net5.0\Core.pdb
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\obj\Debug\net5.0\Core.csproj.AssemblyReference.cache
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\obj\Debug\net5.0\Core.GeneratedMSBuildEditorConfig.editorconfig
@@ -10,3 +9,4 @@ C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\obj\Debug\net5.0\Core.csp
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\obj\Debug\net5.0\Core.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\obj\Debug\net5.0\ref\Core.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\obj\Debug\net5.0\Core.pdb
+C:\Users\fagam\RiderProjects\FarmManagementSystem\Core\obj\Debug\net5.0\refint\Core.dll

@@ -1,6 +1,5 @@
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\bin\Debug\netcoreapp5.0\DataAccess.deps.json
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\bin\Debug\netcoreapp5.0\DataAccess.dll
-C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\bin\Debug\netcoreapp5.0\ref\DataAccess.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\bin\Debug\netcoreapp5.0\DataAccess.pdb
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\bin\Debug\netcoreapp5.0\Core.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\bin\Debug\netcoreapp5.0\Entities.dll
@@ -15,3 +14,4 @@ C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreap
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\ref\DataAccess.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\DataAccess.pdb
 C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\DataAccess.csproj.CopyComplete
+C:\Users\fagam\RiderProjects\FarmManagementSystem\DataAccess\obj\Debug\netcoreapp5.0\refint\DataAccess.dll

@@ -1,6 +1,5 @@
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\bin\Debug\netcoreapp5.0\Entities.deps.json
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\bin\Debug\netcoreapp5.0\Entities.dll
-C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\bin\Debug\netcoreapp5.0\ref\Entities.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\bin\Debug\netcoreapp5.0\Entities.pdb
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\bin\Debug\netcoreapp5.0\Core.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\bin\Debug\netcoreapp5.0\Core.pdb
@@ -13,3 +12,4 @@ C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\obj\Debug\netcoreapp5
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\obj\Debug\netcoreapp5.0\ref\Entities.dll
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\obj\Debug\netcoreapp5.0\Entities.pdb
 C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\obj\Debug\netcoreapp5.0\Entities.csproj.CopyComplete
+C:\Users\fagam\RiderProjects\FarmManagementSystem\Entities\obj\Debug\netcoreapp5.0\refint\Entities.dll

@@ -47,7 +47,8 @@ namespace DataAccess.Concrete.EntityFramework
                     ZipCode = u.ZipCode,
                     ImagePath = context.UserImages.Where(im => im.UserId == u.Id).Select(im => im.ImagePath)
                         .SingleOrDefault(),
-                    Profit = context.MilkSales.Where(s => s.SellerId == u.Id).Sum(x => x.SalePrice),
+                    Profit =context.Orders.Where(o=>o.SellerId == u.Id).Where(o=>o.Status == 6).Sum(x=>x.Price)
+                    ,
                     TotalSales = context.MilkSales.Count(m => m.SellerId == u.Id),
                     CustomerCount = context.Customers.Count(c => c.OwnerId == u.Id),
                     BullCount = context.Bulls.Count(b => b.OwnerId == u.Id),
@@ -58,7 +59,13 @@ namespace DataAccess.Concrete.EntityFramework
                                   context.Calves.Count(calves => calves.OwnerId == u.Id) +
                                   context.Bulls.Count(bull => bull.OwnerId == u.Id) +
                                   context.Sheeps.Count(sheep => sheep.OwnerId == u.Id),
-                    Role = operationClaim.Name
+                    Role = operationClaim.Name,
+                    SuccessfulSales = context.Orders.Where(o=>o.SellerId == u.Id).Count(o => o.Status == 6),
+                    PendingOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 2),
+                    CanceledOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 1),
+                    ApprovedOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 3),
+                    DeliveryOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 5)
+                    
                 };
 
             return filter == null ? result.SingleOrDefault() : result.Where(filter).SingleOrDefault();
