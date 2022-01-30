@@ -10,7 +10,7 @@ namespace DataAccess.Concrete.EntityFramework
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-1TJQMOV;Database=Farm01;user id=sa;password=05366510050Ab*;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-HB75CHQ;Database=Farm01;user id=sa;password=05366510050Ab*-;TrustServerCertificate=True");
         }
 
         public DbSet<User> Users { get; set; }

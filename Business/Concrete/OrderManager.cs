@@ -84,9 +84,18 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult CancelOrder(int orderId, int id, string securityKey)
         {
+            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+
+            if (conditionResult != null)
+            {
+                return new ErrorDataResult<List<OrderDetailDto>>(conditionResult.Message);
+            }
+            
             var order = _orderDal.Get(o => o.Id == orderId);
 
             order.Status = 1;
+            
+            _orderDal.Update(order);
 
             return new SuccessResult($"Order has ben cancelled.");
         }
@@ -101,7 +110,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<List<OrderDetailDto>>(conditionResult.Message);
             }
             
-            var result = _orderDal.GetUserOrders(o=>o.SellerId== id);
+            var result = _orderDal.GetUserOrders(o=>o.SellerId == id);
 
             return new SuccessDataResult<List<OrderDetailDto>>(result);
         }

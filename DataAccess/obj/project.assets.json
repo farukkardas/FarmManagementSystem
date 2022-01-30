@@ -6417,25 +6417,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fagam\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\faruk\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fagam\\RiderProjects\\FarmManagementSystem\\DataAccess\\DataAccess.csproj",
+      "projectUniqueName": "D:\\Development\\RiderProjects\\FarmManagementSystem\\DataAccess\\DataAccess.csproj",
       "projectName": "DataAccess",
-      "projectPath": "C:\\Users\\fagam\\RiderProjects\\FarmManagementSystem\\DataAccess\\DataAccess.csproj",
-      "packagesPath": "C:\\Users\\fagam\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fagam\\RiderProjects\\FarmManagementSystem\\DataAccess\\obj\\",
+      "projectPath": "D:\\Development\\RiderProjects\\FarmManagementSystem\\DataAccess\\DataAccess.csproj",
+      "packagesPath": "C:\\Users\\faruk\\.nuget\\packages\\",
+      "outputPath": "D:\\Development\\RiderProjects\\FarmManagementSystem\\DataAccess\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\fagam\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\faruk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp5.0"
@@ -6448,8 +6443,8 @@
         "net5.0": {
           "targetAlias": "netcoreapp5.0",
           "projectReferences": {
-            "C:\\Users\\fagam\\RiderProjects\\FarmManagementSystem\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\fagam\\RiderProjects\\FarmManagementSystem\\Entities\\Entities.csproj"
+            "D:\\Development\\RiderProjects\\FarmManagementSystem\\Entities\\Entities.csproj": {
+              "projectPath": "D:\\Development\\RiderProjects\\FarmManagementSystem\\Entities\\Entities.csproj"
             }
           }
         }
@@ -6488,7 +6483,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200-preview.21617.4\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

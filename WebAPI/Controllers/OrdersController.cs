@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpGet("GetCustomerOrders")]
         public IActionResult GetCustomerOrders([FromHeader] int id, [FromHeader] string securityKey)
         {
@@ -42,8 +42,8 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
-        
+
+
         [HttpGet("GetAll")]
         public IActionResult GetAll([FromHeader] int id, [FromHeader] string securityKey)
         {
@@ -58,10 +58,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("approveorder")]
-        public IActionResult ApproveOrder([FromHeader] int id, [FromHeader] string securityKey,[FromForm]int order)
+        public IActionResult ApproveOrder([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int order)
         {
             var result = _orderService.ApproveOrder(id, securityKey, order);
-            
+
             if (result.Success)
             {
                 return Ok(result);
@@ -70,8 +70,21 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         
+        [HttpPut("cancelorder")]
+        public IActionResult CancelOrder([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int orderId)
+        {
+            var result = _orderService.CancelOrder(orderId, id, securityKey);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPut("addcargono")]
-        public IActionResult AddCargoNo([FromHeader] int id, [FromHeader] string securityKey,int order,int deliveryNo)
+        public IActionResult AddCargoNo([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int order, [FromForm]int deliveryNo)
         {
             var result = _orderService.AddCargoNumber(id, securityKey, order,deliveryNo);
             

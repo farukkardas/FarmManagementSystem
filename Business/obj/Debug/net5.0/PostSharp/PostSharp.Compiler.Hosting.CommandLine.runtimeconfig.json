@@ -1,1 +1,15 @@
-C:/Users/fagam/RiderProjects/FarmManagementSystem/Business/obj/PostSharp/postsharp.1361543.net5.0.p.00967f861da428df04d7876a5b68f23c.runtimeconfig.json
+{
+  "runtimeOptions": {
+    "tfm": "net5.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "5.0.10"
+    },
+    "additionalProbingPaths": [
+      "C:\\Users\\fagam\\.nuget\\packages\\",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+      "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+      "C:\\ProgramData\\PostSharp\\NuGetFallback"
+    ]
+  }
+}

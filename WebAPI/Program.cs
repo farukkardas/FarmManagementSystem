@@ -30,7 +30,7 @@ namespace WebAPI
             .Build();
 
         public static void Main(string[] args)
-        {
+        {   
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .CreateLogger();

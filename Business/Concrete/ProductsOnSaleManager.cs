@@ -64,7 +64,7 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [SecuredOperations("admin,user")]
-        [CacheRemoveAspect("IProductsOnSaleSer  vice.Get")]
+        [CacheRemoveAspect("IProductsOnSaleService.Get")]
         public IResult Add(ProductsOnSale productsOnSale, IFormFile file, int id, string securityKey)
         {
             IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));

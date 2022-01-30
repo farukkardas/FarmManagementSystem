@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("deleteproduct")]
-        public IActionResult Add([FromForm]int productId,[FromHeader]int id,[FromHeader]string securityKey)
+        public IActionResult Delete([FromForm]int productId,[FromHeader]int id,[FromHeader]string securityKey)
         {
             var result = _productsOnSaleService.Delete(productId,id,securityKey);
 
