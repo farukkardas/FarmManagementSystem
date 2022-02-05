@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -104,7 +105,7 @@ namespace Business.Concrete
         
         public User GetByMail(string email)
         {
-            return _userDal.Get(u => u.Email == email);
+            return  _userDal.Get(u => u.Email == email);
         }
     }
 }

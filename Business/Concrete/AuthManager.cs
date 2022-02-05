@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
@@ -51,9 +52,9 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(user, $"{user} , {Messages.SuccessfullyAdded}");
         }
 
-        public IDataResult<User> Login(UserLoginDto userLoginDto)
+        public  IDataResult<User> Login(UserLoginDto userLoginDto)
         {
-            var userToCheck = _userService.GetByMail(userLoginDto.Email);
+            var userToCheck =  _userService.GetByMail(userLoginDto.Email);
 
 
             if (userToCheck == null)
