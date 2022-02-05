@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Entities.Concrete;
 using FluentValidation.Results;
@@ -17,9 +18,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _cowService.GetAll();
+            var result = await _cowService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -29,9 +30,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _cowService.GetById(id);
+            var result = await _cowService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -41,9 +42,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _cowService.Add(cow,id,securityKey);
+            var result = await _cowService.Add(cow,id,securityKey);
 
             if (result.Success)
             {
@@ -54,9 +55,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Delete(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _cowService.Delete(cow,id,securityKey);
+            var result = await _cowService.Delete(cow,id,securityKey);
 
             if (result.Success)
             {
@@ -67,9 +68,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Update(Cow cow,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _cowService.Update(cow,id,securityKey);
+            var result = await _cowService.Update(cow,id,securityKey);
 
             if (result.Success)
             {
@@ -80,11 +81,11 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("getusercows")]
-        public IActionResult GetUserCows([FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> GetUserCows([FromHeader]int id,[FromHeader] string securityKey)
         {
            
             
-            var result = _cowService.GetUserCows(id, securityKey);
+            var result =  await _cowService.GetUserCows(id, securityKey);
 
             if (result.Success)
             {

@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("checkoutproducts")]
-        public IActionResult CheckoutProducts([FromHeader]int id,[FromHeader] string securityKey, CreditCart creditCart)
+        public async Task<IActionResult> CheckoutProducts([FromHeader]int id,[FromHeader] string securityKey, CreditCart creditCart)
         {
-            var result = _checkOutService.CheckoutProducts(id, securityKey, creditCart);
+            var result = await _checkOutService.CheckoutProducts(id, securityKey, creditCart);
 
             if (result.Success)
             {

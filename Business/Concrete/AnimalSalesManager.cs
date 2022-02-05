@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -25,18 +26,18 @@ namespace Business.Concrete
 
         [CacheAspect(20)]
         [SecuredOperations("admin")]
-        public IDataResult<List<AnimalSales>> GetAll()
+        public async Task<IDataResult<List<AnimalSales>>> GetAll()
         {
-            var result = _animalSalesDal.GetAll();
+            var result = await _animalSalesDal.GetAll();
 
             return new SuccessDataResult<List<AnimalSales>>(result);
         }
 
         [SecuredOperations("admin")]
         [CacheAspect(20)]
-        public IDataResult<AnimalSales> GetById(int id)
+        public async Task<IDataResult<AnimalSales>> GetById(int id)
         {
-            var result = _animalSalesDal.Get(a => a.Id == id);
+            var result = await _animalSalesDal.Get(a => a.Id == id);
 
             return new SuccessDataResult<AnimalSales>(result);
         }
@@ -44,9 +45,9 @@ namespace Business.Concrete
 
         [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IAnimalSaleService.Get")]
-        public IResult Add(AnimalSales animalSales, int id, string securityKey)
+        public async Task<IResult> Add(AnimalSales animalSales, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
@@ -60,9 +61,9 @@ namespace Business.Concrete
 
         [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IAnimalSaleService.Get")]
-        public IResult Delete(AnimalSales animalSales, int id, string securityKey)
+        public async Task<IResult> Delete(AnimalSales animalSales, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
@@ -76,9 +77,9 @@ namespace Business.Concrete
 
         [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IAnimalSaleService.Get")]
-        public IResult Update(AnimalSales animalSales, int id, string securityKey)
+        public async Task<IResult> Update(AnimalSales animalSales, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
@@ -91,16 +92,16 @@ namespace Business.Concrete
         }
 
         [SecuredOperations("user,admin")]
-        public IDataResult<List<AnimalSalesDto>> GetUserAnimalSales(int id, string securityKey)
+        public async Task<IDataResult<List<AnimalSalesDto>>> GetUserAnimalSales(int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<AnimalSalesDto>>(conditionResult.Message);
             }
 
-            var result = _animalSalesDal.GetAnimalSales(s => s.SellerId == id);
+            var result =  _animalSalesDal.GetAnimalSales(s => s.SellerId == id);
 
             return new SuccessDataResult<List<AnimalSalesDto>>(result);
         }

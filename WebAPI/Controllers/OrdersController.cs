@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,9 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("GetUserOrders")]
-        public IActionResult GetUserOrders([FromHeader] int id, [FromHeader] string securityKey)
+        public async Task<IActionResult> GetUserOrders([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _orderService.GetUserOrders(id, securityKey);
+            var result =  await _orderService.GetUserOrders(id, securityKey);
 
             if (result.Success)
             {
@@ -31,9 +32,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("GetCustomerOrders")]
-        public IActionResult GetCustomerOrders([FromHeader] int id, [FromHeader] string securityKey)
+        public async Task<IActionResult> GetCustomerOrders([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _orderService.GetCustomerOrders(id, securityKey);
+            var result = await _orderService.GetCustomerOrders(id, securityKey);
 
             if (result.Success)
             {
@@ -45,9 +46,9 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("GetAll")]
-        public IActionResult GetAll([FromHeader] int id, [FromHeader] string securityKey)
+        public async Task<IActionResult> GetAll([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _orderService.GetAll();
+            var result = await _orderService.GetAll();
 
             if (result.Success)
             {
@@ -58,9 +59,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("approveorder")]
-        public IActionResult ApproveOrder([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int order)
+        public async Task<IActionResult> ApproveOrder([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int order)
         {
-            var result = _orderService.ApproveOrder(id, securityKey, order);
+            var result = await _orderService.ApproveOrder(id, securityKey, order);
 
             if (result.Success)
             {
@@ -71,9 +72,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPut("cancelorder")]
-        public IActionResult CancelOrder([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int orderId)
+        public async Task<IActionResult> CancelOrder([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int orderId)
         {
-            var result = _orderService.CancelOrder(orderId, id, securityKey);
+            var result =  await _orderService.CancelOrder(orderId, id, securityKey);
 
             if (result.Success)
             {
@@ -84,9 +85,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("addcargono")]
-        public IActionResult AddCargoNo([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int order, [FromForm]int deliveryNo)
+        public async Task<IActionResult> AddCargoNo([FromHeader] int id, [FromHeader] string securityKey, [FromForm] int order, [FromForm]int deliveryNo)
         {
-            var result = _orderService.AddCargoNumber(id, securityKey, order,deliveryNo);
+            var result = await _orderService.AddCargoNumber(id, securityKey, order,deliveryNo);
             
             if (result.Success)
             {

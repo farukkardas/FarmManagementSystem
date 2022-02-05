@@ -9,15 +9,15 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        IDataResult<List<User>> GetAll();
-        IDataResult<User> GetById(int id);
-        IResult Add(User user);
-        IResult Delete(User user);
-        IResult Update(User user);
-        IResult UpdateUser(UserForEdit userForEdit);
-        List<OperationClaim> GetClaims(User user);
-        User GetByMail(string email);
-        IDataResult<UserDetailDto> GetUserDetails(int id,string securityKey);
-        IResult ChangeUserAddress(int id, string securityKey, int cityId, string fullAddress);
+        Task<IDataResult<List<User>>> GetAll();
+        Task<IDataResult<User>> GetById(int id);
+        Task<IResult> Add(User user);
+        Task<IResult> Delete(User user);
+        Task<IResult> Update(User user);
+        Task<IResult> UpdateUser(UserForEdit userForEdit);
+        Task<List<OperationClaim>> GetClaims(User user);
+        Task<User> GetByMail(string email);
+        Task<IDataResult<UserDetailDto>> GetUserDetails(int id,string securityKey);
+        Task<IResult> ChangeUserAddress(int id, string securityKey, int cityId, string fullAddress);
     }
 }

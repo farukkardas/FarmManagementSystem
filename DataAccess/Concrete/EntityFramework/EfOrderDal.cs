@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Core.DataAccess.EntityFramework;
 using Core.Utilities.Results.Abstract;
 using DataAccess.Abstract;
@@ -12,9 +13,9 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfOrderDal : EfEntityRepositoryBase<Order, FarmManagementContext>, IOrderDal
     {
-        public List<OrderDetailDto> GetUserOrders(Expression<Func<OrderDetailDto, bool>> filter = null)
+        public async Task<List<OrderDetailDto>> GetUserOrders(Expression<Func<OrderDetailDto, bool>> filter = null)
         {
-            using FarmManagementContext context = new FarmManagementContext();
+            await using FarmManagementContext context = new FarmManagementContext();
 
             var result = from o in context.Orders
                 join u in context.Users on o.CustomerId equals u.Id

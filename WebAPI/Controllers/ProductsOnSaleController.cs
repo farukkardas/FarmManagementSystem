@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _productsOnSaleService.GetAll();
+            var result = await _productsOnSaleService.GetAll();
 
             if (result.Success)
             {
@@ -32,9 +33,9 @@ namespace WebAPI.Controllers
         
         
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _productsOnSaleService.GetById(id);
+            var result = await _productsOnSaleService.GetById(id);
 
             if (result.Success)
             {
@@ -45,9 +46,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("addproduct")]
-        public IActionResult Add([FromForm]ProductsOnSale productsOnSale,[FromForm]IFormFile file,[FromHeader]int id ,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add([FromForm]ProductsOnSale productsOnSale,[FromForm]IFormFile file,[FromHeader]int id ,[FromHeader]string securityKey)
         {
-            var result = _productsOnSaleService.Add(productsOnSale,file,id,securityKey);
+            var result = await _productsOnSaleService.Add(productsOnSale,file,id,securityKey);
 
             if (result.Success)
             {
@@ -57,9 +58,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpGet("getuserproducts")]
-        public IActionResult GetUserProducts([FromHeader]int id ,[FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserProducts([FromHeader]int id ,[FromHeader]string securityKey)
         {
-            var result = _productsOnSaleService.GetUserProducts(id,securityKey);
+            var result = await _productsOnSaleService.GetUserProducts(id,securityKey);
 
             if (result.Success)
             {
@@ -70,9 +71,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("deleteproduct")]
-        public IActionResult Delete([FromForm]int productId,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Delete([FromForm]int productId,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _productsOnSaleService.Delete(productId,id,securityKey);
+            var result =  await _productsOnSaleService.Delete(productId,id,securityKey);
 
             if (result.Success)
             {

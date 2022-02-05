@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("GetAll")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _animalSalesService.GetAll();
+            var result = await _animalSalesService.GetAll();
 
             if (result.Success)
             {
@@ -29,9 +30,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("add")]
-        public IActionResult Add(AnimalSales animalSales,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add(AnimalSales animalSales,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _animalSalesService.Add(animalSales,id,securityKey);
+            var result = await _animalSalesService.Add(animalSales,id,securityKey);
 
             if (result.Success)
             {
@@ -42,9 +43,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(AnimalSales animalSales,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Update(AnimalSales animalSales,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _animalSalesService.Update(animalSales,id,securityKey);
+            var result = await _animalSalesService.Update(animalSales,id,securityKey);
 
             if (result.Success)
             {
@@ -55,9 +56,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("delete")]
-        public IActionResult Delete(AnimalSales animalSales,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Delete(AnimalSales animalSales,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _animalSalesService.Delete(animalSales,id,securityKey);
+            var result = await _animalSalesService.Delete(animalSales,id,securityKey);
 
             if (result.Success)
             {
@@ -68,9 +69,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getuseranimalsales")]
-        public IActionResult GetUserAnimalSales([FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> GetUserAnimalSales([FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _animalSalesService.GetUserAnimalSales(id, securityKey);
+            var result = await _animalSalesService.GetUserAnimalSales(id, securityKey);
 
             if (result.Success)
             {

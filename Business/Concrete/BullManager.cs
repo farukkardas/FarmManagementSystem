@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -28,79 +29,79 @@ namespace Business.Concrete
      
         [CacheAspect(20)]
         [SecuredOperations("admin")]
-        public IDataResult<List<Bull>> GetAll()
+        public async Task<IDataResult<List<Bull>>> GetAll()
         {
-            var result = _bullDal.GetAll();
+            var result =  await _bullDal.GetAll();
             return new SuccessDataResult<List<Bull>>(result);
         }
         
         [CacheAspect(20)]
         [SecuredOperations("admin")]
-        public IDataResult<Bull> GetById(int id)
+        public async Task<IDataResult<Bull>> GetById(int id)
         {
-            var result = _bullDal.Get(b => b.Id == id);
+            var result = await _bullDal.Get(b => b.Id == id);
             return new SuccessDataResult<Bull>(result);
         }
         
         [SecuredOperations("user,admin")]
         [ValidationAspect(typeof(BullValidator))]
         [CacheRemoveAspect("IBullService.Get")]
-        public IResult Add(Bull bull,int id,string securityKey)
+        public async Task<IResult> Add(Bull bull,int id,string securityKey)
         {
-             IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+             IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Bull>>(conditionResult.Message);
             }
             
-            _bullDal.Add(bull);
+            await _bullDal.Add(bull);
             return new SuccessResult($"Bull{Messages.SuccessfullyAdded}");
         }
 
         [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IBullService.Get")]
-        public IResult Delete(Bull bull,int id,string securityKey)
+        public async Task<IResult> Delete(Bull bull,int id,string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Bull>>(conditionResult.Message);
             }
-            _bullDal.Delete(bull);
+            await _bullDal.Delete(bull);
             return new SuccessResult($"Bull{Messages.SuccessfullyDeleted}");
         }
 
         [ValidationAspect(typeof(BullValidator))]
         [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IBullService.Get")]
-        public IResult Update(Bull bull,int id,string securityKey)
+        public async Task<IResult> Update(Bull bull,int id,string securityKey)
         {
           
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Bull>>(conditionResult.Message);
             }
             
-            _bullDal.Update(bull);
+            await _bullDal.Update(bull);
             return new SuccessResult($"Bull{Messages.SuccessfullyUpdated}");
         }
 
         [CacheAspect(20)]
         [SecuredOperations("user,admin")]
-        public IDataResult<List<Bull>> GetUserBulls(int id, string securityKey)
+        public async Task<IDataResult<List<Bull>>> GetUserBulls(int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Bull>>(conditionResult.Message);
             }
 
-            var bulls = _bullDal.GetAll(c=>c.OwnerId == id);
+            var bulls = await _bullDal.GetAll(c=>c.OwnerId == id);
             
             return new SuccessDataResult<List<Bull>>(bulls);
             

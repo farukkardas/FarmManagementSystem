@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -27,89 +28,89 @@ namespace Business.Concrete
 
 
         [SecuredOperations("admin")]
-        public IDataResult<List<Customer>> GetAll()
+        public async Task<IDataResult<List<Customer>>> GetAll()
         {
-            var result = _customerDal.GetAll();
+            var result = await _customerDal.GetAll();
             return new SuccessDataResult<List<Customer>>(result);
-            
         }
 
         [SecuredOperations("admin")]
-        public IDataResult<Customer> GetById(int id)
+        public async Task<IDataResult<Customer>> GetById(int id)
         {
-            var result = _customerDal.Get(c=>c.Id == id);
+            var result = await _customerDal.Get(c => c.Id == id);
 
             return new SuccessDataResult<Customer>(result);
         }
 
         [SecuredOperations("admin")]
-        public IDataResult<List<MilkSalesTotalDto>> GetCustomerSummary()
+        public async Task<IDataResult<List<MilkSalesTotalDto>>> GetCustomerSummary()
         {
-            var result = _customerDal.MilkSalesSummary();
+            var result = await _customerDal.MilkSalesSummary();
 
             return new SuccessDataResult<List<MilkSalesTotalDto>>(result);
         }
 
-        
+
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect(("ICustomerService.Get"))]
         [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Add(Customer customer,int id, string securityKey)
+        public async Task<IResult> Add(Customer customer, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Customer>>(conditionResult.Message);
             }
-            _customerDal.Add(customer);
+
+            await _customerDal.Add(customer);
             return new SuccessResult($"Customer {Messages.SuccessfullyAdded}");
         }
 
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect(("ICustomerService.Get"))]
-        public IResult Delete(Customer customer,int id, string securityKey)
+        public async Task<IResult> Delete(Customer customer, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Customer>>(conditionResult.Message);
             }
-            
-           _customerDal.Delete(customer);
-           return new SuccessResult($"Customer {Messages.SuccessfullyDeleted}");
+
+            await _customerDal.Delete(customer);
+            return new SuccessResult($"Customer {Messages.SuccessfullyDeleted}");
         }
 
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect(("ICustomerService.Get"))]
         [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Update(Customer customer,int id, string securityKey)
+        public async Task<IResult> Update(Customer customer, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Customer>>(conditionResult.Message);
             }
-            
-            _customerDal.Update(customer);
+
+            await _customerDal.Update(customer);
             return new SuccessResult($"Customer {Messages.SuccessfullyUpdated}");
         }
 
-    
+
         [SecuredOperations("user,admin")]
-        public IDataResult<List<MilkSalesTotalDto>> GetUserCustomers(int id, string securityKey)
+        public async Task<IDataResult<List<MilkSalesTotalDto>>> GetUserCustomers(int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<MilkSalesTotalDto>>(conditionResult.Message);
             }
 
-            var customers = _customerDal.MilkSalesSummary(c=>c.OwnerId == id);
-            
+            var customers = await _customerDal.MilkSalesSummary(c => c.OwnerId == id);
+
             return new SuccessDataResult<List<MilkSalesTotalDto>>(customers);
         }
     }

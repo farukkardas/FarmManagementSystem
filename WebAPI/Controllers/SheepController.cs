@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,9 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _sheepService.GetAll();
+            var result = await _sheepService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -29,9 +30,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _sheepService.GetById(id);
+            var result = await _sheepService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -41,9 +42,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Sheep sheep,[FromHeader]int id, [FromHeader]string securityKey)
+        public async Task<IActionResult> Add(Sheep sheep, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _sheepService.Add(sheep,id,securityKey);
+            var result = await _sheepService.Add(sheep, id, securityKey);
 
             if (result.Success)
             {
@@ -54,9 +55,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Sheep sheep,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Delete(Sheep sheep, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _sheepService.Delete(sheep,id,securityKey);
+            var result = await _sheepService.Delete(sheep, id, securityKey);
 
             if (result.Success)
             {
@@ -65,11 +66,11 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPost("update")]
-        public IActionResult Update(Sheep sheep,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Update(Sheep sheep, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _sheepService.Update(sheep,id,securityKey);
+            var result = await _sheepService.Update(sheep, id, securityKey);
 
             if (result.Success)
             {
@@ -80,10 +81,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getusersheeps")]
-        public IActionResult GetUserSheeps([FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> GetUserSheeps([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _sheepService.GetUserSheeps(id, securityKey);
-            
+            var result = await _sheepService.GetUserSheeps(id, securityKey);
+
             if (result.Success)
             {
                 return Ok(result);

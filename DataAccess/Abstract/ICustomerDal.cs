@@ -4,12 +4,13 @@ using Entities.DataTransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
     public interface ICustomerDal:IEntityRepository<Customer>
     {
-        List<MilkSalesTotalDto> MilkSalesSummary(Expression<Func<MilkSalesTotalDto, bool>> filter = null);
+        Task<List<MilkSalesTotalDto>> MilkSalesSummary(Expression<Func<MilkSalesTotalDto, bool>> filter = null);
 
     }
 }

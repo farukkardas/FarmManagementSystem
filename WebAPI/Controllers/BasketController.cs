@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbasketproducts")]
-        public IActionResult GetBasketProducts([FromHeader] int id, [FromHeader] string securityKey)
+        public async Task<IActionResult> GetBasketProducts([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = _basketService.GetBasketProducts(id, securityKey);
+            var result =  await _basketService.GetBasketProducts(id, securityKey);
 
             if (result.Success)
             {
@@ -29,10 +30,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("addtobasket")]
-        public IActionResult AddToBasket(ProductInBasket productInBasket, [FromHeader] int id,
+        public async Task<IActionResult> AddToBasket(ProductInBasket productInBasket, [FromHeader] int id,
             [FromHeader] string securityKey)
         {
-            var result = _basketService.AddToBasket(productInBasket, id, securityKey);
+            var result = await _basketService.AddToBasket(productInBasket, id, securityKey);
             if (result.Success)
             {
                 return Ok(result);
@@ -43,10 +44,10 @@ namespace WebAPI.Controllers
         
         
         [HttpPost("deletetobasket")]
-        public IActionResult DeleteToBasket(ProductInBasket productInBasket, [FromHeader] int id,
+        public async Task<IActionResult> DeleteToBasket(ProductInBasket productInBasket, [FromHeader] int id,
             [FromHeader] string securityKey)
         {
-            var result = _basketService.DeleteFromBasket(productInBasket, id, securityKey);
+            var result = await _basketService.DeleteFromBasket(productInBasket, id, securityKey);
             if (result.Success)
             {
                 return Ok(result);

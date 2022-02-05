@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -32,32 +33,32 @@ namespace Business.Concrete
 
         [SecuredOperations("admin,user,customer")]
         [CacheAspect(10)]
-        public IDataResult<List<ProductsOnSale>> GetAll()
+        public async Task<IDataResult<List<ProductsOnSale>>> GetAll()
         {
-            var result = _productsOnSaleDal.GetAll();
+            var result = await _productsOnSaleDal.GetAll();
 
             return new SuccessDataResult<List<ProductsOnSale>>(result);
         }
 
         [SecuredOperations("admin,user,customer")]
         [CacheAspect(10)]
-        public IDataResult<ProductDetailDto> GetById(int id)
+        public async Task<IDataResult<ProductDetailDto>> GetById(int id)
         {
-            var result = _productsOnSaleDal.GetProductById(p=>p.Id == id);
+            var result = await _productsOnSaleDal.GetProductById(p=>p.Id == id);
 
             return new SuccessDataResult<ProductDetailDto>(result);
         }
 
-        public IDataResult<List<ProductsOnSale>> GetUserProducts(int id, string securityKey)
+        public async Task<IDataResult<List<ProductsOnSale>>> GetUserProducts(int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<ProductsOnSale>>(conditionResult.Message);
             }
 
-            var result = _productsOnSaleDal.GetAll(u => u.SellerId == id);
+            var result = await _productsOnSaleDal.GetAll(u => u.SellerId == id);
 
             return new SuccessDataResult<List<ProductsOnSale>>(result);
         }
@@ -65,37 +66,39 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect("IProductsOnSaleService.Get")]
-        public IResult Add(ProductsOnSale productsOnSale, IFormFile file, int id, string securityKey)
+        public async  Task<IResult> Add(ProductsOnSale productsOnSale, IFormFile file, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<ProductsOnSale>>(conditionResult.Message);
             }
 
-            var product = new ProductsOnSale();
+            var product = new ProductsOnSale
+            {
+                Id = productsOnSale.Id,
+                Name = productsOnSale.Name,
+                Price = productsOnSale.Price,
+                CategoryId = productsOnSale.CategoryId,
+                Description = productsOnSale.Description,
+                EntryDate = DateTime.Now,
+                SellerId = productsOnSale.SellerId,
+                ImagePath =  await FileHelper.Add(file)
+            };
 
-            product.Id = productsOnSale.Id;
-            product.Name = productsOnSale.Name;
-            product.Price = productsOnSale.Price;
-            product.CategoryId = productsOnSale.CategoryId;
-            product.Description = productsOnSale.Description;
-            product.EntryDate = DateTime.Now;
-            product.SellerId = productsOnSale.SellerId;
-            product.ImagePath = FileHelper.Add(file);
 
 
-            _productsOnSaleDal.Add(product);
+         await   _productsOnSaleDal.Add(product);
 
             return new SuccessResult($"Product {Messages.SuccessfullyAdded}");
         }
 
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect("IProductsOnSaleService.Get")]
-        public IResult Delete(int productId, int id, string securityKey)
+        public async Task<IResult> Delete(int productId, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
@@ -103,7 +106,7 @@ namespace Business.Concrete
             }
             
             //Find product
-            var product = _productsOnSaleDal.Get(p => p.Id == productId);
+            var product = await _productsOnSaleDal.Get(p => p.Id == productId);
 
             if (product == null)
             {
@@ -112,16 +115,16 @@ namespace Business.Concrete
             // Delete image from local.
             FileHelper.Delete(product.ImagePath);
             //Delete product from DB.
-            _productsOnSaleDal.Delete(product);
+            await _productsOnSaleDal.Delete(product);
 
             return new SuccessResult($"Product {Messages.SuccessfullyDeleted}");
         }
 
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect("IProductsOnSaleService.Get")]
-        public IResult Update(ProductsOnSale productsOnSale, int id, string securityKey)
+        public async Task<IResult> Update(ProductsOnSale productsOnSale, int id, string securityKey)
         {
-            _productsOnSaleDal.Update(productsOnSale);
+            await _productsOnSaleDal.Update(productsOnSale);
 
             return new SuccessResult($"Product {Messages.SuccessfullyUpdated}");
         }

@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _bullService.GetAll();
+            var result = await _bullService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -28,9 +29,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _bullService.GetById(id);
+            var result = await _bullService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -40,9 +41,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("getuserbulls")]
-        public IActionResult GetUserBulls([FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserBulls([FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _bullService.GetUserBulls(id,securityKey);
+            var result = await _bullService.GetUserBulls(id,securityKey);
             if (result.Success)
             {
                 return Ok(result);
@@ -52,10 +53,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
         {
             
-            var result = _bullService.Add(bull,id,securityKey);
+            var result = await _bullService.Add(bull,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +67,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Delete(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _bullService.Delete(bull,id,securityKey);
+            var result = await _bullService.Delete(bull,id,securityKey);
 
             if (result.Success)
             {
@@ -79,9 +80,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Update(Bull bull,[FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _bullService.Update(bull,id,securityKey);
+            var result = await _bullService.Update(bull,id,securityKey);
 
             if (result.Success)
             {

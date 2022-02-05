@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _fuelConsumptionService.GetAll();
+            var result = await _fuelConsumptionService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -28,9 +29,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _fuelConsumptionService.GetById(id);
+            var result = await _fuelConsumptionService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -40,9 +41,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Add(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _fuelConsumptionService.Add(fuelConsumption,id,securityKey);
+            var result = await _fuelConsumptionService.Add(fuelConsumption,id,securityKey);
 
             if (result.Success)
             {
@@ -53,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Delete(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _fuelConsumptionService.Delete(fuelConsumption,id,securityKey);
+            var result = await _fuelConsumptionService.Delete(fuelConsumption,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +67,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Update(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _fuelConsumptionService.Update(fuelConsumption,id,securityKey);
+            var result =await _fuelConsumptionService.Update(fuelConsumption,id,securityKey);
 
             if (result.Success)
             {
@@ -79,9 +80,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getuserfuelconsumption")]
-        public IActionResult GetUserFuelConsumption([FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> GetUserFuelConsumption([FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _fuelConsumptionService.GetUserFuelConsumptions(id, securityKey);
+            var result = await _fuelConsumptionService.GetUserFuelConsumptions(id, securityKey);
 
             if (result.Success)
             {

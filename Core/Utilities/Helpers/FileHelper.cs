@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Core.Utilities.Business;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -18,64 +19,77 @@ namespace Core.Utilities.Helpers
         static readonly string Directory = System.IO.Directory.GetCurrentDirectory() + @"\wwwroot\uploads\";
         static string path = @"images\";
 
-        public static string Add(IFormFile file)
+        public static async Task<string> Add(IFormFile file)
         {
-            string extension = Path.GetExtension(file.FileName)?.ToUpper();
-            string newFileName = Guid.NewGuid().ToString("N") + extension;
-
-
-            if (!System.IO.Directory.Exists(Directory + path))
+            return await Task.Run(() =>
             {
-                System.IO.Directory.CreateDirectory(Directory + path);
-            }
+                string extension = Path.GetExtension(file.FileName)?.ToUpper();
+                string newFileName = Guid.NewGuid().ToString("N") + extension;
 
-            //Check if its valid image.
-            using MemoryStream ms = new MemoryStream();
-            file.CopyTo(ms);
 
-            byte[] bytes = ms.ToArray();
+                if (!System.IO.Directory.Exists(Directory + path))
+                {
+                    System.IO.Directory.CreateDirectory(Directory + path);
+                }
 
-            if (!bytes.IsImage())
-            {
-                throw new ArgumentException($" {bytes.Length}  - It is not valid image!");
-            }
+                //Check if its valid image.
+                using MemoryStream ms = new MemoryStream();
+                file.CopyToAsync(ms);
 
-            //Upload image
-            using FileStream fileStream = File.Create(Directory + path + newFileName);
-            file.CopyTo(fileStream);
-            fileStream.Flush();
+                byte[] bytes = ms.ToArray();
 
-            return (path + newFileName).Replace("\\", "/");
+                if (!bytes.IsImage().Result)
+                {
+                    throw new ArgumentException($" {bytes.Length}  - It is not valid image!");
+                }
+
+                //Upload image
+                using FileStream fileStream = File.Create(Directory + path + newFileName);
+                file.CopyTo(fileStream);
+                fileStream.Flush();
+
+                return (path + newFileName).Replace("\\", "/");
+            });
         }
 
-        public static string Update(IFormFile file, string oldImagePath)
+        public static async Task<string> Update(IFormFile file, string oldImagePath)
         {
-            Delete(oldImagePath);
-            return Add(file);
+            return await Task.Run(() =>
+            {
+                Delete(oldImagePath);
+                return Add(file);
+            });
         }
 
-        public static void Delete(string imagePath)
+        public static async void Delete(string imagePath)
         {
-            if (File.Exists(Directory + imagePath.Replace("/", "\\")) && Path.GetFileName(imagePath) != "default.png")
+            await Task.Run(() =>
             {
-                File.Delete(Directory + imagePath.Replace("/", "\\"));
-            }
+                if (File.Exists(Directory + imagePath.Replace("/", "\\")) &&
+                    Path.GetFileName(imagePath) != "default.png")
+                {
+                    File.Delete(Directory + imagePath.Replace("/", "\\"));
+                }
+            });
         }
 
-        private static bool IsImage(this byte[] fileBytes)
+        private static async Task<bool> IsImage(this byte[] fileBytes)
         {
-            var headers = new List<byte[]>
+            return await Task.Run(() =>
             {
-                Encoding.ASCII.GetBytes("BM"), // BMP
-                Encoding.ASCII.GetBytes("GIF"), // GIF
-                new byte[] {137, 80, 78, 71}, // PNG
-                new byte[] {73, 73, 42}, // TIFF
-                new byte[] {77, 77, 42}, // TIFF
-                new byte[] {255, 216, 255, 224}, // JPEG
-                new byte[] {255, 216, 255, 225} // JPEG CANON
-            };
+                var headers = new List<byte[]>
+                {
+                    Encoding.ASCII.GetBytes("BM"), // BMP
+                    Encoding.ASCII.GetBytes("GIF"), // GIF
+                    new byte[] {137, 80, 78, 71}, // PNG
+                    new byte[] {73, 73, 42}, // TIFF
+                    new byte[] {77, 77, 42}, // TIFF
+                    new byte[] {255, 216, 255, 224}, // JPEG
+                    new byte[] {255, 216, 255, 225} // JPEG CANON
+                };
 
-            return headers.Any(x => x.SequenceEqual(fileBytes.Take(x.Length)));
+                return headers.Any(x => x.SequenceEqual(fileBytes.Take(x.Length)));
+            });
         }
     }
 }

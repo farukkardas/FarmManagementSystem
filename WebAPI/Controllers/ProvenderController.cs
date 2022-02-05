@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _provenderService.GetAll();
+            var result = await _provenderService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -28,9 +29,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _provenderService.GetById(id);
+            var result = await _provenderService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -40,9 +41,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Add(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _provenderService.Add(provender,id,securityKey);
+            var result = await _provenderService.Add(provender,id,securityKey);
 
             if (result.Success)
             {
@@ -53,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Delete(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _provenderService.Delete(provender,id,securityKey);
+            var result = await _provenderService.Delete(provender,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +67,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Update(Provender provender,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _provenderService.Update(provender,id,securityKey);
+            var result = await _provenderService.Update(provender,id,securityKey);
 
             if (result.Success)
             {
@@ -79,9 +80,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getuserprovenders")]
-        public IActionResult GetUserProvenders([FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> GetUserProvenders([FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _provenderService.GetUserProvenders(id, securityKey);
+            var result = await _provenderService.GetUserProvenders(id, securityKey);
 
             if (result.Success)
             {

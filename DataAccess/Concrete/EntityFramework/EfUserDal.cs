@@ -6,14 +6,15 @@ using Core.Entities.Concrete;
 using DataAccess.Abstract;
 using Entities.DataTransferObjects;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserDal : EfEntityRepositoryBase<User, FarmManagementContext>, IUserDal
     {
-        public List<OperationClaim> GetClaims(User user)
+        public async Task<List<OperationClaim>> GetClaims(User user)
         {
-            using var context = new FarmManagementContext();
+            await using var context = new FarmManagementContext();
             var result = from operationClaim in context.OperationClaims
                 join userOperationClaim in context.UserOperationClaims
                     on operationClaim.Id equals userOperationClaim.OperationClaimId
@@ -26,9 +27,9 @@ namespace DataAccess.Concrete.EntityFramework
             return result.ToList();
         }
 
-        public UserDetailDto GetUserDetails(Expression<Func<UserDetailDto, bool>> filter = null)
+        public async Task<UserDetailDto> GetUserDetails(Expression<Func<UserDetailDto, bool>> filter = null)
         {
-            using var context = new FarmManagementContext();
+            await using var context = new FarmManagementContext();
             var result = from u in context.Users
                 join userOperationClaim in context.UserOperationClaims
                     on u.Id equals userOperationClaim.UserId
@@ -47,8 +48,7 @@ namespace DataAccess.Concrete.EntityFramework
                     ZipCode = u.ZipCode,
                     ImagePath = context.UserImages.Where(im => im.UserId == u.Id).Select(im => im.ImagePath)
                         .SingleOrDefault(),
-                    Profit =context.Orders.Where(o=>o.SellerId == u.Id).Where(o=>o.Status == 6).Sum(x=>x.Price)
-                    ,
+                    Profit = context.Orders.Where(o => o.SellerId == u.Id).Where(o => o.Status == 6).Sum(x => x.Price),
                     TotalSales = context.MilkSales.Count(m => m.SellerId == u.Id),
                     CustomerCount = context.Customers.Count(c => c.OwnerId == u.Id),
                     BullCount = context.Bulls.Count(b => b.OwnerId == u.Id),
@@ -60,20 +60,19 @@ namespace DataAccess.Concrete.EntityFramework
                                   context.Bulls.Count(bull => bull.OwnerId == u.Id) +
                                   context.Sheeps.Count(sheep => sheep.OwnerId == u.Id),
                     Role = operationClaim.Name,
-                    SuccessfulSales = context.Orders.Where(o=>o.SellerId == u.Id).Count(o => o.Status == 6),
-                    PendingOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 2),
-                    CanceledOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 1),
-                    ApprovedOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 3),
-                    DeliveryOrders = context.Orders.Where(o=>o.SellerId == u.Id).Count(o=>o.Status == 5)
-                    
+                    SuccessfulSales = context.Orders.Where(o => o.SellerId == u.Id).Count(o => o.Status == 6),
+                    PendingOrders = context.Orders.Where(o => o.SellerId == u.Id).Count(o => o.Status == 2),
+                    CanceledOrders = context.Orders.Where(o => o.SellerId == u.Id).Count(o => o.Status == 1),
+                    ApprovedOrders = context.Orders.Where(o => o.SellerId == u.Id).Count(o => o.Status == 3),
+                    DeliveryOrders = context.Orders.Where(o => o.SellerId == u.Id).Count(o => o.Status == 5)
                 };
 
             return filter == null ? result.SingleOrDefault() : result.Where(filter).SingleOrDefault();
         }
 
-        public void UpdateUser(UserForEdit userForEdit)
+        public async Task UpdateUser(UserForEdit userForEdit)
         {
-            using var context = new FarmManagementContext();
+           await using var context = new FarmManagementContext();
 
             var user = context.Users.SingleOrDefault(u => u.Id == userForEdit.Id);
 
@@ -87,12 +86,12 @@ namespace DataAccess.Concrete.EntityFramework
                 user.Address = userForEdit.Address;
             }
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void SetClaims(int id)
+        public async void SetClaims(int id)
         {
-            using var context = new FarmManagementContext();
+           await using var context = new FarmManagementContext();
 
             UserOperationClaim userOperationClaim = new UserOperationClaim();
 
@@ -101,7 +100,7 @@ namespace DataAccess.Concrete.EntityFramework
 
             context.UserOperationClaims.Add(userOperationClaim);
 
-            context.SaveChanges();
+           await context.SaveChangesAsync();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -26,29 +27,29 @@ namespace Business.Concrete
             _userImageDal = userImageDal;
             _authService = authService;
         }
+
         [TransactionScopeAspect]
         [SecuredOperations("user,admin")]
-        public IResult Add(IFormFile file, UserImage userImage, int id, string securityKey)
+        public async Task<IResult> Add(IFormFile file, UserImage userImage, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
-        
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
+
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
             }
-        
-            userImage.ImagePath =  FileHelper.Add(file);
+
+            userImage.ImagePath = await FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
-            _userImageDal.Add(userImage);
+            await _userImageDal.Add(userImage);
             return new SuccessResult($"Image is {file.FileName} {Messages.SuccessfullyAdded}");
         }
 
-      
 
         [SecuredOperations("user,admin")]
-        public IResult Delete(UserImage userImage, int id, string securityKey)
+        public async Task<IResult> Delete(UserImage userImage, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
@@ -56,61 +57,61 @@ namespace Business.Concrete
             }
 
             FileHelper.Delete(userImage.ImagePath);
-            _userImageDal.Delete(userImage);
+            await _userImageDal.Delete(userImage);
             return new SuccessResult($"Image {Messages.SuccessfullyDeleted}");
         }
 
         [SecuredOperations("user,admin")]
-        public IResult Update(IFormFile file, UserImage userImage, int id, string securityKey)
+        public async Task<IResult> Update(IFormFile file, UserImage userImage, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<UserImage>>(conditionResult.Message);
             }
 
-            var user = _userImageDal.Get(u => u.UserId == id);
+            var user = await _userImageDal.Get(u => u.UserId == id);
 
             if (user != null)
             {
                 FileHelper.Delete(user.ImagePath);
-                _userImageDal.Delete(user);
+                await _userImageDal.Delete(user);
             }
-           
 
-            userImage.ImagePath = FileHelper.Add(file);
+
+            userImage.ImagePath = await FileHelper.Add(file);
             userImage.ImageDate = DateTime.Now;
-            _userImageDal.Add(userImage);
+            await _userImageDal.Add(userImage);
             return new SuccessResult($"Image {Messages.SuccessfullyUpdated}");
         }
 
         [SecuredOperations("admin")]
-        public IDataResult<UserImage> Get(int id)
+        public async Task<IDataResult<UserImage>> Get(int id)
         {
-            var result = _userImageDal.Get(u => u.Id == id);
+            var result = await _userImageDal.Get(u => u.Id == id);
             return new SuccessDataResult<UserImage>(result);
         }
 
         [SecuredOperations("admin")]
-        public IDataResult<List<UserImage>> GetAll()
+        public async Task<IDataResult<List<UserImage>>> GetAll()
         {
-            var result = _userImageDal.GetAll();
+            var result = await _userImageDal.GetAll();
 
             return new SuccessDataResult<List<UserImage>>(result);
         }
 
         [SecuredOperations("admin")]
-        public IDataResult<UserImage> GetImagesByUserId(int id, string securityKey)
+        public async Task<IDataResult<UserImage>> GetImagesByUserId(int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<UserImage>(conditionResult.Message);
             }
 
-            var result = _userImageDal.Get(u => u.UserId == id);
+            var result = await _userImageDal.Get(u => u.UserId == id);
 
             return new SuccessDataResult<UserImage>(result);
         }

@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _milkSalesService.GetAll();
+            var result = await _milkSalesService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -28,9 +29,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("getmilksales")]
-        public IActionResult GetAllMilkSales()
+        public async Task<IActionResult> GetAllMilkSales()
         {
-            var result = _milkSalesService.GetMilkSales();
+            var result = await _milkSalesService.GetMilkSales();
             if (result.Success)
             {
                 return Ok(result);
@@ -42,9 +43,9 @@ namespace WebAPI.Controllers
        
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _milkSalesService.GetById(id);
+            var result = await _milkSalesService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -54,9 +55,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(MilkSales milkSales,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Add(MilkSales milkSales,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _milkSalesService.Add(milkSales,id,securityKey);
+            var result = await _milkSalesService.Add(milkSales,id,securityKey);
 
             if (result.Success)
             {
@@ -67,9 +68,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(MilkSales milkSales,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Delete(MilkSales milkSales,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _milkSalesService.Delete(milkSales,id,securityKey);
+            var result = await _milkSalesService.Delete(milkSales,id,securityKey);
 
             if (result.Success)
             {
@@ -80,9 +81,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(MilkSales milkSales,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Update(MilkSales milkSales,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _milkSalesService.Update(milkSales,id,securityKey);
+            var result =  await _milkSalesService.Update(milkSales,id,securityKey);
 
             if (result.Success)
             {
@@ -93,9 +94,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("getusermilksales")]
-        public IActionResult GetUserMilkSales([FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserMilkSales([FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _milkSalesService.GetUserMilkSales(id,securityKey);
+            var result = await _milkSalesService.GetUserMilkSales(id,securityKey);
             if (result.Success)
             {
                 return Ok(result);

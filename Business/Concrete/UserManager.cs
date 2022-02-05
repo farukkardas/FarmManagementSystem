@@ -20,92 +20,92 @@ namespace Business.Concrete
     public class UserManager : IUserService
     {
         private readonly IUserDal _userDal;
+
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
-            
         }
 
         [SecuredOperations("admin")]
         [CacheAspect(20)]
-        public IDataResult<List<User>> GetAll()
+        public async Task<IDataResult<List<User>>> GetAll()
         {
-            var result = _userDal.GetAll();
+            var result = await _userDal.GetAll();
             return new SuccessDataResult<List<User>>(result);
         }
 
         [SecuredOperations("admin")]
         [CacheAspect(20)]
-        public IDataResult<User> GetById(int id)
+        public async Task<IDataResult<User>> GetById(int id)
         {
-            var result = _userDal.Get(u => u.Id == id);
+            var result = await _userDal.Get(u => u.Id == id);
             return new SuccessDataResult<User>(result);
         }
 
         [CacheRemoveAspect("IUserService.Get")]
         [ValidationAspect(typeof(UserValidator))]
-        public IResult Add(User user)
+        public async Task<IResult> Add(User user)
         {
-            _userDal.Add(user);
+            await _userDal.Add(user);
             return new SuccessResult($"User{Messages.SuccessfullyAdded}");
         }
 
         [SecuredOperations("admin")]
         [CacheRemoveAspect("IUserService.Get")]
-        public IResult Delete(User user)
+        public async Task<IResult> Delete(User user)
         {
-            _userDal.Delete(user);
+            await _userDal.Delete(user);
             return new SuccessResult($"User{Messages.SuccessfullyDeleted}");
         }
 
         [SecuredOperations("user")]
         [CacheRemoveAspect("IUserService.Get")]
         [ValidationAspect(typeof(UserValidator))]
-        public IResult Update(User user)
+        public async Task<IResult> Update(User user)
         {
-            _userDal.Update(user);
+            await _userDal.Update(user);
             return new SuccessResult($"User{Messages.SuccessfullyUpdated}");
         }
 
         [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IUserService.Get")]
         [ValidationAspect(typeof(UserUpdateValidator))]
-        public IResult UpdateUser(UserForEdit userForEdit)
+        public async Task<IResult> UpdateUser(UserForEdit userForEdit)
         {
-            _userDal.UpdateUser(userForEdit);
+            await _userDal.UpdateUser(userForEdit);
             return new SuccessResult($"User{Messages.SuccessfullyUpdated}");
         }
 
 
         [SecuredOperations("admin,user,customer")]
         [CacheAspect(10)]
-        public IDataResult<UserDetailDto> GetUserDetails(int id,string securityKey)
+        public async Task<IDataResult<UserDetailDto>> GetUserDetails(int id, string securityKey)
         {
-            var result = _userDal.GetUserDetails(u => u.Id == id);
+            var result = await _userDal.GetUserDetails(u => u.Id == id);
 
             return new SuccessDataResult<UserDetailDto>(result, "Data was successfully fetched.");
         }
 
         [CacheRemoveAspect("IUserService.Get")]
         [SecuredOperations("admin,user,customer")]
-        public IResult ChangeUserAddress(int id, string securityKey, int cityId, string fullAddress)
+        public async Task<IResult> ChangeUserAddress(int id, string securityKey, int cityId, string fullAddress)
         {
-            var user = _userDal.Get(u=>u.Id == id);
+            var user = await _userDal.Get(u => u.Id == id);
             user.City = cityId;
             user.Address = fullAddress;
-            _userDal.Update(user);
+            await _userDal.Update(user);
             return new SuccessResult("Address information is updated!");
         }
 
 
-        public List<OperationClaim> GetClaims(User user)
+        public async Task<List<OperationClaim>> GetClaims(User user)
         {
-            return _userDal.GetClaims(user);
+            return await _userDal.GetClaims(user);
         }
-        
-        public User GetByMail(string email)
+
+        public async Task<User> GetByMail(string email)
         {
-            return  _userDal.Get(u => u.Email == email);
+            return await _userDal.Get(u => u.Email == email);
         }
     }
 }

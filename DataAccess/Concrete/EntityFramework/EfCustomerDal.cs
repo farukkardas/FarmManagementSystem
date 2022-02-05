@@ -6,15 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCustomerDal : EfEntityRepositoryBase<Customer,FarmManagementContext>,ICustomerDal
+    public class EfCustomerDal : EfEntityRepositoryBase<Customer, FarmManagementContext>, ICustomerDal
     {
-        public List<MilkSalesTotalDto> MilkSalesSummary(Expression<Func<MilkSalesTotalDto, bool>> filter = null)
+        public async Task<List<MilkSalesTotalDto>> MilkSalesSummary(
+            Expression<Func<MilkSalesTotalDto, bool>> filter = null)
         {
-            using FarmManagementContext context = new FarmManagementContext();
-            
+            await using var context = new FarmManagementContext();
+
             var result = from c in context.Customers
                 join u in context.Users on c.OwnerId equals u.Id
                 select new MilkSalesTotalDto
@@ -24,13 +26,11 @@ namespace DataAccess.Concrete.EntityFramework
                     LastName = c.LastName,
                     Address = c.Address,
                     PhoneNumber = c.PhoneNumber,
-                    TotalSalesAmount = context.MilkSales.Where(x=>x.CustomerId == c.Id).Sum(sa=>sa.Amount),
+                    TotalSalesAmount = context.MilkSales.Where(x => x.CustomerId == c.Id).Sum(sa => sa.Amount),
                     OwnerId = u.Id
-                    
                 };
 
-            return filter == null ? result.ToList() :
-                result.Where(filter).ToList();
+            return filter == null ? result.ToList() : result.Where(filter).ToList();
         }
     }
 }

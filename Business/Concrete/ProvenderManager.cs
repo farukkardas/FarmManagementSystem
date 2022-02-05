@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
@@ -26,18 +27,18 @@ namespace Business.Concrete
 
         [CacheAspect(20)]
         [SecuredOperations("admin")]
-        public IDataResult<List<Provender>> GetAll()
+        public async Task<IDataResult<List<Provender>>> GetAll()
         {
-            var result = _provenderDal.GetAll();
+            var result = await _provenderDal.GetAll();
 
             return new SuccessDataResult<List<Provender>>(result);
         }
 
         [CacheAspect(20)]
         [SecuredOperations("admin")]
-        public IDataResult<Provender> GetById(int id)
+        public async Task<IDataResult<Provender>> GetById(int id)
         {
-            var result = _provenderDal.Get(s => s.Id == id);
+            var result = await _provenderDal.Get(s => s.Id == id);
 
             return new SuccessDataResult<Provender>(result);
         }
@@ -45,61 +46,64 @@ namespace Business.Concrete
         [SecuredOperations("user,admin")]
         [ValidationAspect(typeof(ProvenderValidator))]
         [CacheRemoveAspect("IProvenderService.Get")]
-        public IResult Add(Provender provender,int id,string securityKey)
+        public async Task<IResult> Add(Provender provender, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Provender>>(conditionResult.Message);
             }
-            _provenderDal.Add(provender);
+
+            await _provenderDal.Add(provender);
 
             return new SuccessResult($"Provender {Messages.SuccessfullyAdded}");
         }
 
         [SecuredOperations("user,admin")]
         [CacheRemoveAspect("IProvenderService.Get")]
-        public IResult Delete(Provender provender,int id,string securityKey)
+        public async Task<IResult> Delete(Provender provender, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Provender>>(conditionResult.Message);
             }
-            _provenderDal.Delete(provender);
+
+            await _provenderDal.Delete(provender);
             return new SuccessResult($"Provender {Messages.SuccessfullyDeleted}");
         }
 
         [SecuredOperations("user,admin")]
         [ValidationAspect(typeof(ProvenderValidator))]
         [CacheRemoveAspect("IProvenderService.Get")]
-        public IResult Update(Provender provender,int id,string securityKey)
+        public async Task<IResult> Update(Provender provender, int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Provender>>(conditionResult.Message);
             }
-            _provenderDal.Update(provender);
+
+            await _provenderDal.Update(provender);
             return new SuccessResult($"Provender {Messages.SuccessfullyUpdated}");
         }
 
         [CacheAspect(20)]
         [SecuredOperations("user,admin")]
-        public IDataResult<List<Provender>> GetUserProvenders(int id, string securityKey)
+        public async Task<IDataResult<List<Provender>>> GetUserProvenders(int id, string securityKey)
         {
-            IResult conditionResult = BusinessRules.Run(_authService.UserOwnControl(id, securityKey));
+            IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
             if (conditionResult != null)
             {
                 return new ErrorDataResult<List<Provender>>(conditionResult.Message);
             }
-            
-            _authService.UserOwnControl(id, securityKey);
-            var provenders = _provenderDal.GetAll(c => c.OwnerId == id);
+
+            await _authService.UserOwnControl(id, securityKey);
+            var provenders = await _provenderDal.GetAll(c => c.OwnerId == id);
 
             return new SuccessDataResult<List<Provender>>(provenders);
         }

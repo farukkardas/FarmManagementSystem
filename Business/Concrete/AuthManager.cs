@@ -31,7 +31,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(UserValidator))]
-        public IDataResult<User> Register(UserRegisterDto userRegisterDto, string password)
+        public async Task<IDataResult<User>> Register(UserRegisterDto userRegisterDto, string password)
         {
             HashingHelper.CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
@@ -44,17 +44,17 @@ namespace Business.Concrete
                 PasswordSalt = passwordSalt,
                 Status = true
             };
-            
-            _userService.Add(user);
+
+            await _userService.Add(user);
             _userDal.SetClaims(user.Id);
-            GenerateRandomSecurityKey(user);
+           await GenerateRandomSecurityKey(user);
 
             return new SuccessDataResult<User>(user, $"{user} , {Messages.SuccessfullyAdded}");
         }
 
-        public  IDataResult<User> Login(UserLoginDto userLoginDto)
+        public async Task<IDataResult<User>> Login(UserLoginDto userLoginDto)
         {
-            var userToCheck =  _userService.GetByMail(userLoginDto.Email);
+            var userToCheck = await _userService.GetByMail(userLoginDto.Email);
 
 
             if (userToCheck == null)
@@ -62,9 +62,9 @@ namespace Business.Concrete
                 return new ErrorDataResult<User>("User not found!");
             }
 
-            GenerateRandomSecurityKey(userToCheck);
+            await GenerateRandomSecurityKey(userToCheck);
 
-            IResult result = BusinessRules.Run(CheckUserStatus(userLoginDto.Email));
+            IResult result = BusinessRules.Run(await CheckUserStatus(userLoginDto.Email));
 
             if (result != null)
             {
@@ -81,9 +81,9 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck);
         }
 
-        public IResult UserExists(string email)
+        public async Task<IResult> UserExists(string email)
         {
-            if (_userService.GetByMail(email) != null)
+            if (await _userService.GetByMail(email) != null)
             {
                 return new ErrorResult("This user is exists!");
             }
@@ -92,17 +92,17 @@ namespace Business.Concrete
         }
 
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
+        public async Task<IDataResult<AccessToken>> CreateAccessToken(User user)
         {
-            var claims = _userService.GetClaims(user);
+            var claims = await _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
 
             return new SuccessDataResult<AccessToken>(accessToken, "Successful login!");
         }
 
-        private IResult CheckUserStatus(string email)
+        private async Task<IResult> CheckUserStatus(string email)
         {
-            var user = _userService.GetByMail(email);
+            var user = await _userService.GetByMail(email);
 
             if (user.Status == false)
             {
@@ -112,42 +112,46 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private void GenerateRandomSecurityKey(User user)
+        private async Task GenerateRandomSecurityKey(User user)
         {
-            using var context = new FarmManagementContext();
-            
+            await using var context = new FarmManagementContext();
+
             if (user == null || user.SecurityKeyExpiration > DateTime.Now)
             {
                 return;
             }
-            
-            user.SecurityKey = RandomSecurityKey();
+
+            user.SecurityKey = await RandomSecurityKey();
             user.SecurityKeyExpiration = DateTime.Now.AddDays(1);
-               
+
             _userDal.Update(user);
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        private string RandomSecurityKey()
+        private async Task<string> RandomSecurityKey()
         {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var stringChars = new char[100];
-            var random = new Random();
-
-            for (int i = 0; i < stringChars.Length; i++)
+            return await Task.Run((() =>
             {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
+                var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var stringChars = new char[100];
+                var random = new Random();
 
-            var finalString = new String(stringChars);
+                for (int i = 0; i < stringChars.Length; i++)
+                {
+                    stringChars[i] = chars[random.Next(chars.Length)];
+                }
 
-            return finalString;
+                var finalString = new String(stringChars);
+
+                return finalString;
+            }));
+          
         }
 
-        public IResult UserOwnControl(int userId, string securityKey)
+        public async Task<IResult> UserOwnControl(int userId, string securityKey)
         {
-            var user = _userDal.Get(u => u.Id == userId);
+            var user = await _userDal.Get(u => u.Id == userId);
 
             if (user == null)
             {
@@ -162,9 +166,9 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult CheckSecurityKeyOutdated(int id)
+        public async Task<IResult> CheckSecurityKeyOutdated(int id)
         {
-            var result = _userDal.Get(u=>u.Id == id);
+            var result = await _userDal.Get(u => u.Id == id);
 
             if (result == null)
             {
@@ -172,11 +176,11 @@ namespace Business.Concrete
             }
 
             if (result.SecurityKeyExpiration < DateTime.Now)
-           {
-               return new ErrorResult("Security key outdated");
-           }
+            {
+                return new ErrorResult("Security key outdated");
+            }
 
-           return new SuccessResult("Security key is up to date.");
+            return new SuccessResult("Security key is up to date.");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -10,9 +11,9 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfProductsOnSaleDal : EfEntityRepositoryBase<ProductsOnSale, FarmManagementContext>, IProductsOnSaleDal
     {
-        public ProductDetailDto GetProductById(Expression<Func<ProductDetailDto, bool>> filter = null)
+        public async Task<ProductDetailDto> GetProductById(Expression<Func<ProductDetailDto, bool>> filter = null)
         {
-            using var context = new FarmManagementContext();
+            await using var context = new FarmManagementContext();
 
             var result = from p in context.ProductsOnSale
                 join u in context.Users on p.SellerId equals u.Id

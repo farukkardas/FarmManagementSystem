@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _fertilizerService.GetAll();
+            var result = await _fertilizerService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -28,9 +29,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _fertilizerService.GetById(id);
+            var result =  await _fertilizerService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -40,9 +41,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Fertilizer fertilizer,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Add(Fertilizer fertilizer,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _fertilizerService.Add(fertilizer,id,securityKey);
+            var result = await _fertilizerService.Add(fertilizer,id,securityKey);
 
             if (result.Success)
             {
@@ -53,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Fertilizer fertilizer,[FromHeader]int id, [FromHeader]string securityKey)
+        public async Task<IActionResult> Delete(Fertilizer fertilizer,[FromHeader]int id, [FromHeader]string securityKey)
         {
-            var result = _fertilizerService.Delete(fertilizer,id,securityKey);
+            var result = await _fertilizerService.Delete(fertilizer,id,securityKey);
 
             if (result.Success)
             {
@@ -66,9 +67,9 @@ namespace WebAPI.Controllers
         }
         
         [HttpPost("update")]
-        public IActionResult Update(Fertilizer fertilizer,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Update(Fertilizer fertilizer,[FromHeader]int id,[FromHeader] string securityKey)
         {
-            var result = _fertilizerService.Update(fertilizer,id,securityKey);
+            var result =  await _fertilizerService.Update(fertilizer,id,securityKey);
 
             if (result.Success)
             {
@@ -80,9 +81,9 @@ namespace WebAPI.Controllers
         
         
         [HttpGet("getuserfertilizers")]
-        public IActionResult GetUserFertilizers([FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserFertilizers([FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _fertilizerService.GetUserFertilizers(id,securityKey);
+            var result = await _fertilizerService.GetUserFertilizers(id,securityKey);
             
             if (result.Success)
             {

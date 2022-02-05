@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -18,17 +19,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(UserLoginDto userLoginDto)
+        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
 
-            var userToLogin = _authService.Login(userLoginDto);
+            var userToLogin = await _authService.Login(userLoginDto);
             
             if (!userToLogin.Success)
             {
                 return BadRequest(userToLogin);
             }
             
-            var result = _authService.CreateAccessToken(userToLogin.Data);
+            var result =  await _authService.CreateAccessToken(userToLogin.Data);
 
             if (result.Success)
             {
@@ -42,11 +43,11 @@ namespace WebAPI.Controllers
         
         
         [HttpPost("register")]
-        public ActionResult Register(UserRegisterDto userRegisterDto)
+        public async Task<ActionResult> Register(UserRegisterDto userRegisterDto)
         {
        
-            var registerResult = _authService.Register(userRegisterDto, userRegisterDto.Password);
-            var result = _authService.CreateAccessToken(registerResult.Data);
+            var registerResult = await _authService.Register(userRegisterDto, userRegisterDto.Password);
+            var result = await _authService.CreateAccessToken(registerResult.Data);
             result.Message = "Successfully registered!";
             
             if (result.Success)
@@ -58,9 +59,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("checkskoutdated")]
-        public ActionResult CheckSecurityKeyOutdated([FromForm]int id)
+        public async Task<ActionResult> CheckSecurityKeyOutdated([FromForm]int id)
         {
-           var result = _authService.CheckSecurityKeyOutdated(id);
+           var result =  await _authService.CheckSecurityKeyOutdated(id);
 
            if (result.Success)
            {

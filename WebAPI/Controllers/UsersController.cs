@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Core.Entities.Concrete;
 using Core.Utilities.Business;
@@ -24,9 +25,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _userService.GetAll();
+            var result = await _userService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -36,9 +37,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _userService.GetById(id);
+            var result = await _userService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -48,9 +49,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(User user)
+        public async Task<IActionResult> Add(User user)
         {
-            var result = _userService.Add(user);
+            var result = await _userService.Add(user);
 
             if (result.Success)
             {
@@ -61,16 +62,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(User user, int id, string securityKey)
+        public async Task<IActionResult> Delete(User user, int id, string securityKey)
         {
-            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+            IResult conditionResult = await _authService.UserOwnControl(id, securityKey);
 
             if (!conditionResult.Success)
             {
                 return BadRequest(conditionResult);
             }
 
-            var result = _userService.Delete(user);
+            var result = await _userService.Delete(user);
 
             if (result.Success)
             {
@@ -81,16 +82,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update(User user, [FromHeader] int id, [FromHeader] string securityKey)
+        public async Task<IActionResult> Update(User user, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+            IResult conditionResult = await _authService.UserOwnControl(id, securityKey);
 
             if (!conditionResult.Success)
             {
                 return BadRequest(conditionResult);
             }
 
-            var result = _userService.Update(user);
+            var result = await _userService.Update(user);
 
             if (result.Success)
             {
@@ -101,16 +102,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("updateuser")]
-        public IActionResult UpdateUser(UserForEdit userForEdit, [FromHeader] int id, [FromHeader] string securityKey)
+        public async Task<IActionResult> UpdateUser(UserForEdit userForEdit, [FromHeader] int id,
+            [FromHeader] string securityKey)
         {
-            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+            IResult conditionResult = await _authService.UserOwnControl(id, securityKey);
 
             if (!conditionResult.Success)
             {
                 return BadRequest(conditionResult);
             }
 
-            var result = _userService.UpdateUser(userForEdit);
+            var result = await _userService.UpdateUser(userForEdit);
 
             if (result.Success)
             {
@@ -121,17 +123,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getuserdetails")]
-        public IActionResult GetUserDetails([FromHeader] int id, [FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserDetails([FromHeader] int id, [FromHeader] string securityKey)
         {
-            
-            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+            IResult conditionResult = await _authService.UserOwnControl(id, securityKey);
 
             if (!conditionResult.Success)
             {
                 return BadRequest(conditionResult);
             }
-            
-            var result = _userService.GetUserDetails(id,securityKey);
+
+            var result = await _userService.GetUserDetails(id, securityKey);
 
             if (result.Success)
             {
@@ -140,18 +141,19 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPut("changeaddress")]
-        public IActionResult ChangeUserAddress([FromHeader]int id,[FromHeader]string securityKey,[FromForm]int cityId,[FromForm]string fullAddress)
+        public async Task<IActionResult> ChangeUserAddress([FromHeader] int id, [FromHeader] string securityKey,
+            [FromForm] int cityId, [FromForm] string fullAddress)
         {
-            IResult conditionResult = _authService.UserOwnControl(id, securityKey);
+            IResult conditionResult = await _authService.UserOwnControl(id, securityKey);
 
             if (!conditionResult.Success)
             {
                 return BadRequest(conditionResult);
             }
-            
-            var result = _userService.ChangeUserAddress(id,securityKey,cityId,fullAddress);
+
+            var result = await _userService.ChangeUserAddress(id, securityKey, cityId, fullAddress);
 
             if (result.Success)
             {
@@ -160,8 +162,5 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-
-
-        
     }
 }

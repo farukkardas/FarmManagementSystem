@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -11,9 +12,9 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfMilkSalesDal : EfEntityRepositoryBase<MilkSales, FarmManagementContext>, IMilkSalesDal
     {
-        public List<MilkSalesDto> GetMilkSales(Expression<Func<MilkSalesDto, bool>> filter = null)
+        public async Task<List<MilkSalesDto>> GetMilkSales(Expression<Func<MilkSalesDto, bool>> filter = null)
         {
-            using FarmManagementContext context = new FarmManagementContext();
+           await using FarmManagementContext context = new FarmManagementContext();
             var result = from c in context.MilkSales
                 join cu in context.Customers on c.CustomerId equals cu.Id
                 select new MilkSalesDto()

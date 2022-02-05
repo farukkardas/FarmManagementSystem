@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,10 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm]IFormFile file,[FromForm]UserImage userImage,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add([FromForm]IFormFile file,[FromForm]UserImage userImage,[FromHeader]int id,[FromHeader]string securityKey)
         {
             
-            var result = _userImageService.Add(file,userImage,id,securityKey);
+            var result =await _userImageService.Add(file,userImage,id,securityKey);
             
             if (result.Success)
             {
@@ -33,12 +34,12 @@ namespace WebAPI.Controllers
         
         
         [HttpDelete("delete")]
-        public IActionResult Delete(int imageId,[FromHeader]int id,[FromHeader]string securityKey)
-        {
+        public async Task<IActionResult> Delete(int imageId,[FromHeader]int id,[FromHeader]string securityKey)
+        { 
 
-            var userImage = _userImageService.Get(id).Data;
+            var userImage = await _userImageService.Get(id);
 
-            var result = _userImageService.Delete(userImage,id,securityKey);
+            var result = await _userImageService.Delete(userImage.Data,id,securityKey);
             if (result.Success)
             {
                 return Ok(result);
@@ -47,10 +48,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm]IFormFile file,[FromForm] UserImage userImage,[FromHeader]int id ,[FromHeader]string securityKey)
+        public async Task<IActionResult> Update([FromForm]IFormFile file,[FromForm] UserImage userImage,[FromHeader]int id ,[FromHeader]string securityKey)
         {
            
-            var result = _userImageService.Update(file, userImage,id,securityKey);
+            var result = await _userImageService.Update(file, userImage,id,securityKey);
             if (result.Success)
             {
                 return Ok(result);
@@ -59,9 +60,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById([FromForm(Name = ("Id"))] int id)
+        public async Task<IActionResult> GetById([FromForm(Name = ("Id"))] int id)
         {
-            var result = _userImageService.Get(id);
+            var result = await _userImageService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -71,9 +72,9 @@ namespace WebAPI.Controllers
         
         
         [HttpGet("getimagesbyuserid")]
-        public IActionResult GetImagesByUserId([FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> GetImagesByUserId([FromHeader]int id,[FromHeader]string securityKey)
         {
-            var result = _userImageService.GetImagesByUserId(id,securityKey);
+            var result = await _userImageService.GetImagesByUserId(id,securityKey);
             
             if (result.Success)
             {
