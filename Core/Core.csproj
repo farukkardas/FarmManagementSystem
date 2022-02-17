@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Aspects\Autofac\Logging" />
       <Folder Include="CrossCuttingConcerns\Logging\" />
     </ItemGroup>
 

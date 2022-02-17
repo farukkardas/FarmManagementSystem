@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Business;
@@ -30,6 +35,7 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+
         [ValidationAspect(typeof(UserValidator))]
         public async Task<IDataResult<User>> Register(UserRegisterDto userRegisterDto, string password)
         {
@@ -45,13 +51,15 @@ namespace Business.Concrete
                 Status = true
             };
 
+
             await _userService.Add(user);
-            _userDal.SetClaims(user.Id);
-           await GenerateRandomSecurityKey(user);
+            await _userDal.SetClaims(user.Id);
+            await GenerateRandomSecurityKey(user);
 
             return new SuccessDataResult<User>(user, $"{user} , {Messages.SuccessfullyAdded}");
         }
 
+        [FileLogger(typeof(UserLoginDto))]
         public async Task<IDataResult<User>> Login(UserLoginDto userLoginDto)
         {
             var userToCheck = await _userService.GetByMail(userLoginDto.Email);
@@ -76,8 +84,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>("Wrong password!");
             }
-
-
+            
             return new SuccessDataResult<User>(userToCheck);
         }
 
@@ -124,7 +131,7 @@ namespace Business.Concrete
             user.SecurityKey = await RandomSecurityKey();
             user.SecurityKeyExpiration = DateTime.Now.AddDays(1);
 
-            _userDal.Update(user);
+            await _userDal.Update(user);
 
             await context.SaveChangesAsync();
         }
@@ -146,7 +153,6 @@ namespace Business.Concrete
 
                 return finalString;
             }));
-          
         }
 
         public async Task<IResult> UserOwnControl(int userId, string securityKey)
@@ -182,5 +188,7 @@ namespace Business.Concrete
 
             return new SuccessResult("Security key is up to date.");
         }
+
+     
     }
 }

@@ -30,6 +30,7 @@ namespace DataAccess.Concrete.EntityFramework
         public async Task<UserDetailDto> GetUserDetails(Expression<Func<UserDetailDto, bool>> filter = null)
         {
             await using var context = new FarmManagementContext();
+            
             var result = from u in context.Users
                 join userOperationClaim in context.UserOperationClaims
                     on u.Id equals userOperationClaim.UserId
@@ -89,14 +90,12 @@ namespace DataAccess.Concrete.EntityFramework
             await context.SaveChangesAsync();
         }
 
-        public async void SetClaims(int id)
+        public async Task SetClaims(int id)
         {
            await using var context = new FarmManagementContext();
 
-            UserOperationClaim userOperationClaim = new UserOperationClaim();
+           UserOperationClaim userOperationClaim = new UserOperationClaim {UserId = id, OperationClaimId = 3};
 
-            userOperationClaim.UserId = id;
-            userOperationClaim.OperationClaimId = 3;
 
             context.UserOperationClaims.Add(userOperationClaim);
 

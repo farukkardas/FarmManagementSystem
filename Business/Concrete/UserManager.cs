@@ -5,6 +5,7 @@ using Business.BusinessAspects;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Business;
@@ -76,7 +77,7 @@ namespace Business.Concrete
             return new SuccessResult($"User{Messages.SuccessfullyUpdated}");
         }
 
-
+        [FileLogger(typeof(UserDetailDto))]
         [SecuredOperations("admin,user,customer")]
         [CacheAspect(10)]
         public async Task<IDataResult<UserDetailDto>> GetUserDetails(int id, string securityKey)

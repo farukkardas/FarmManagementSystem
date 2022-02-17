@@ -18,6 +18,6 @@ namespace DataAccess.Abstract
 
         Task UpdateUser(UserForEdit userForEdit);
 
-        void SetClaims(int id);
+        Task SetClaims(int id);
     }
 }
