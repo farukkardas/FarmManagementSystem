@@ -2,10 +2,12 @@
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-   [Route("api/[controller]")]
+    [SwaggerTag("Süt satışı stokları.")]
+    [Route("api/[controller]")]
   [ApiController]
     public class MilkSalesController : Controller
     {

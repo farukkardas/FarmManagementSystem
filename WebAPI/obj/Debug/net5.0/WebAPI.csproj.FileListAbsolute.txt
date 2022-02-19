@@ -175,3 +175,4 @@ D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Swashb
 D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Development\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll

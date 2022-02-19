@@ -402,6 +402,10 @@
               "target": "Package",
               "version": "[6.2.3, )"
             },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            },
             "Swashbuckle.AspNetCore.SwaggerUI": {
               "target": "Package",
               "version": "[6.2.3, )"

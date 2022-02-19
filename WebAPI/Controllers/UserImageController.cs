@@ -3,11 +3,13 @@ using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-  //  [Route("api/[controller]")]
-  // [ApiController]
+    [SwaggerTag("Kullanıcı resim ekleme servisi.")]
+    [Route("api/[controller]")]
+   [ApiController]
     public class UserImageController : Controller
     {
         readonly IUserImageService _userImageService;

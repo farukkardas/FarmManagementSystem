@@ -2,11 +2,13 @@
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
+    [SwaggerTag("Sepet işlemleri servisi.")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class BasketController : Controller
     {
         private IBasketService _basketService;
@@ -19,7 +21,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbasketproducts")]
         public async Task<IActionResult> GetBasketProducts([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result =  await _basketService.GetBasketProducts(id, securityKey);
+            var result = await _basketService.GetBasketProducts(id, securityKey);
 
             if (result.Success)
             {
@@ -41,8 +43,8 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
-        
+
+
         [HttpPost("deletetobasket")]
         public async Task<IActionResult> DeleteToBasket(ProductInBasket productInBasket, [FromHeader] int id,
             [FromHeader] string securityKey)

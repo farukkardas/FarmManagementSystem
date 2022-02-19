@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstract;
 using Entities.Concrete;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
+    [SwaggerTag("Stoktaki buzağı kayıtları. (BULL)")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CalvesController : Controller
     {
         readonly ICalfService _calvesService;
@@ -15,7 +17,7 @@ namespace WebAPI.Controllers
         {
             _calvesService = calvesService;
         }
-        
+
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll()
         {
@@ -39,12 +41,12 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpGet("getusercalves")]
-        public async Task<IActionResult> GetUserCalves([FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserCalves([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _calvesService.GetUserCalves(id,securityKey);
-            
+            var result = await _calvesService.GetUserCalves(id, securityKey);
+
             if (result.Success)
             {
                 return Ok(result);
@@ -54,9 +56,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add(Calves calves,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add(Calves calves, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _calvesService.Add(calves,id,securityKey);
+            var result = await _calvesService.Add(calves, id, securityKey);
 
             if (result.Success)
             {
@@ -67,9 +69,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete(Calves calves,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Delete(Calves calves, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _calvesService.Delete(calves,id,securityKey);
+            var result = await _calvesService.Delete(calves, id, securityKey);
 
             if (result.Success)
             {
@@ -78,11 +80,11 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPost("update")]
-        public async Task<IActionResult> Update(Calves calves,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Update(Calves calves, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _calvesService.Update(calves,id,securityKey);
+            var result = await _calvesService.Update(calves, id, securityKey);
 
             if (result.Success)
             {

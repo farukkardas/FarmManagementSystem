@@ -2,11 +2,13 @@
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
+    [SwaggerTag("Yakıt tüketimi kayıtları.")]
     [Route("api/[controller]")]
-     [ApiController]
+    [ApiController]
     public class FuelConsumptionController : Controller
     {
         private readonly IFuelConsumptionService _fuelConsumptionService;
@@ -41,9 +43,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Add(FuelConsumption fuelConsumption, [FromHeader] int id,
+            [FromHeader] string securityKey)
         {
-            var result = await _fuelConsumptionService.Add(fuelConsumption,id,securityKey);
+            var result = await _fuelConsumptionService.Add(fuelConsumption, id, securityKey);
 
             if (result.Success)
             {
@@ -54,9 +57,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Delete(FuelConsumption fuelConsumption, [FromHeader] int id,
+            [FromHeader] string securityKey)
         {
-            var result = await _fuelConsumptionService.Delete(fuelConsumption,id,securityKey);
+            var result = await _fuelConsumptionService.Delete(fuelConsumption, id, securityKey);
 
             if (result.Success)
             {
@@ -65,11 +69,12 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPost("update")]
-        public async Task<IActionResult> Update(FuelConsumption fuelConsumption,[FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> Update(FuelConsumption fuelConsumption, [FromHeader] int id,
+            [FromHeader] string securityKey)
         {
-            var result =await _fuelConsumptionService.Update(fuelConsumption,id,securityKey);
+            var result = await _fuelConsumptionService.Update(fuelConsumption, id, securityKey);
 
             if (result.Success)
             {
@@ -80,7 +85,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getuserfuelconsumption")]
-        public async Task<IActionResult> GetUserFuelConsumption([FromHeader]int id,[FromHeader] string securityKey)
+        public async Task<IActionResult> GetUserFuelConsumption([FromHeader] int id, [FromHeader] string securityKey)
         {
             var result = await _fuelConsumptionService.GetUserFuelConsumptions(id, securityKey);
 

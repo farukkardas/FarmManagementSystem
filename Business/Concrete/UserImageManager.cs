@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
 using Business.Constants;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
@@ -29,6 +30,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
+        [CacheRemoveAspect("IUserService.Get")]
         [SecuredOperations("user,admin")]
         public async Task<IResult> Add(IFormFile file, UserImage userImage, int id, string securityKey)
         {
@@ -61,6 +63,7 @@ namespace Business.Concrete
             return new SuccessResult($"Image {Messages.SuccessfullyDeleted}");
         }
 
+        [CacheRemoveAspect("IUserService.Get")]
         [SecuredOperations("user,admin")]
         public async Task<IResult> Update(IFormFile file, UserImage userImage, int id, string securityKey)
         {

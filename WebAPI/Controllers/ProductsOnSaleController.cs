@@ -4,10 +4,11 @@ using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-    
+    [SwaggerTag("Satışa ürün ekleme servisi.")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsOnSaleController : Controller

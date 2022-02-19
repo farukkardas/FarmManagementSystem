@@ -8,16 +8,19 @@ using Core.Utilities.Results.Concrete;
 using Entities.Concrete;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
+    [SwaggerTag("Kullanıcı CRUD işlemleri.")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
 
+   
         public UsersController(IUserService userService, IAuthService authService)
         {
             _userService = userService;

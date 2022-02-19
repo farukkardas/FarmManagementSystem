@@ -4,11 +4,13 @@ using Business.ValidationRules.FluentValidation;
 using Entities.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-   [Route("api/[controller]")]
-      [ApiController]
+    [SwaggerTag("Stoktaki hayvan kayıtları. (Cow)")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CowController : Controller
     {
         private readonly ICowService _cowService;

@@ -3,9 +3,11 @@ using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
+    [SwaggerTag("Sipariş takibi servisi.")]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : Controller
@@ -18,7 +20,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("GetUserOrders")]
+        [HttpGet("getuserorders")]
         public async Task<IActionResult> GetUserOrders([FromHeader] int id, [FromHeader] string securityKey)
         {
             var result =  await _orderService.GetUserOrders(id, securityKey);
@@ -31,7 +33,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("GetCustomerOrders")]
+        [HttpGet("getcustomerorders")]
         public async Task<IActionResult> GetCustomerOrders([FromHeader] int id, [FromHeader] string securityKey)
         {
             var result = await _orderService.GetCustomerOrders(id, securityKey);
@@ -45,7 +47,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("GetAll")]
+        [HttpGet("getall")]
         public async Task<IActionResult> GetAll([FromHeader] int id, [FromHeader] string securityKey)
         {
             var result = await _orderService.GetAll();

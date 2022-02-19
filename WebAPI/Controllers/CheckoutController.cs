@@ -2,11 +2,13 @@
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-  [Route("api/[controller]")]
-   [ApiController]
+    [SwaggerTag("Ödeme işlemleri demo servisi.")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CheckoutController : Controller
     {
         private readonly ICheckOutService _checkOutService;
@@ -17,7 +19,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("checkoutproducts")]
-        public async Task<IActionResult> CheckoutProducts([FromHeader]int id,[FromHeader] string securityKey, CreditCart creditCart)
+        public async Task<IActionResult> CheckoutProducts([FromHeader] int id, [FromHeader] string securityKey,
+            CreditCart creditCart)
         {
             var result = await _checkOutService.CheckoutProducts(id, securityKey, creditCart);
 

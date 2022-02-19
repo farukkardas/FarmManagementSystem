@@ -1,4 +1,7 @@
+using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,12 +30,12 @@ namespace WebAPI
 
         private IConfiguration Configuration { get; }
 
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
+                options.EnableAnnotations();
                 options.SwaggerDoc("v1", new OpenApiInfo {Title = "FmsAPI", Version = "v1"});
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
@@ -79,7 +82,7 @@ namespace WebAPI
 
 
             //Exception Middleware for handle error
-            app.ConfigureCustomExceptionMiddleware();
+     //       app.ConfigureCustomExceptionMiddleware();
 
             //Using static files from root directory
             app.UseStaticFiles(new StaticFileOptions

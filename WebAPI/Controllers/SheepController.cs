@@ -2,11 +2,13 @@
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
-   // [Route("api/[controller]")]
-   // [ApiController]
+    [SwaggerTag("Stoktaki koyun kayıtları.")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class SheepController : Controller
     {
         private readonly ISheepService _sheepService;

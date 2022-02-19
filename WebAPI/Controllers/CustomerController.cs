@@ -2,11 +2,13 @@
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
 {
- [Route("api/[controller]")]
- [ApiController]
+    [SwaggerTag("Manuel müşteri kaydı servisi.")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CustomerController : Controller
     {
         private readonly ICustomerService _customerService;
@@ -19,7 +21,7 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll()
         {
-            var result =await _customerService.GetAll();
+            var result = await _customerService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -39,7 +41,7 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpGet("getcustomersummary")]
         public async Task<IActionResult> GetCustomerSummary()
         {
@@ -53,9 +55,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add(Customer customer,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add(Customer customer, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _customerService.Add(customer,id,securityKey);
+            var result = await _customerService.Add(customer, id, securityKey);
 
             if (result.Success)
             {
@@ -66,9 +68,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete(Customer customer,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Delete(Customer customer, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _customerService.Delete(customer,id,securityKey);
+            var result = await _customerService.Delete(customer, id, securityKey);
 
             if (result.Success)
             {
@@ -77,11 +79,11 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPost("update")]
-        public async Task<IActionResult> Update(Customer customer,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Update(Customer customer, [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _customerService.Update(customer,id,securityKey);
+            var result = await _customerService.Update(customer, id, securityKey);
 
             if (result.Success)
             {
@@ -92,10 +94,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getusercustomers")]
-        public async Task<IActionResult> GetUserCustomer([FromHeader]int id, [FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserCustomer([FromHeader] int id, [FromHeader] string securityKey)
         {
             var result = await _customerService.GetUserCustomers(id, securityKey);
-            
+
             if (result.Success)
             {
                 return Ok(result);
