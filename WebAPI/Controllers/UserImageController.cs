@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+  //  [Route("api/[controller]")]
+  // [ApiController]
     public class UserImageController : Controller
     {
         readonly IUserImageService _userImageService;

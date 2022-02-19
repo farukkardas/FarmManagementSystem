@@ -7,8 +7,9 @@ using Newtonsoft.Json;
 
 namespace WebAPI.Controllers
 {
-    [ApiController]
+    
     [Route("api/[controller]")]
+    [ApiController]
     public class ProductsOnSaleController : Controller
     {
         private readonly IProductsOnSaleService _productsOnSaleService;
@@ -18,7 +19,7 @@ namespace WebAPI.Controllers
             _productsOnSaleService = productsOnSaleService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _productsOnSaleService.GetAll();
@@ -30,56 +31,60 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
-        
-        [HttpGet("getbyid")]
+
+
+        [HttpGet("GetById")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _productsOnSaleService.GetById(id);
-
+        
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+        
+            return BadRequest(result);
+        }
+        [HttpPost("addproduct")]
+        public async Task<IActionResult> Add([FromForm] ProductsOnSale productsOnSale, [FromForm] ImageUpload file,
+            [FromHeader] int id, [FromHeader] string securityKey)
+        {
+            var result = await _productsOnSaleService.Add(productsOnSale, file.Image, id, securityKey);
+            
             if (result.Success)
             {
                 return Ok(result);
             }
 
-            return BadRequest(result);
+            return BadRequest();
         }
         
-        [HttpPost("addproduct")]
-        public async Task<IActionResult> Add([FromForm]ProductsOnSale productsOnSale,[FromForm]IFormFile file,[FromHeader]int id ,[FromHeader]string securityKey)
-        {
-            var result = await _productsOnSaleService.Add(productsOnSale,file,id,securityKey);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
+        
+        
         [HttpGet("getuserproducts")]
-        public async Task<IActionResult> GetUserProducts([FromHeader]int id ,[FromHeader]string securityKey)
+        public async Task<IActionResult> GetUserProducts([FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _productsOnSaleService.GetUserProducts(id,securityKey);
-
+            var result = await _productsOnSaleService.GetUserProducts(id, securityKey);
+        
             if (result.Success)
             {
                 return Ok(result);
             }
-
+        
             return BadRequest(result);
         }
         
         [HttpPost("deleteproduct")]
-        public async Task<IActionResult> Delete([FromForm]int productId,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Delete([FromForm] int productId, [FromHeader] int id,
+            [FromHeader] string securityKey)
         {
-            var result =  await _productsOnSaleService.Delete(productId,id,securityKey);
-
+            var result = await _productsOnSaleService.Delete(productId, id, securityKey);
+        
             if (result.Success)
             {
                 return Ok(result);
             }
-
+        
             return BadRequest(result);
         }
     }

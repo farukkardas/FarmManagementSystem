@@ -170,3 +170,8 @@ D:\Development\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI
 D:\Development\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\ref\WebAPI.dll
 D:\Development\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI.pdb
 D:\Development\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI.genruntimeconfig.cache
+D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Microsoft.OpenApi.dll
+D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\Development\RiderProjects\FarmManagementSystem\WebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\Development\RiderProjects\FarmManagementSystem\WebAPI\obj\Debug\net5.0\WebAPI.MvcApplicationPartsAssemblyInfo.cs

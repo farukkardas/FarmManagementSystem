@@ -6,8 +6,8 @@ using Serilog;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+ [Route("api/[controller]")]
+ [ApiController]
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;

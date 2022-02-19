@@ -41,8 +41,8 @@ namespace Business.Concrete
 
             return new SuccessDataResult<Fertilizer>(result);
         }
-
-
+        
+        
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect(("IFertilizerService.Get"))]
         [ValidationAspect(typeof(FertilizerValidator))]

@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,14 +10,16 @@ using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace WebAPI
 {
+    
     public class Startup
     {
-        string  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,25 +27,25 @@ namespace WebAPI
 
         private IConfiguration Configuration { get; }
 
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {   
-           
-            
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo {Title = "FmsAPI", Version = "v1"});
+                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            });
+
             services.AddControllers();
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                    });
+                    builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
             });
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-            services.AddSignalR();
-            
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -70,13 +73,15 @@ namespace WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger(c => { c.RouteTemplate = "/swagger/{documentName}/swagger.json"; });
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FmsAPI v1"));
             }
 
+
             //Exception Middleware for handle error
-           // app.ConfigureCustomExceptionMiddleware();
+            app.ConfigureCustomExceptionMiddleware();
 
             //Using static files from root directory
-
             app.UseStaticFiles(new StaticFileOptions
             {
                 ServeUnknownFileTypes = true
@@ -85,11 +90,11 @@ namespace WebAPI
             app.UseHttpsRedirection();
 
             app.UseCors(MyAllowSpecificOrigins);
-            
+
             app.UseRouting();
 
             app.UseAuthorization();
-    
+
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

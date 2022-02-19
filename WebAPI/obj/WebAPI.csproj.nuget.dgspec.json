@@ -397,6 +397,14 @@
             "Serilog.Sinks.MSSqlServer": {
               "target": "Package",
               "version": "[5.7.0-dev-00414, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[6.2.3, )"
             }
           },
           "imports": [

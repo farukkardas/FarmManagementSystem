@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+  [Route("api/[controller]")]
+   [ApiController]
     public class CheckoutController : Controller
     {
         private readonly ICheckOutService _checkOutService;

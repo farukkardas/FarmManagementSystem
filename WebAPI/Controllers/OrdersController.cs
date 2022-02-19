@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class OrdersController : Controller
     {
         private readonly IOrderService _orderService;

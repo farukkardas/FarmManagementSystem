@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+   [Route("api/[controller]")]
+  [ApiController]
     public class MilkSalesController : Controller
     {
         private IMilkSalesService _milkSalesService;

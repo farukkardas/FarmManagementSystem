@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+     [ApiController]
     public class FuelConsumptionController : Controller
     {
         private readonly IFuelConsumptionService _fuelConsumptionService;

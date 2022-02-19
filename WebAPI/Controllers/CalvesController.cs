@@ -5,8 +5,8 @@ using Entities.Concrete;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+  [Route("api/[controller]")]
+  [ApiController]
     public class CalvesController : Controller
     {
         readonly ICalfService _calvesService;
