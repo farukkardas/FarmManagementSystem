@@ -21,14 +21,14 @@ namespace Business.Concrete
     {
         private readonly IProductsOnSaleDal _productsOnSaleDal;
         private readonly IAuthService _authService;
-        private IUserImageDal _userImageDal;
+        private readonly IMailService _mailService;
 
         public ProductsOnSaleManager(IProductsOnSaleDal productsOnSaleDal, IAuthService authService,
-            IUserImageDal userImageDal)
+            IMailService mailService)
         {
             _productsOnSaleDal = productsOnSaleDal;
             _authService = authService;
-            _userImageDal = userImageDal;
+            _mailService = mailService;
         }
 
         [SecuredOperations("admin,user,customer")]
@@ -44,7 +44,7 @@ namespace Business.Concrete
         [CacheAspect(10)]
         public async Task<IDataResult<ProductDetailDto>> GetById(int id)
         {
-            var result = await _productsOnSaleDal.GetProductById(p=>p.Id == id);
+            var result = await _productsOnSaleDal.GetProductById(p => p.Id == id);
 
             return new SuccessDataResult<ProductDetailDto>(result);
         }
@@ -66,7 +66,7 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         [SecuredOperations("admin,user")]
         [CacheRemoveAspect("IProductsOnSaleService.Get")]
-        public async  Task<IResult> Add(ProductsOnSale productsOnSale, IFormFile file, int id, string securityKey)
+        public async Task<IResult> Add(ProductsOnSale productsOnSale, IFormFile file, int id, string securityKey)
         {
             IResult conditionResult = BusinessRules.Run(await _authService.UserOwnControl(id, securityKey));
 
@@ -84,13 +84,20 @@ namespace Business.Concrete
                 Description = productsOnSale.Description,
                 EntryDate = DateTime.Now,
                 SellerId = productsOnSale.SellerId,
-                ImagePath =  await FileHelper.Add(file)
+                ImagePath = await FileHelper.Add(file)
             };
 
 
-
-         await   _productsOnSaleDal.Add(product);
-
+            EmailObject emailObject = new EmailObject
+            {
+                userId = id,
+                Subject = "Your product is successfully on the list!",
+                MailBody =
+                    $"{product.Name} is now on the list. Price: {product.Price} , Date: {product.EntryDate}"
+            };
+            
+            await _productsOnSaleDal.Add(product);
+            await _mailService.SendMail(emailObject);
             return new SuccessResult($"Product {Messages.SuccessfullyAdded}");
         }
 
@@ -104,7 +111,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<ProductsOnSale>>(conditionResult.Message);
             }
-            
+
             //Find product
             var product = await _productsOnSaleDal.Get(p => p.Id == productId);
 
@@ -112,6 +119,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult("Product not found!");
             }
+
             // Delete image from local.
             FileHelper.Delete(product.ImagePath);
             //Delete product from DB.

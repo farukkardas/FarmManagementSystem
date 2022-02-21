@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebAPI.Controllers
@@ -14,10 +13,12 @@ namespace WebAPI.Controllers
     public class ProductsOnSaleController : Controller
     {
         private readonly IProductsOnSaleService _productsOnSaleService;
+        private readonly IMailService _emailService;
 
-        public ProductsOnSaleController(IProductsOnSaleService productsOnSaleService)
+        public ProductsOnSaleController(IProductsOnSaleService productsOnSaleService, IMailService emailService)
         {
             _productsOnSaleService = productsOnSaleService;
+            _emailService = emailService;
         }
 
         [HttpGet("GetAll")]
@@ -46,11 +47,12 @@ namespace WebAPI.Controllers
         
             return BadRequest(result);
         }
+        //[ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost("addproduct")]
         public async Task<IActionResult> Add([FromForm] ProductsOnSale productsOnSale, [FromForm] ImageUpload file,
             [FromHeader] int id, [FromHeader] string securityKey)
         {
-            var result = await _productsOnSaleService.Add(productsOnSale, file.Image, id, securityKey);
+            var result = await _productsOnSaleService.Add(productsOnSale, file.File, id, securityKey);
             
             if (result.Success)
             {
@@ -59,8 +61,6 @@ namespace WebAPI.Controllers
 
             return BadRequest();
         }
-        
-        
         
         [HttpGet("getuserproducts")]
         public async Task<IActionResult> GetUserProducts([FromHeader] int id, [FromHeader] string securityKey)
@@ -88,5 +88,7 @@ namespace WebAPI.Controllers
         
             return BadRequest(result);
         }
+        
+     
     }
 }

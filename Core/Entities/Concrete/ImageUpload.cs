@@ -1,10 +1,10 @@
 ﻿using DataAccess.Entites;
 using Microsoft.AspNetCore.Http;
 
-namespace Entities.Concrete
+namespace Core.Entities.Concrete
 {
     public class ImageUpload : IEntity
     {
-        public IFormFile Image { get; set; }
+        public IFormFile File { get; set; }
     }
 }

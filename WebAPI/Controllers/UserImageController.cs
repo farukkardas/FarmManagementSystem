@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,10 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromForm]IFormFile file,[FromForm]UserImage userImage,[FromHeader]int id,[FromHeader]string securityKey)
+        public async Task<IActionResult> Add([FromForm]ImageUpload file,[FromForm]UserImage userImage,[FromHeader]int id,[FromHeader]string securityKey)
         {
             
-            var result =await _userImageService.Add(file,userImage,id,securityKey);
+            var result =await _userImageService.Add(file.File,userImage,id,securityKey);
             
             if (result.Success)
             {
@@ -50,10 +51,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> Update([FromForm]IFormFile file,[FromForm] UserImage userImage,[FromHeader]int id ,[FromHeader]string securityKey)
+        public async Task<IActionResult> Update([FromForm]ImageUpload file,[FromForm] UserImage userImage,[FromHeader]int id ,[FromHeader]string securityKey)
         {
            
-            var result = await _userImageService.Update(file, userImage,id,securityKey);
+            var result = await _userImageService.Update(file.File, userImage,id,securityKey);
             if (result.Success)
             {
                 return Ok(result);

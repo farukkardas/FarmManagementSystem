@@ -82,7 +82,7 @@ namespace WebAPI
 
 
             //Exception Middleware for handle error
-     //       app.ConfigureCustomExceptionMiddleware();
+            //app.ConfigureCustomExceptionMiddleware();
 
             //Using static files from root directory
             app.UseStaticFiles(new StaticFileOptions

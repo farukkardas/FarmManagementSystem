@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class BasketController : Controller
     {
-        private IBasketService _basketService;
+        private readonly IBasketService _basketService;
 
         public BasketController(IBasketService basketService)
         {

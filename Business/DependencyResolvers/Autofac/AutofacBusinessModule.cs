@@ -62,6 +62,8 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<BasketManager>().As<IBasketService>();
             builder.RegisterType<EfBasketDal>().As<IBasketDal>();
+
+            builder.RegisterType<MailService>().As<IMailService>();
             
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

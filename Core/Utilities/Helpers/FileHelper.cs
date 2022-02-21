@@ -23,6 +23,7 @@ namespace Core.Utilities.Helpers
         {
             return await Task.Run(() =>
             {
+                
                 string extension = Path.GetExtension(file.FileName)?.ToUpper();
                 string newFileName = Guid.NewGuid().ToString("N") + extension;
 
@@ -36,12 +37,12 @@ namespace Core.Utilities.Helpers
                 using MemoryStream ms = new MemoryStream();
                 file.CopyToAsync(ms);
 
-                byte[] bytes = ms.ToArray();
+                var bytes = ms.ToArray();
 
-                if (!bytes.IsImage().Result)
-                {
-                    throw new ArgumentException($" {bytes.Length}  - It is not valid image!");
-                }
+                // if (!bytes.IsImage().Result)
+                // {
+                //     throw new ArgumentException($" {bytes.Length}  - It is not valid image!");
+                // }
 
                 //Upload image
                 using FileStream fileStream = File.Create(Directory + path + newFileName);
