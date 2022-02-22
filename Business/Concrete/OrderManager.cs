@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects;
@@ -19,11 +20,16 @@ namespace Business.Concrete
     {
         private readonly IOrderDal _orderDal;
         private readonly IAuthService _authService;
+        private readonly IMailService _mailService;
+        private readonly IUserService _userService;
 
-        public OrderManager(IOrderDal orderDal, IAuthService authService)
+        public OrderManager(IOrderDal orderDal, IAuthService authService, IMailService mailService,
+            IUserService userService)
         {
             _orderDal = orderDal;
             _authService = authService;
+            _mailService = mailService;
+            _userService = userService;
         }
 
         [SecuredOperations("admin")]
@@ -93,11 +99,21 @@ namespace Business.Concrete
             }
 
             var order = await _orderDal.Get(o => o.Id == orderId);
-
             order.Status = 1;
-
             await _orderDal.Update(order);
+            
+            
+            var customer = await _userService.GetById(order.CustomerId);
+            EmailObject emailObject = new EmailObject
+            {
+                userId = customer.Data.Id,
+                Subject = "Your product is canceled!",
+                MailBody =
+                    $"Dear {customer.Data.FirstName} {customer.Data.LastName},  {order.Id} numbered order is canceled by seller."
+            };
+            await _mailService.SendMail(emailObject);
 
+            
             return new SuccessResult($"Order has ben cancelled.");
         }
 
@@ -142,6 +158,17 @@ namespace Business.Concrete
             var result = await _orderDal.Get(o => o.Id == orderId);
             result.Status = 3;
             await _orderDal.Update(result);
+           
+            var customer = await _userService.GetById(result.CustomerId);
+          
+            EmailObject emailObject = new EmailObject
+            {
+                userId = customer.Data.Id,
+                Subject = "Your product is successfully approved!",
+                MailBody =
+                    $"Dear {customer.Data.FirstName} {customer.Data.LastName},  {result.Id} numbered order is approved. You will be informed when your product is delivered to the cargo."
+            };
+            await _mailService.SendMail(emailObject);
 
             return new SuccessResult($" Order has ben approved.");
         }
@@ -158,7 +185,17 @@ namespace Business.Concrete
             var result = await _orderDal.Get(o => o.Id == orderId);
             result.DeliveryNo = deliveryNo;
             result.Status = 5;
-           await _orderDal.Update(result);
+            await _orderDal.Update(result);
+            
+            var customer = await _userService.GetById(result.CustomerId);
+            EmailObject emailObject = new EmailObject
+            {
+                userId = customer.Data.Id,
+                Subject = "Your product is delivered the cargo!",
+                MailBody =
+                    $"Dear {customer.Data.FirstName} {customer.Data.LastName},  {result.Id} numbered order is delivered cargo. Your cargo number is {result.DeliveryNo}. You can track order with the cargo number."
+            };
+            await _mailService.SendMail(emailObject);
 
             return new SuccessResult("Delivery no has ben approved.");
         }

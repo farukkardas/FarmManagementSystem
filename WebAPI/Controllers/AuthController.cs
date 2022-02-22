@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-
+      
         public AuthController(IAuthService authService)
         {
             _authService = authService;
@@ -69,5 +69,6 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+       
     }
 }

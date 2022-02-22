@@ -26,6 +26,7 @@ namespace Business.Concrete
 
             SmtpClient smtpClient = new()
             {
+                UseDefaultCredentials = false,
                 Port = 587,
                 Host = "smtp.gmail.com",
                 EnableSsl = true,
@@ -34,20 +35,19 @@ namespace Business.Concrete
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("farukkardasx@gmail.com", "Faruk Kardaş")
+                From = new MailAddress("farukkardasx@gmail.com", "FMS Service")
             };
             
             string filePath = "D:\\Development\\RiderProjects\\FarmManagementSystem\\Business\\MailTemplates\\MailTemplate.html";  
             StreamReader str = new StreamReader(filePath);  
-            string MailText = await str.ReadToEndAsync();
+            string mailText = await str.ReadToEndAsync();
             str.Close();  
-            MailText = MailText.Replace("[newusername]", emailObject.MailBody);  
+            mailText = mailText.Replace("[newusername]", emailObject.MailBody);  
 
             mailMessage.To.Add(user.Data.Email);
-            mailMessage.CC.Add(user.Data.Email);
             mailMessage.Subject = emailObject.Subject;
             mailMessage.IsBodyHtml = true;
-            mailMessage.Body = MailText;
+            mailMessage.Body = mailText;
 
             try
             {

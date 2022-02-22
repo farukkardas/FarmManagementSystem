@@ -21,7 +21,7 @@ namespace WebAPI
     
     public class Startup
     {
-        string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        string MyAllowSpecificOrigins = "http://localhost:5000/";
 
         public Startup(IConfiguration configuration)
         {
@@ -44,7 +44,7 @@ namespace WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
+                    builder => { builder.WithOrigins("http://localhost:5000").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin(); });
             });
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
